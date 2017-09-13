@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  //- message
+  .alert.alert-danger this is an error message
+  .alert.alert-success.
+    this is
+    an 
+    success message
+    啦啦
+    啦啦
+
+  - var name = 'raohl1'
+  if name === 'raohl1'
+    p name is 饶厚林
+  else 
+    p name is raohl1
+
+  - var list = ['第一个', '第二个']
+  ul
+    each value in list
+      li=value
+
+  a.btn.btn-primary(href='https://www.baidu.com') 百度

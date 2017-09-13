@@ -1,0 +1,81 @@
+extends ../layout
+
+append css
+    link(rel="stylesheet", href="/css/blog.css")
+
+block main
+  block header
+    .blog-masthead
+      .container
+        nav.blog-nav
+          if pageName === '/'
+            a.blog-nav-item.active(href="/") 首页
+          else
+            a.blog-nav-item(href="/") 首页
+          a.blog-nav-item(href="/#") 设计
+          a.blog-nav-item(href="#") 新事件
+          if pageName === '/about'
+            a.blog-nav-item.active(href="/about") 关于我们
+          else
+            a.blog-nav-item(href="/about") 关于我们
+          if pageName === '/contact'
+            a.blog-nav-item.active(href="/contact") 联系
+          else
+            a.blog-nav-item(href="/contact") 联系
+
+  .container
+    .row
+      .col-sm-8.blog-main
+        block content
+      .col-sm-3.col-sm-offset-1.blog-sidebar
+          .sidebar-module.sidebar-module-inset
+            h4 About
+            p
+              | Etiam porta 
+              em sem malesuada magna
+              |  mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+          .sidebar-module
+            h4 Archives
+            ol.list-unstyled
+              li
+                a(href="#") March 2014
+              li
+                a(href="#") February 2014
+              li
+                a(href="#") January 2014
+              li
+                a(href="#") December 2013
+              li
+                a(href="#") November 2013
+              li
+                a(href="#") October 2013
+              li
+                a(href="#") September 2013
+              li
+                a(href="#") August 2013
+              li
+                a(href="#") July 2013
+              li
+                a(href="#") June 2013
+              li
+                a(href="#") May 2013
+              li
+                a(href="#") April 2013
+          .sidebar-module
+            h4 Elsewhere
+            ol.list-unstyled
+              li
+                a(href="#") GitHub
+              li
+                a(href="#") Twitter
+              li
+                a(href="#") Facebook
+
+  block footer
+    .blog-footer
+      .container
+        .row
+          p.col-xs-6
+            | Blog Test
+          p.col-xs-6
+            ©RHL2017 
