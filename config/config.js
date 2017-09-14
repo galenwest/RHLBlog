@@ -9,7 +9,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/blogone-development'
+    db: 'mongodb://localhost/nodeblog'
   },
 
   test: {
