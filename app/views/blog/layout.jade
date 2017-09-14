@@ -2,6 +2,7 @@ extends ../layout
 
 append css
     link(rel="stylesheet", href="/css/blog.css")
+    link(rel="stylesheet", href="/components/font-awesome/css/font-awesome.min.css")
 
 block main
   block header
@@ -23,7 +24,7 @@ block main
           else
             a.blog-nav-item(href="/contact") 联系
 
-  .container
+  .container.page
     .row
       .col-sm-8.blog-main
         block content

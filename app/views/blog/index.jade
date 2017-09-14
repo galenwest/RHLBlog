@@ -1,27 +1,31 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-
-  //- message
-  .alert.alert-danger this is an error message
-  .alert.alert-success.
-    this is
-    an 
-    success message
-    啦啦
-    啦啦
-
-  - var name = 'raohl1'
-  if name === 'raohl1'
-    p name is 饶厚林
-  else 
-    p name is raohl1
-
-  - var list = ['第一个', '第二个']
-  ul
-    each value in list
-      li=value
-
-  a.btn.btn-primary(href='https://www.baidu.com') 百度
+  each post in posts
+    .post
+      .post-info-meta
+        .post-info
+          span.post-author
+            =post.author.name
+          span.post-created
+            =moment(post.created).format('YYYY-MM-DD')
+        .post-icons
+          i.fa.fa-thumb-tack
+      h3.post-title
+        a(href="/posts/view/" + post._id, title="#{post.title}", target="_blank")
+          =post.title
+      .post-abstract
+        = post.content
+      .post-meta
+        .post-category
+          =post.category.name
+        .mts-like
+          i.fa.fa-heart-o
+          span.post-favorite
+            =post.meta.favorites
+        .post-comment
+          if post.comments.length === 0
+            | 无评论
+          else
+            =post.comments.length
+            | &nbsp;评论
