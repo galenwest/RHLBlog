@@ -6,7 +6,7 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-  res.redirect('/posts');
+  res.redirect('/posts/1');
 });
 
 router.get('/about', function (req, res, next) {

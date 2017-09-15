@@ -17,11 +17,14 @@
     "express": "^4.13.3",
     "glob": "^6.0.4",
     "jade": "^1.11.0",
+    "lorem-ipsum": "^1.0.4",
     "method-override": "^2.3.0",
     "moment": "^2.18.1",
     "mongoose": "^4.1.2",
     "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "slug": "^0.9.1",
+    "truncate": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
