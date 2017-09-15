@@ -15,7 +15,7 @@ block content
         a(href="/posts/view/" + post._id, title="#{post.title}", target="_blank")
           =post.title
       .post-abstract
-        = truncate(post.content, 160)
+        = truncate(post.content, 80)
       .post-meta
         .post-category
           =post.category.name
@@ -34,15 +34,7 @@ block content
     nav(aria-label="Page navigation")
       ul.pagination
         - var currentPage = 1;
-        if (currentPage === 1)
-          li.disabled
-            span
-              span(aria-hidden="true") &laquo;
-        else
-          li
-            a(href="/posts/" + currentPage, aria-label="Previous")
-              span(aria-hidden="true") &laquo;
-        while currentPage < pageCount
+        while currentPage <= pageCount
           if (currentPage === pageNum)
             li.active
               span
@@ -50,6 +42,3 @@ block content
           else
             li
               a(href="/posts/" + currentPage)= currentPage++
-        li
-          a(href="/posts/" + currentPage, aria-label="Next")
-            span(aria-hidden="true") &raquo;
