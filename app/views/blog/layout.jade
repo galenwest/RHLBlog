@@ -9,7 +9,7 @@ block main
     .blog-masthead
       .container
         nav.blog-nav
-          if pageName === '/posts'
+          if (pageName === '/posts/1' || pageName === '/')
             a.blog-nav-item.active(href="/") 首页
           else
             a.blog-nav-item(href="/") 首页

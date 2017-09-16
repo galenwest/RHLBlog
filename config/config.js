@@ -18,7 +18,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/blogone-test'
+    db: 'mongodb://localhost/nodeblog'
   },
 
   production: {
@@ -27,7 +27,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/blogone-production'
+    db: 'mongodb://localhost/nodeblog'
   }
 };
 
