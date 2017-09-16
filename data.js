@@ -6,7 +6,7 @@ var loremipsum = require('lorem-ipsum'),
   glob = require('glob'),
   mongoose = require('mongoose');
 
-mongoose.connect(config.db);
+  mongoose.connect(config.db, { useMongoClient: true });
 var db = mongoose.connection;
 db.on('error', function () {
   throw new Error('unable to connect to database at ' + config.db);
@@ -22,12 +22,12 @@ var User = mongoose.model('User');
 var Category = mongoose.model('Category');
 
 User.findOne(function (err, user) {
-  if (err) {
+  if (err || !user) {
     return console.log('cannot find user');
   }
   Category.find(function (err, categories) {
-    if (err) {
-      return console.log('cannot find user');
+    if (err || !categories) {
+      return console.log('cannot find categories');
     }
     categories.forEach(function (category) {
       for (var i = 0; i < 35; i++) {
