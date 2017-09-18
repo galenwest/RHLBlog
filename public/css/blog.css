@@ -289,11 +289,15 @@ h6, .h6 {
   z-index: 1;
 }
 
-.post-title a {
+.post-title {
   font-weight: 700;
   font-size: 27px;
   color: #333333;
   padding: 0 0 8px 0;
+}
+
+.post-title a{
+  color: #333333;
 }
 
 .post-title a:link {

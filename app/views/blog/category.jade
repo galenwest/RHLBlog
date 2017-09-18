@@ -20,7 +20,7 @@ block content
       .post-abstract
         = truncate(post.content, 80)
       .post-meta
-        a.post-category(href="/posts/category/" + post.category.name, target='_blank')= post.category.name
+        a.post-category(href="/posts/category/" + post.category.name)= post.category.name
         .mts-like
           i.fa.fa-heart-o
           span.post-favourates

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .post
+    .post-info-meta
+      .post-info
+        span.post-author
+          =post.author.name
+        span.post-created
+          =moment(post.created).format('YYYY-MM-DD')
+      .post-icons
+        i.fa.fa-thumb-tack
+    h3.post-title
+      =post.title
+    .post-abstract
+      = post.content
+    .post-meta
+      a.post-category(href="/posts/category/" + post.category.name, target='_blank')= post.category.name
+      .mts-like
+        i.fa.fa-heart-o
+        span.post-favourates
+          =post.meta.favourates

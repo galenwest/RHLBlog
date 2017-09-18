@@ -26,15 +26,15 @@ block main
 
   .container.page
     .row
-      .col-sm-9.blog-main
+      .col-sm-8.blog-main
         block content
-      .col-sm-3.col-sm-offset-0.blog-sidebar
-          .sidebar-module.sidebar-module-inset
+      .col-sm-4.blog-sidebar
+          .sidebar-module
             h3.widget-title 文章分类
             ul
               each category in categories
                 li
-                  a.cat-item(href="/posts/category/" + category.name, target='_blank')=category.name
+                  a.cat-item(href="/posts/category/" + category.name)=category.name
           .sidebar-module
             h3.widget-title Archives
             ol.list-unstyled
