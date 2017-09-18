@@ -26,51 +26,35 @@ block main
 
   .container.page
     .row
-      .col-sm-8.blog-main
+      .col-sm-9.blog-main
         block content
-      .col-sm-3.col-sm-offset-1.blog-sidebar
+      .col-sm-3.col-sm-offset-0.blog-sidebar
           .sidebar-module.sidebar-module-inset
-            h4 About
-            p
-              | Etiam porta 
-              em sem malesuada magna
-              |  mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+            h3.widget-title 文章分类
+            ul
+              each category in categories
+                li
+                  a.cat-item(href="/posts/category/" + category.name, target='_blank')=category.name
           .sidebar-module
-            h4 Archives
+            h3.widget-title Archives
             ol.list-unstyled
               li
-                a(href="#") March 2014
+                a.cat-item(href="#") March 2014
               li
-                a(href="#") February 2014
+                a.cat-item(href="#") February 2014
               li
-                a(href="#") January 2014
+                a.cat-item(href="#") January 2014
               li
-                a(href="#") December 2013
-              li
-                a(href="#") November 2013
-              li
-                a(href="#") October 2013
-              li
-                a(href="#") September 2013
-              li
-                a(href="#") August 2013
-              li
-                a(href="#") July 2013
-              li
-                a(href="#") June 2013
-              li
-                a(href="#") May 2013
-              li
-                a(href="#") April 2013
+                a.cat-item(href="#") December 2013
           .sidebar-module
-            h4 Elsewhere
+            h3.widget-title Elsewhere
             ol.list-unstyled
               li
-                a(href="#") GitHub
+                a.cat-item(href="#") GitHub
               li
-                a(href="#") Twitter
+                a.cat-item(href="#") Twitter
               li
-                a(href="#") Facebook
+                a.cat-item(href="#") Facebook
 
   block footer
     .blog-footer

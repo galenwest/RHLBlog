@@ -9,6 +9,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
+var mongoose = require('mongoose');
+
+var Category = mongoose.model('Category');
 
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
@@ -22,7 +25,13 @@ module.exports = function(app, config) {
     app.locals.pageName = req.path;
     app.locals.moment = moment;
     app.locals.truncate = truncate;
-    next();
+    Category.find(function (err, categories) {
+      if (err) {
+        return next(err);
+      }
+      app.locals.categories = categories;
+      next();
+    })
   });
 
   // app.use(favicon(config.root + '/public/img/favicon.ico'));

@@ -1,6 +1,9 @@
 extends layout
 
 block content
+  h1.postsby
+    span 类别：
+      =cateName
   each post in posts
     .post
       .post-info-meta
@@ -40,4 +43,4 @@ block content
                 span= currentPage++
           else
             li
-              a(href="/posts/" + currentPage)= currentPage++
+              a(href="/posts/category/" + cateName + '/' + currentPage)= currentPage++
