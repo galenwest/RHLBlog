@@ -1,0 +1,108 @@
+extends ../layout
+
+block content
+  != messages()
+  table.table.table-bordered
+    thead
+      tr
+        th(width="30%")
+          if sortby === 'title'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=asc") 标题
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc") 标题
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc") 标题
+        th
+          if sortby === 'category'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=asc") 分类
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc") 分类
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc") 分类
+        th
+          if sortby === 'author'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=asc") 作者
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc") 作者
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc") 作者
+        th
+          if sortby === 'created'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc") 添加时间
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc") 添加时间
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc") 添加时间
+        th 
+          if sortby === 'meta.favorite'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=asc") 被赞
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc") 被赞
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc") 被赞
+        th 
+          if sortby === 'comments'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=asc") 评论
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc") 评论
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc") 评论
+        th 
+          if sortby === 'published'
+            if (sortdir === 'desc')
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc") 状态
+                i.fa.fa-arrow-down
+            else
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc") 状态
+                i.fa.fa-arrow-up
+          else
+            a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc") 状态
+        th 管理
+    tbody
+    each post in posts
+      tr
+        td
+          a(href="/posts/view/" + post._id, target="_blank")= post.title
+        td= post.category.name
+        td= post.author.email
+        td= moment(post.created).format('YYYY-MM-DD')
+        td= post.meta.favorite || 0
+        td= post.comments.length || 0
+        td= post.published ? '已发布' : '待发布'
+        td
+          a(href="/posts/view/" + post._id, class="btn btn-sm btn-success", target="_blank") 查看
+          &nbsp;&nbsp;
+          a(href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
+          &nbsp;&nbsp;
+          a(href="/admin/posts/delete/" + post._id, class="btn btn-sm btn-danger") 删除
+
+  if pageCount > 1
+    nav(aria-label="Page navigation")
+      ul.pagination
+        - var currentPage = 1;
+        while currentPage <= pageCount
+          if (currentPage === pageNum)
+            li.active
+              span
+                span= currentPage++
+          else
+            li
+              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir)= currentPage++
