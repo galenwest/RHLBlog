@@ -16,7 +16,49 @@ block content
       = post.content
     .post-meta
       a.post-category(href="/posts/category/" + post.category.name, target='_blank')= post.category.name
-      .mts-like
-        i.fa.fa-heart-o
-        span.post-favourates
-          =post.meta.favourates
+      a.mts-like(href="javascript:void(0)" id=post._id postId=post.id favorite=post.meta.favorite)
+        i.fa.fa-heart-o(postId=post.id favorite=post.meta.favorite)
+        span.post-favourates(postId=post.id favorite=post.meta.favorite)
+          =post.meta.favorite
+  nav(aria-label="Page navigation")
+    ul.pager
+      li.previous
+        if (prePost)
+          a.prenex(href="/posts/view/" + prePost.slug title="#{prePost.title}") 上一篇
+        else
+          a.prenex(href="#") 没有文章了
+      li.next
+        if (nextPost)
+          a.prenex(href="/posts/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
+        else
+          a.prenex(href="#") 没有文章了
+
+  .post-comments
+    if post.comments.length
+      - var commentLength = post.comments.length + '个评论';
+      .total-comments= commentLength
+      .post-comments-list
+      each comment in post.comments
+        .post-comment-item(id=comment.id)
+          .post-comment-author
+            span.comm-author= comment.author
+            span.comm-created= moment(comment.created).format('YYYY-MM-DD')
+          //- h4.post-comment-email= comment.email
+          p.post-comment-content= comment.comment
+    else
+      .total-comments 没有评论
+      
+    
+    .total-comments 添加一个评论
+    form#commentform(action="/posts/comment/"+post._id, method="post", enctype="application/x-www-form-urlencoded")
+      p.comment-form-author
+        input(id="author" type="text" name="author" placeholder="昵称" )
+      p.comment-form-email
+        input(id="email" type="text" name="email" placeholder="邮箱" )
+      p.comment-form-comment
+        textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论...")
+      p.form-submit
+        input(id="submit" type="submit" value="发布")
+
+  p ╰❥ª.•° ✿ゞ .•°❤ ┈━═☆
+

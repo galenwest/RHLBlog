@@ -12,16 +12,16 @@ block content
         .post-icons
           i.fa.fa-thumb-tack
       h3.post-title
-        a(href="/posts/view/" + post._id, title="#{post.title}", target="_blank")
+        a(href="/posts/view/" + post.slug, title="#{post.title}")
           =post.title
       .post-abstract
         = truncate(post.content, 80)
       .post-meta
         a.post-category(href="/posts/category/" + post.category.name)= post.category.name
-        .mts-like
-          i.fa.fa-heart-o
-          span.post-favourates
-            =post.meta.favourates
+        a.mts-like(href="javascript:void(0)" id=post._id postId=post.id favorite=post.meta.favorite)
+          i.fa.fa-heart-o(postId=post.id favorite=post.meta.favorite)
+          span.post-favourates(postId=post.id favorite=post.meta.favorite)
+            =post.meta.favorite
         .post-comment
           if post.comments.length === 0
             | 无评论

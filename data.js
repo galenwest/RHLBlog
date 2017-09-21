@@ -39,7 +39,7 @@ User.findOne(function (err, user) {
           category: category,
           author: user,
           published: true,
-          meta: { favorites: 0 },
+          meta: { favorite: 0 },
           comments: [],
           created: new Date,
         });
