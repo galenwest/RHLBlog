@@ -1,86 +1,102 @@
 extends ../layout
 
 block content
+  h2.page-header 文章列表
   != messages()
+  form#form-post-filter.form.form-inline.form-filter(action="")
+    .form-group
+      label 分类
+      select#js-category.form-control(name="category")
+        option(value="", selected=(filter.category === "")) - 选择分类 -
+        each category in categories
+          option(value=category._id, selected=(category._id.toString() === filter.category))= category.name
+    .form-group
+      label 作者
+      select#js-author.form-control(name="author")
+        option(value="", selected=(filter.author === "")) - 选择分类 -
+        each author in authors
+          option(value=author._id, selected=(author._id.toString() === filter.author))= author.name
+    button#js-filter-submit.btn.btn-info 筛选
+
   table.table.table-bordered
     thead
       tr
         th(width="30%")
           if sortby === 'title'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=asc") 标题
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 标题
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc") 标题
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 标题
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc") 标题
+            a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 标题
         th
           if sortby === 'category'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=asc") 分类
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 分类
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc") 分类
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 分类
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc") 分类
+            a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 分类
         th
           if sortby === 'author'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=asc") 作者
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 作者
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc") 作者
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 作者
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc") 作者
+            a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 作者
         th
           if sortby === 'created'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc") 添加时间
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc") 添加时间
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc") 添加时间
+            a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
         th 
           if sortby === 'meta.favorite'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=asc") 被赞
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc") 被赞
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc") 被赞
+            a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
         th 
           if sortby === 'comments'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=asc") 评论
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 评论
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc") 评论
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 评论
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc") 评论
+            a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 评论
         th 
           if sortby === 'published'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc") 状态
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 状态
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc") 状态
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 状态
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc") 状态
+            a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 状态
         th 管理
     tbody
     each post in posts
       tr
         td
-          a(href="/posts/view/" + post._id, target="_blank")= post.title
+          a(href="/posts/view/" + post._id + "?published=" + post.published, target="_blank")= post.title
         td= post.category.name
         td= post.author.email
         td= moment(post.created).format('YYYY-MM-DD')
@@ -88,11 +104,17 @@ block content
         td= post.comments.length || 0
         td= post.published ? '已发布' : '待发布'
         td
-          a(href="/posts/view/" + post._id, class="btn btn-sm btn-success", target="_blank") 查看
+          if (!post.published)
+            a(href="/admin/posts/published/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author, class="btn btn-sm btn-primary") 发布
+            &nbsp;&nbsp;
+          else
+            button(class="btn btn-sm btn-default", disabled="disabled") 发布
+            &nbsp;&nbsp;
+          a(href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
           &nbsp;&nbsp;
           a(href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
           &nbsp;&nbsp;
-          a(href="/admin/posts/delete/" + post._id, class="btn btn-sm btn-danger") 删除
+          a(href="/admin/posts/delete/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author, class="btn btn-sm btn-danger") 删除
 
   if pageCount > 1
     nav(aria-label="Page navigation")
@@ -105,4 +127,4 @@ block content
                 span= currentPage++
           else
             li
-              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir)= currentPage++
+              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author)= currentPage++

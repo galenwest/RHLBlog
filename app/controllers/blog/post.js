@@ -34,7 +34,6 @@ router.get('/:page', function (req, res, next) {
         res.redirect('/posts/' + pageNum);
         return;
       }
-      // return res.json({ 'skip': skip, 'pageNum': pageNum, 'params': req.params.page, 'pageCount': pageCount });
       Post.find({ published: true })
         .sort({ _id: -1 })
         .limit(pageSize)
@@ -106,7 +105,13 @@ router.get('/view/:id', function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('No post id provided!'));
   }
-  var conditions = { published: true };
+  // return res.jsonp(req.query);
+  var conditions = {};
+  if (req.query.published !== 'false') {
+    conditions.published = true;
+  } else {
+    conditions.published = false;
+  }
   try {
     conditions._id = mongoose.Types.ObjectId(req.params.id);
   } catch (err) {
@@ -210,5 +215,5 @@ router.get('/favorite/:id', function (req, res, next) {
         else return res.send(200, post.meta.favorite);
         // }, 5000);
       });
-    });;
+    });
 });

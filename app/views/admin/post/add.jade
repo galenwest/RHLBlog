@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+  h2.page-header 添加文章
+  != messages()
+  
+  form.vertical-form(method="post", action="/admin/posts/add")
+    button.btn.btn-info(type="submit" style="margin-bottom: 10px; width: 160px;") 保 存
+    //- button.btn.btn-success(type="submit" style="margin-bottom: 10px; width: 160px;") 发 布
+    .form-group
+      label(for="title" style="font-size:18px;color:#555555") 标题
+      input.form-control.input-lg(name="title", required="true", placeholder="请输入标题...")
+
+    .form-group
+      label(for="category" style="font-size:18px;color:#555555") 分类
+      select.form-control.input-lg(name="category", required="true")
+        option(value="", selected=true) -选择分类-
+        each category in categories
+          option(value=category._id)= category.name
+    
+    .form-group
+      label(for="published" style="font-size:18px;color:#555555;margin-right:10px;") 是否发布
+      label.radio-inline
+        input(type="radio", name="published", value="true", style="width:16px;height:16px") 
+        span(style="font-size:16px") 是
+      label.radio-inline
+        input(type="radio", name="published", value="false", style="width:16px;height:16px", checked)
+        span(style="font-size:16px") 否
+    
+    .form-group
+      label(for="content" style="font-size:18px;color:#555555") 内容
+      #my-editormd
+        textarea#js-post-content.form-control(name="content", required="true", style="display:none;")
+
+    button.btn.btn-info(type="submit" style="margin-bottom: 100px; width: 160px;") 保 存
+    //- button.btn.btn-success(type="submit" style="margin-bottom: 100px; width: 160px;") 发 布

@@ -27,7 +27,7 @@ module.exports = function(app, config) {
   app.use(function (req, res, next) {
     app.locals.pageName = req.path;
     app.locals.moment = moment;
-    app.locals.truncate = truncate;
+    app.locals.truncate = mytruncate;
     Category.find(function (err, categories) {
       if (err) {
         return next(err);
@@ -94,3 +94,7 @@ module.exports = function(app, config) {
 
   return app;
 };
+
+function mytruncate (str) {
+  return truncate(str.replace(/[&\|\\\*^%$#@\-]/g,""), 90);
+}

@@ -3,6 +3,9 @@ extends ../layout
 append css
     link(rel="stylesheet", href="/css/admin.css")
     link(rel="stylesheet", href="/components/font-awesome/css/font-awesome.min.css")
+append js
+  script(src="/js/controller/admin.js")
+  script(src="/js/controller/querystring.js")
 
 block main
   nav.navbar.navbar-inverse.navbar-fixed-top
@@ -36,20 +39,20 @@ block main
     .row
       .col-sm-3.col-md-2.sidebar
         ul.nav.nav-sidebar
-          li.active
-            a(href="/admin/posts/list")
+          li(class={active: pageName === "/admin/posts/"+pageNum})
+            a(href="/admin/posts")
               i.fa.fa-files-o &nbsp;文章列表
-          li
+          li(class={active: pageName === "/admin/posts/add"})
             a(href="/admin/posts/add")
               i.fa.fa-file-o &nbsp;添加文章
-          li
-            a(href="/admin/categories/list")
+          li(class={active: pageName === "/admin/categories"})
+            a(href="/admin/categories")
               i.fa.fa-th-list &nbsp;分类列表
-          li
+          li(class={active: pageName === "/admin/categories/add"})
             a(href="/admin/categories/add")
               i.fa.fa-plus &nbsp;添加分类
         ul.nav.nav-sidebar
-          li
+          li(class={active: pageName === "/admin/users/password"})
             a(href="/admin/users/password")
               i.fa.fa-unlock-alt &nbsp;修改密码
 

@@ -8,7 +8,7 @@ $(document).ready(function () {
     $.ajax({
       url: "/posts/favorite/" + postId,
       success: function (result) {
-        domLike.html('<i postid="'+postId+'" favorite="'+result+'" class="fa fa-heart-o"></i><span postid="'+postId+'" favorite="'+result+'" class="post-favourates">'+result+'</span>');
+        domLike.html('<i postid="' + postId + '" favorite="' + result + '" class="fa fa-heart-o"></i><span postid="' + postId + '" favorite="' + result + '" class="post-favourates">' + result + '</span>');
         // mtsLike.bind("click", featchFavorite);
       },
       error: function () {
@@ -17,10 +17,10 @@ $(document).ready(function () {
         alert("点赞失败，请重新尝试");
       },
       beforeSend: function () {
-        domLike.html('<i class="fa fa-spinner fa-spin"></i><span class="post-favourates">'+ favorite +'</span>');
+        domLike.html('<i class="fa fa-spinner fa-spin"></i><span class="post-favourates">' + favorite + '</span>');
         // mtsLike.unbind("click", featchFavorite);
       }
     });
-
   });
+
 });

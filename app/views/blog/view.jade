@@ -12,8 +12,8 @@ block content
         i.fa.fa-thumb-tack
     h3.post-title
       =post.title
-    .post-abstract
-      = post.content
+    .post-abstract#my-editormd-view
+      textarea#append-text(style="display:none;")= post.content
     .post-meta
       a.post-category(href="/posts/category/" + post.category.name, target='_blank')= post.category.name
       a.mts-like(href="javascript:void(0)" id=post._id postId=post.id favorite=post.meta.favorite)
