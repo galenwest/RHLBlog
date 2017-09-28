@@ -48,14 +48,15 @@ block content
     else
       .total-comments 没有评论
       
-    .total-comments 写一个评论
+    .total-comments#commentAnchorPoint 写一个评论
+    
     form#commentform(action="/posts/comment/"+post._id, method="post", enctype="application/x-www-form-urlencoded")
       p.comment-form-author
-        input(id="author" type="text" name="author" placeholder="昵称" )
+        input(id="author" type="text" name="author" placeholder="昵称" required="true" )
       p.comment-form-email
-        input(id="email" type="text" name="email" placeholder="邮箱" )
+        input(id="email" type="text" name="email" placeholder="邮箱" required="true")
       p.comment-form-comment
-        textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论...")
+        textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论..." required="true")
       p.form-submit
         input(id="submit" type="submit" value="发布")
 

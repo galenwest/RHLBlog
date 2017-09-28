@@ -2,6 +2,7 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   slug = require('slug'),
+  pinyin = require("node-pinyin"),
   Category = mongoose.model('Category'),
   Post = mongoose.model('Post'),
   User = mongoose.model('User');
@@ -22,6 +23,18 @@ router.get('/add', function (req, res, next) {
 
 router.post('/add', function (req, res, next) {
   // return res.jsonp(req.body);
+  req.checkBody('title', '文章标题不能为空').notEmpty();
+  req.checkBody('category', '请选择文章类别').notEmpty();
+  req.checkBody('content', '文章内容不能为空').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    return res.render('admin/post/add', {
+      errors: errors,
+      title: req.body.title,
+      content: req.body.content,
+    })
+  }
+
   var title = req.body.title.trim();
   var category = req.body.category.trim();
   var content = req.body.content;
@@ -33,32 +46,42 @@ router.post('/add', function (req, res, next) {
     published = false;
   }
 
-  User.findOne({}, function(err, author) {
-    if (err) return next(err);
-
-    var post = new Post({
-      title: title,
-      slug: slug(title),
-      category: category,
-      content: content,
-      author: author,
-      meta: { favorite: 0},
-      created: new Date(),
-      comments: [],
-      published: published,
-    });
-    post.save(function (err, post) {
-      console.log(err);
-      if (err) {
-        req.flash('error', '文章保存失败');
+  var pyTitle = pinyin(title, {
+    style: 'toneWithNumber',
+  });
+  var slugTitle = slug(pyTitle);
+  Post.find({ slug: slugTitle },
+    function (err, post) {
+      if (err) return next(err);
+      if (post.length > 0) {
+        req.flash('error', '文章标题已经存在');
         res.redirect('/admin/posts/add');
       } else {
-        req.flash('info', '文章保存成功');
-        res.redirect('/admin/posts');
+        User.findOne({}, function (err, author) {
+          if (err) return next(err);
+          var post = new Post({
+            title: title,
+            slug: slugTitle,
+            category: category,
+            content: content,
+            author: author,
+            meta: { favorite: 0 },
+            created: new Date(),
+            comments: [],
+            published: published,
+          });
+          post.save(function (err, post) {
+            if (err) {
+              req.flash('error', '文章保存失败');
+              res.redirect('/admin/posts/add');
+            } else {
+              req.flash('info', '文章保存成功');
+              res.redirect('/admin/posts');
+            }
+          });
+        });
       }
     });
-  });
-  
 });
 
 router.get('/:page', function (req, res, next) {

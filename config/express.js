@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var flash = require('connect-flash');
 var messages = require('express-messages');
+var expressValidator = require('express-validator');
 
 var Category = mongoose.model('Category');
 
@@ -44,6 +45,22 @@ module.exports = function(app, config) {
     extended: true
   }));
   app.use(cookieParser('rhlblog'));
+
+  app.use(expressValidator({
+    errorFormatter: function(param, msg, value, location) {
+      var namespace = param.split('.'),
+        root = namespace.shift(),
+        formParam = root;
+      while(namespace.length) {
+        formParam += '[' + namespace.shift() + ']';
+      }
+      return {
+        param: formParam,
+        msg: msg,
+        value: value
+      }
+    }
+  }));
 
   app.use(session({
     secret: 'rhlblog',
@@ -96,5 +113,5 @@ module.exports = function(app, config) {
 };
 
 function mytruncate (str) {
-  return truncate(str.replace(/[&\|\\\*^%$#@\-]/g,""), 90);
+  return truncate(str.replace(/[&\|\\\*~+=`#\-]/g,""), 90);
 }

@@ -18,7 +18,7 @@
     "express": "^4.13.3",
     "express-messages": "^1.0.1",
     "express-session": "^1.15.5",
-    "express-validator": "^4.2.0",
+    "express-validator": "^4.2.1",
     "glob": "^6.0.4",
     "jade": "^1.11.0",
     "lorem-ipsum": "^1.0.4",
@@ -26,6 +26,8 @@
     "moment": "^2.18.1",
     "mongoose": "^4.1.2",
     "morgan": "^1.6.1",
+    "node-pinyin": "^0.2.3",
+    "pinyin": "^2.8.3",
     "serve-favicon": "^2.3.0",
     "slug": "^0.9.1",
     "truncate": "^2.0.0"
