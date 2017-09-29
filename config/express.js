@@ -29,13 +29,14 @@ module.exports = function(app, config) {
     app.locals.pageName = req.path;
     app.locals.moment = moment;
     app.locals.truncate = mytruncate;
-    Category.find(function (err, categories) {
-      if (err) {
-        return next(err);
-      }
-      app.locals.categories = categories;
-      next();
-    })
+    Category.find().sort('-created')
+      .exec(function (err, categories) {
+        if (err) {
+          return next(err);
+        }
+        app.locals.categories = categories;
+        next();
+      })
   });
 
   // app.use(favicon(config.root + '/public/img/favicon.ico'));

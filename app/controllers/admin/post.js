@@ -17,23 +17,14 @@ router.get('/', function (req, res, next) {
 
 router.get('/add', function (req, res, next) {
   res.render('admin/post/add', {
+    action: '/admin/posts/add',
+    post: {category:{_id: ''}},
     pretty: true,
   });
 });
 
 router.post('/add', function (req, res, next) {
   // return res.jsonp(req.body);
-  req.checkBody('title', '文章标题不能为空').notEmpty();
-  req.checkBody('category', '请选择文章类别').notEmpty();
-  req.checkBody('content', '文章内容不能为空').notEmpty();
-  var errors = req.validationErrors();
-  if (errors) {
-    return res.render('admin/post/add', {
-      errors: errors,
-      title: req.body.title,
-      content: req.body.content,
-    })
-  }
 
   var title = req.body.title.trim();
   var category = req.body.category.trim();
@@ -46,16 +37,40 @@ router.post('/add', function (req, res, next) {
     published = false;
   }
 
+  var postCheck = {
+    title: title,
+    category: {_id: category},
+    content: content,
+    published: published,
+  };
+  
+  req.checkBody('title', '文章标题不能为空').notEmpty();
+  req.checkBody('category', '请选择文章类别').notEmpty();
+  req.checkBody('content', '文章内容不能为空').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    // return res.json(postCheck);
+    // return res.send(postCheck);
+    return res.render('admin/post/add', {
+      errors: errors,
+      post: postCheck,
+    })
+  }
+
   var pyTitle = pinyin(title, {
     style: 'toneWithNumber',
   });
   var slugTitle = slug(pyTitle);
-  Post.find({ slug: slugTitle },
-    function (err, post) {
+
+  Post.find({ slug: slugTitle })
+    .exec(function (err, post) {
       if (err) return next(err);
       if (post.length > 0) {
         req.flash('error', '文章标题已经存在');
-        res.redirect('/admin/posts/add');
+        res.render('admin/post/add', {
+          errors: errors,
+          post: postCheck,
+        })
       } else {
         User.findOne({}, function (err, author) {
           if (err) return next(err);
@@ -156,9 +171,79 @@ router.get('/:page', function (req, res, next) {
 });
 
 router.get('/edit/:id', function (req, res, next) {
+  if (!req.params.id) {
+    return next(new Error('No post id provided!'));
+  }
+  Post.findOne({_id: req.params.id})
+    .populate('category')
+    .populate('author')
+    .exec(function (err, post) {
+      if (err) return next(err);
+      // return res.json(post);
+      res.render('admin/post/add', {
+        post:post,
+        action: '/admin/posts/edit/' + post._id,
+      });
+    });
 });
 
 router.post('/edit/:id', function (req, res, next) {
+  if (!req.params.id) {
+    return next(new Error('no post id provided'));
+  }
+
+  var title = req.body.title.trim();
+  var category = req.body.category.trim();
+  var content = req.body.content;
+  var published = req.body.published;
+  if (published === 'true') {
+    published = true;
+  } else {
+    published = false;
+  }
+  
+  var postCheck = {
+    title: title,
+    category: {_id: category},
+    content: content,
+    published: published,
+  };
+  req.checkBody('title', '文章标题不能为空').notEmpty();
+  req.checkBody('category', '请选择文章类别').notEmpty();
+  req.checkBody('content', '文章内容不能为空').notEmpty();
+  var errors = req.validationErrors();
+  if (errors) {
+    // return res.jsonp(post);
+    return res.render('admin/post/add', {
+      errors: errors,
+      post: postCheck,
+    })
+  }
+
+  var pyTitle = pinyin(title, {
+    style: 'toneWithNumber',
+  });
+  var slugTitle = slug(pyTitle);
+
+  Post.findOne({ _id: req.params.id})
+    .populate('category')
+    .exec(function (err, post) {
+      if (err) return next(err);
+      post.title = title;
+      post.category = category;
+      post.content = content;
+      post.published = published;
+      post.slug = slugTitle;
+      post.save(function (err, post) {
+        if (err) {
+          req.flash('error', '文章保存失败');
+          res.redirect('/admin/posts/add/' + post._id);
+        } else {
+          req.flash('info', '文章保存成功');
+          res.redirect('/admin/posts');
+        }
+      });
+    });
 });
 
 router.get('/delete/:id', function (req, res, next) {
@@ -174,7 +259,7 @@ router.get('/delete/:id', function (req, res, next) {
         req.flash('failure', '文章删除失败');
       }
       res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author);
-    })
+    });
 });
 
 router.get('/published/:id', function (req, res, next) {

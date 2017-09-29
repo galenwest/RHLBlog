@@ -99,9 +99,23 @@ block content
           a(href="/posts/view/" + post._id + "?published=" + post.published, target="_blank")= post.title
         td= post.category.name
         td= post.author.email
-        td= moment(post.created).format('YYYY-MM-DD')
-        td= post.meta.favorite || 0
-        td= post.comments.length || 0
+        td= moment(post.created).format('YYYY-MM-DD HH:mm')
+        if (post.meta.favorite>0 && post.meta.favorite<7)
+          td.numCount(style="font-weight:bold;color:#66CD00")= post.meta.favorite
+        else if (post.meta.favorite>=7 && post.meta.favorite<16)
+          td.numCount(style="font-weight:bold;color:#4169E1")= post.meta.favorite
+        else if (post.meta.favorite>=16 && post.meta.favorite<28)
+          td.numCount(style="font-weight:bold;color:#EE33E9")= post.meta.favorite
+        else if (post.meta.favorite>=28 && post.meta.favorite<50)
+          td.numCount(style="font-weight:bold;color:#EE7600")= post.meta.favorite
+        else if (post.meta.favorite>=50)
+          td.numCount(style="font-weight:bold;color:#FF0000")= post.meta.favorite
+        else
+          td.numCount= 0
+        if (post.comments.length>0)
+          td.numCount(style="font-weight:bold")= post.comments.length
+        else
+          td.numCount= 0
         td= post.published ? '已发布' : '待发布'
         td
           if (!post.published)
