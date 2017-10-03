@@ -6,6 +6,7 @@ append css
 append js
   script(src="/js/controller/admin.js")
   script(src="/js/controller/querystring.js")
+  block scripts
 
 block main
   nav.navbar.navbar-inverse.navbar-fixed-top
@@ -24,10 +25,7 @@ block main
           a(href="#") 评论
         li.nav-item
           a(href="#") 设置
-      form.navbar-form.navbar-right
-        input.form-control.margin-width(type="text", placeholder="关键字")
-        button.btn.margin-width(type="submit")
-          i.fa.fa-search
+      .navbar-form.navbar-right
       ul.nav.navbar-nav.navbar-right
         li
           a(href="")
@@ -56,5 +54,5 @@ block main
             a(href="/admin/users/password")
               i.fa.fa-unlock-alt &nbsp;修改密码
 
-      .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+      .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main(style="padding-left:26px;padding-right:26px;")
         block content

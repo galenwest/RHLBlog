@@ -469,3 +469,57 @@ p.form-submit {
   font-size: 16px;
   color: #8f8f8f;
 }
+#skeyword {
+  width: 100%;
+  float: left;
+  height: 36px;
+  text-indent: 10px;
+  color: #777777;
+  padding: 0 10px;
+  background: transparent;
+  box-sizing: border-box;
+  border: 0;
+}
+#sbutton {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 40px;
+  height: 100%;
+  font-size: 14px;
+  z-index: 10;
+  border: 0;
+  text-align: center;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.25s linear;
+}
+#sbutton:focus,
+#sbutton:hover {
+  color: #12b075;
+}
+#searchform {
+  padding: 0;
+  float: left;
+  clear: both;
+  width: 100%;
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,.09);
+  box-shadow: 0 1px 4px rgba(0,0,0,.03);
+  border-radius: 3px;
+}
+.widget-search {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 15px;
+  padding: 12px;
+  clear: both;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.09);
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  box-sizing: border-box;
+  border-radius: 3px;
+}

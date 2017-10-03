@@ -13,6 +13,18 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:page', function (req, res, next) {
+  var keyword = req.query.keyword;
+  var conditions = { published: true };
+  if (keyword) {
+    conditions ={
+      published: true,
+      $or: [
+          {title: new RegExp(keyword.trim(), 'i')},
+          {content: new RegExp(keyword.trim(), 'i')}
+      ]
+    };
+  }
+
   var pNum = parseInt(req.params.page, 10);
   var pageNum = Math.abs(pNum);
   if (isNaN(pNum) || pNum === 0) {
@@ -24,7 +36,7 @@ router.get('/:page', function (req, res, next) {
     return;
   }
 
-  Post.count({ published: true })
+  Post.count(conditions)
     .exec(function (err, count) {
       var pageSize = 8;
       var pageCount = Math.ceil(count / pageSize);
@@ -34,7 +46,7 @@ router.get('/:page', function (req, res, next) {
         res.redirect('/posts/' + pageNum);
         return;
       }
-      Post.find({ published: true })
+      Post.find(conditions)
         .sort({ _id: -1 })
         .limit(pageSize)
         .skip(skip)
@@ -48,6 +60,7 @@ router.get('/:page', function (req, res, next) {
             pageNum: pageNum,
             pageCount: pageCount,
             pretty: true,
+            keyword: keyword,
           });
         });
     });

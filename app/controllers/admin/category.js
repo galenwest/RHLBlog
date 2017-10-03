@@ -38,7 +38,7 @@ router.post('/add', function (req, res, next) {
     })
   }
   var pyName = pinyin(name, {
-    style: 'toneWithNumber',
+    style: 'normal',
   });
   var slugName = slug(pyName);
   Category.find({ slug: slugName })
@@ -90,7 +90,7 @@ router.post('/edit/:id', getCateforyById, function (req, res, next) {
     })
   }
   var pyName = pinyin(name, {
-    style: 'toneWithNumber',
+    style: 'normal',
   });
   var slugName = slug(pyName);
   var category = req.category;
@@ -118,7 +118,7 @@ router.get('/delete/:id', function (req, res, next) {
         req.flash('error', '该分类下存在文章，暂不能删除');
         res.redirect('/admin/categories/');
       } else {
-        Category.remove({ _id: req.params.id })
+        Category.deleteOne({ _id: req.params.id })
         .exec(function (err, rowsRemoved) {
           if (err) return next(err);
           if (rowsRemoved) {

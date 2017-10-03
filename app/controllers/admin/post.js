@@ -114,6 +114,14 @@ router.get('/:page', function (req, res, next) {
   sortObj[sortby] = sortdir;
 
   var conditions = {};
+  if (req.query.keyword) {
+    conditions ={
+      $or: [
+          {title: new RegExp(req.query.keyword.trim(), 'i')},
+          {content: new RegExp(req.query.keyword.trim(), 'i')}
+      ]
+    };
+  }
   if (req.query.category) {
     conditions.category = req.query.category.trim();
   }
@@ -162,6 +170,7 @@ router.get('/:page', function (req, res, next) {
               filter: {
                 category: req.query.category || '',
                 author: req.query.author || '',
+                keyword: req.query.keyword || '',
               },
               pretty: true,
             });
@@ -250,7 +259,7 @@ router.get('/delete/:id', function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('no post id provided'));
   }
-  Post.remove({ _id: req.params.id })
+  Post.deleteOne({ _id: req.params.id })
     .exec(function (err, rowsRemoved) {
       if (err) return next(err);
       if (rowsRemoved) {
@@ -258,7 +267,7 @@ router.get('/delete/:id', function (req, res, next) {
       } else {
         req.flash('failure', '文章删除失败');
       }
-      res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author);
+      res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author + "&keyword=" + req.query.keyword);
     });
 });
 

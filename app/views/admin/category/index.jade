@@ -8,18 +8,16 @@ block content
     thead
       tr
         th 名称
-        th 别名
-        th 创建时间
-        th 管理
+        th(style="width:58px") 别名
+        th(style="text-align:center;width:112px") 创建时间
+        th(style="text-align:center;width:186px") 管理
     tbody
     each category in categories
       tr
-        td= category.name
-        td= category.slug
-        td= moment(category.created).format('YYYY-MM-DD HH:mm')
-        td
-          a(href="/posts/category/" + category.slug, class="btn btn-sm btn-success", target="_blank") 查看
-          &nbsp;&nbsp;
-          a(href="/admin/categories/edit/" + category._id, class="btn btn-sm btn-info") 编辑
-          &nbsp;&nbsp;
-          a(href="/admin/categories/delete/" + category._id, class="btn btn-sm btn-danger") 删除
+        td(style="vertical-align:middle;")= category.name
+        td(style="vertical-align:middle;")= category.slug
+        td(style="vertical-align:middle;")= moment(category.created).format('YY-MM-DD HH:mm')
+        td(style="vertical-align:middle;")
+          a(style="margin-left:8px;", href="/posts/category/" + category.slug, class="btn btn-sm btn-success", target="_blank") 查看
+          a(style="margin-left:8px;", href="/admin/categories/edit/" + category._id, class="btn btn-sm btn-info") 编辑
+          a(style="margin-left:8px;", href="/admin/categories/delete/" + category._id, class="btn btn-sm btn-danger") 删除

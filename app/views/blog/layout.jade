@@ -31,32 +31,38 @@ block main
       .col-sm-8.blog-main
         block content
       .col-sm-4.blog-sidebar
-          .sidebar-module.sidebar-module-inset
-            h3.widget-title 文章分类
-            ul
-              each category in categories
-                li
-                  a.cat-item(href="/posts/category/" + category.slug)=category.name
-          .sidebar-module
-            h3.widget-title Archives
-            ol.list-unstyled
+        .widget-search
+          form#searchform.vertical-form(method="get", action="/posts/1")
+            fieldset
+              input#skeyword(name="keyword", placeholder="搜索...")
+              button#sbutton(type="submit")
+                i.fa.fa-search
+        .sidebar-module.sidebar-module-inset
+          h3.widget-title 文章分类
+          ul
+            each category in categories
               li
-                a.cat-item(href="#") March 2014
-              li
-                a.cat-item(href="#") February 2014
-              li
-                a.cat-item(href="#") January 2014
-              li
-                a.cat-item(href="#") December 2013
-          .sidebar-module
-            h3.widget-title Elsewhere
-            ol.list-unstyled
-              li
-                a.cat-item(href="#") GitHub
-              li
-                a.cat-item(href="#") Twitter
-              li
-                a.cat-item(href="#") Facebook
+                a.cat-item(href="/posts/category/" + category.slug)=category.name
+        .sidebar-module
+          h3.widget-title Archives
+          ol.list-unstyled
+            li
+              a.cat-item(href="#") March 2014
+            li
+              a.cat-item(href="#") February 2014
+            li
+              a.cat-item(href="#") January 2014
+            li
+              a.cat-item(href="#") December 2013
+        .sidebar-module
+          h3.widget-title Elsewhere
+          ol.list-unstyled
+            li
+              a.cat-item(href="#") GitHub
+            li
+              a.cat-item(href="#") Twitter
+            li
+              a.cat-item(href="#") Facebook
 
   block footer
     .blog-footer

@@ -127,5 +127,7 @@ a.navbar-my-brand {
 }
 
 .numCount {
+  text-align:center;
+  vertical-align:middle;
   font-size: 16px;
 }

@@ -13,122 +13,123 @@ block content
     .form-group
       label 作者
       select#js-author.form-control(name="author")
-        option(value="", selected=(filter.author === "")) - 选择分类 -
+        option(value="", selected=(filter.author === "")) - 选择作者 -
         each author in authors
           option(value=author._id, selected=(author._id.toString() === filter.author))= author.name
-    button#js-filter-submit.btn.btn-info 筛选
+    .form-group
+      input#js-keyword.form-control(name="keyword", type="text", placeholder="关键词", value=filter.keyword)
+    button#js-filter-submit.btn.btn-info
+      i.fa.fa-search &nbsp;筛选
+    a.btn.btn-info(href="/admin/posts/1", style="margin-left:3px")
+      i.fa.fa-refresh &nbsp;重置
 
   table.table.table-bordered
     thead
       tr
-        th(width="30%")
+        th
           if sortby === 'title'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 标题
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 标题
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 标题
+              a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 标题
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 标题
-        th
+            a(href="/admin/posts/" + pageNum + "?sortby=title&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 标题
+        th(style="text-align:center;width:100px")
           if sortby === 'category'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 分类
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 分类
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 分类
+              a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 分类
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 分类
-        th
+            a(href="/admin/posts/" + pageNum + "?sortby=category&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 分类
+        th(style="text-align:center;width:58px")
           if sortby === 'author'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 作者
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 作者
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 作者
+              a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 作者
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 作者
-        th
+            a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 作者
+        th(style="text-align:center;width:112px")
           if sortby === 'created'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 添加时间
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
+              a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 添加时间
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 添加时间
-        th 
+            a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 添加时间
+        th(style="text-align:center;width:58px")
           if sortby === 'meta.favorite'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 被赞
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
+              a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 被赞
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 被赞
-        th 
+            a(href="/admin/posts/" + pageNum + "?sortby=meta.favorite&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 被赞
+        th(style="text-align:center;width:58px")
           if sortby === 'comments'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 评论
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 评论
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 评论
+              a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 评论
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 评论
-        th 
+            a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 评论
+        th(style="text-align:center;width:59px")
           if sortby === 'published'
             if (sortdir === 'desc')
-              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author) 状态
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 状态
                 i.fa.fa-arrow-down
             else
-              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 状态
+              a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 状态
                 i.fa.fa-arrow-up
           else
-            a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author) 状态
-        th 管理
+            a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 状态
+        th(style="text-align:center;width:226px") 管理
     tbody
     each post in posts
       tr
-        td
+        td(style="vertical-align:middle;")
           a(href="/posts/view/" + post._id + "?published=" + post.published, target="_blank")= post.title
-        td= post.category.name
-        td= post.author.email
-        td= moment(post.created).format('YYYY-MM-DD HH:mm')
+        td(style="vertical-align:middle;")= post.category.name
+        td(style="vertical-align:middle;")= post.author.name
+        td(style="vertical-align:middle;")= moment(post.created).format('YY-MM-DD HH:mm')
         if (post.meta.favorite>0 && post.meta.favorite<7)
-          td.numCount(style="font-weight:bold;color:#66CD00")= post.meta.favorite
+          td.numCount(style="vertical-align:middle;font-weight:bold;color:#66CD00")= post.meta.favorite
         else if (post.meta.favorite>=7 && post.meta.favorite<16)
-          td.numCount(style="font-weight:bold;color:#4169E1")= post.meta.favorite
+          td.numCount(style="vertical-align:middle;font-weight:bold;color:#4169E1")= post.meta.favorite
         else if (post.meta.favorite>=16 && post.meta.favorite<28)
-          td.numCount(style="font-weight:bold;color:#EE33E9")= post.meta.favorite
+          td.numCount(style="vertical-align:middle;font-weight:bold;color:#EE33E9")= post.meta.favorite
         else if (post.meta.favorite>=28 && post.meta.favorite<50)
-          td.numCount(style="font-weight:bold;color:#EE7600")= post.meta.favorite
+          td.numCount(style="vertical-align:middle;font-weight:bold;color:#EE7600")= post.meta.favorite
         else if (post.meta.favorite>=50)
-          td.numCount(style="font-weight:bold;color:#FF0000")= post.meta.favorite
+          td.numCount(style="vertical-align:middle;font-weight:bold;color:#FF0000")= post.meta.favorite
         else
-          td.numCount= 0
+          td(style="vertical-align:middle;").numCount= 0
         if (post.comments.length>0)
-          td.numCount(style="font-weight:bold")= post.comments.length
+          td.numCount(style="vertical-align:middle;font-weight:bold")= post.comments.length
         else
-          td.numCount= 0
-        td= post.published ? '已发布' : '待发布'
-        td
+          td(style="vertical-align:middle;").numCount= 0
+        td(style="vertical-align:middle;")= post.published ? '已发布' : '待发布'
+        td(style="vertical-align:middle;")
           if (!post.published)
-            a(href="/admin/posts/published/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author, class="btn btn-sm btn-primary") 发布
-            &nbsp;&nbsp;
+            a(style="margin-right:8px;",href="/admin/posts/published/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-primary") 发布
           else
-            button(class="btn btn-sm btn-default", disabled="disabled") 发布
-            &nbsp;&nbsp;
-          a(href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
-          &nbsp;&nbsp;
-          a(href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
-          &nbsp;&nbsp;
-          a(href="/admin/posts/delete/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author, class="btn btn-sm btn-danger") 删除
+            button(style="margin-right:8px;",class="btn btn-sm btn-default", disabled="disabled") 发布
+          a(style="margin-right:8px;", href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
+          a(style="margin-right:8px;", href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
+          a( href="/admin/posts/delete/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-danger") 删除
 
   if pageCount > 1
     nav(aria-label="Page navigation")
@@ -141,4 +142,4 @@ block content
                 span= currentPage++
           else
             li
-              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author)= currentPage++
+              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword)= currentPage++
