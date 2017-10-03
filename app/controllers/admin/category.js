@@ -5,18 +5,19 @@ var express = require('express'),
   pinyin = require("node-pinyin"),
   Category = mongoose.model('Category'),
   Post = mongoose.model('Post');
+var auth = require('./admin');
 
 module.exports = function (app) {
   app.use('/admin/categories', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/', auth.requireLogin, function (req, res, next) {
   res.render('admin/category/index', {
     pretty: true,
   });
 });
 
-router.get('/add', function (req, res, next) {
+router.get('/add', auth.requireLogin, function (req, res, next) {
   res.render('admin/category/add', {
     action: '/admin/categories/add',
     category: {},
@@ -24,7 +25,7 @@ router.get('/add', function (req, res, next) {
   });
 });
 
-router.post('/add', function (req, res, next) {
+router.post('/add', auth.requireLogin, function (req, res, next) {
   var name = req.body.name.trim();
   var categoryCheck = {
     name: name,
@@ -69,14 +70,14 @@ router.post('/add', function (req, res, next) {
     });
 });
 
-router.get('/edit/:id', getCateforyById, function (req, res, next) {
+router.get('/edit/:id', auth.requireLogin, getCateforyById, function (req, res, next) {
   res.render('admin/category/add', {
     action: "/admin/categories/edit/" + req.category._id,
     category: req.category,
   });
 });
 
-router.post('/edit/:id', getCateforyById, function (req, res, next) {
+router.post('/edit/:id', auth.requireLogin, getCateforyById, function (req, res, next) {
   var name = req.body.name.trim();
   var categoryCheck = {
     name: name,
@@ -107,7 +108,7 @@ router.post('/edit/:id', getCateforyById, function (req, res, next) {
   });
 });
 
-router.get('/delete/:id', function (req, res, next) {
+router.get('/delete/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('no category id provided'));
   }

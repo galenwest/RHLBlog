@@ -14,10 +14,13 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var messages = require('express-messages');
 var expressValidator = require('express-validator');
+var passport = require('passport');
+var MongoStore = require('connect-mongo')(session);
 
+var User = mongoose.model('User');
 var Category = mongoose.model('Category');
 
-module.exports = function(app, config) {
+module.exports = function(app, config, connection) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -67,11 +70,31 @@ module.exports = function(app, config) {
     secret: 'rhlblog',
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: {secure: false},
+    store: new MongoStore({mongooseConnection: connection})
   }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(function (req, res, next) {
+    req.user = null;
+    if (req.session.passport && req.session.passport.user) {
+      User.findById(req.session.passport.user, function (err, user) {
+        if (err) return next(err);
+        user.password = null;
+        req.user = user;
+        next();
+      })
+    } else {
+      next();
+    }
+  });
+
   app.use(flash());
   app.use(function (req, res, next) {
     res.locals.messages = messages(req, res);
+    res.locals.user = req.user;
     next();
   });
 

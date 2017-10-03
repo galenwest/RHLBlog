@@ -1,5 +1,31 @@
-extends layout
+html.no-js
+  head
+    meta(charset="utf-8")
+    link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.min.css')
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300", rel="stylesheet", type="text/css")
+    link(rel="stylesheet", href="/css/login/animate.css")
+    link(rel="stylesheet", href="/css/login/style.css")
+  body.style-3
+    .container
+      .top(style="height:100px;")
+      .row
+        .col-md-4.col-md-push-8
+          form.fh5co-form.animate-box.fadeInRight.animated-fast(method="post", action="/admin/login", data-animate-effect="fadeInRight")
+            h2(style="margin-bottom:10px;") 登 录
+            != messages()
+            .form-group(style="margin-bottom:10px;")
+              input.form-control#username(type="text", name="username", placeholder="用户名", autocomplete="off")
+            .form-group(style="margin-bottom:20px;")
+              input.form-control#password(type="password", name="password", placeholder="密    码", autocomplete="off")
+            .form-group(style="margin-bottom:20px;")
+              label(for="remember")
+                input#remember(type="checkbox", style="top:1px;position:relative;")
+                |  记住密码
+            .form-group
+              input.btn.btn-primary.col-sm-9(type="submit", value="登 录")
 
-block content
-  h1= title
-  p Welcome to #{title}
+    script(src="http://code.jquery.com/jquery-3.2.1.min.js")
+    script(src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    script(src="/js/login/jquery.placeholder.min.js")
+    script(src="/js/login/jquery.waypoints.min.js")
+    script(src="/js/login/login.js")

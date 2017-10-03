@@ -27,11 +27,14 @@ block main
           a(href="#") 设置
       .navbar-form.navbar-right
       ul.nav.navbar-nav.navbar-right
+        if user
+          li
+            a= user.name
         li
           a(href="")
             i.fa.fa-question &nbsp;帮助
         li
-          a(href="/admin/users/logout")
+          a(href="/admin/logout")
             i.fa.fa-lock &nbsp;注销
   .container-fluid
     .row

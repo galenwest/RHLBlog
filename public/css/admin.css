@@ -131,3 +131,48 @@ a.navbar-my-brand {
   vertical-align:middle;
   font-size: 16px;
 }
+
+#messages .error {
+  margin: 0;
+  padding: 0;
+}
+
+#messages  .info {
+  margin: 0;
+  padding: 0;
+}
+
+#messages  .success {
+  margin: 0;
+  padding: 0;
+}
+
+#messages .error li {
+  list-style: none;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #a94442;
+  background-color: #ebccd1;
+}
+
+#messages .info li {
+  list-style: none;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #104E8B;
+  background-color: #87CEFA;
+}
+
+#messages .success li {
+  list-style: none;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #008B00;
+  background-color: #9bddad;
+}

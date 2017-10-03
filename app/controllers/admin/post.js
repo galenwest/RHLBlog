@@ -6,16 +6,17 @@ var express = require('express'),
   Category = mongoose.model('Category'),
   Post = mongoose.model('Post'),
   User = mongoose.model('User');
+var auth = require('./admin');
 
 module.exports = function (app) {
   app.use('/admin/posts', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/', auth.requireLogin, function (req, res, next) {
   res.redirect('/admin/posts/1');
 });
 
-router.get('/add', function (req, res, next) {
+router.get('/add', auth.requireLogin, function (req, res, next) {
   res.render('admin/post/add', {
     action: '/admin/posts/add',
     post: {category:{_id: ''}},
@@ -23,7 +24,7 @@ router.get('/add', function (req, res, next) {
   });
 });
 
-router.post('/add', function (req, res, next) {
+router.post('/add', auth.requireLogin, function (req, res, next) {
   // return res.jsonp(req.body);
 
   var title = req.body.title.trim();
@@ -99,7 +100,7 @@ router.post('/add', function (req, res, next) {
     });
 });
 
-router.get('/:page', function (req, res, next) {
+router.get('/:page', auth.requireLogin, function (req, res, next) {
   var sortby = req.query.sortby ? req.query.sortby : 'created';
   var sortdir = req.query.sortdir ? req.query.sortdir : 'desc';
 
@@ -179,7 +180,7 @@ router.get('/:page', function (req, res, next) {
   });
 });
 
-router.get('/edit/:id', function (req, res, next) {
+router.get('/edit/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('No post id provided!'));
   }
@@ -196,7 +197,7 @@ router.get('/edit/:id', function (req, res, next) {
     });
 });
 
-router.post('/edit/:id', function (req, res, next) {
+router.post('/edit/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('no post id provided'));
   }
@@ -255,7 +256,7 @@ router.post('/edit/:id', function (req, res, next) {
     });
 });
 
-router.get('/delete/:id', function (req, res, next) {
+router.get('/delete/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('no post id provided'));
   }
@@ -271,7 +272,7 @@ router.get('/delete/:id', function (req, res, next) {
     });
 });
 
-router.get('/published/:id', function (req, res, next) {
+router.get('/published/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('no post id provided'));
   }
