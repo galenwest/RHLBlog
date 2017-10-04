@@ -301,4 +301,35 @@ router.get('/published/:id', auth.requireLogin, function (req, res, next) {
         res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author);
       });
     });
-})
+});
+
+router.get('/unpublish/:id', auth.requireLogin, function (req, res, next) {
+  if (!req.params.id) {
+    return next(new Error('no post id provided'));
+  }
+  var conditions = {};
+  conditions.published = true;
+  try {
+    conditions._id = mongoose.Types.ObjectId(req.params.id);
+  } catch (err) {
+    conditions.slug = req.params.id;
+  }
+
+  Post.findOne(conditions)
+    .populate('category')
+    .populate('author')
+    .exec(function (err, post) {
+      if (err) return next(err);
+      post.published = false;
+      post.markModified('published');
+      post.save(function (err, published) {
+        if (err) return next(err);
+        if (published) {
+          req.flash('success', '文章取消发布成功');
+        } else {
+          req.flash('failure', '文章取消发布失败');
+        }
+        res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author);
+      });
+    });
+});

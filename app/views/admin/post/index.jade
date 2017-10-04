@@ -129,7 +129,7 @@ block content
             button(style="margin-right:8px;",class="btn btn-sm btn-default", disabled="disabled") 发布
           a(style="margin-right:8px;", href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
           a(style="margin-right:8px;", href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
-          a( href="/admin/posts/delete/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-danger") 删除
+          a.deletePost(href="javascript:void(0)", postid=post._id, ispublish=post.published+"", url="?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-danger") 删除
 
   if pageCount > 1
     nav(aria-label="Page navigation")
