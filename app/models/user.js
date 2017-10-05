@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
- var md5 = require('md5');
+var md5 = require('md5');
 
 var UserSchema = new Schema({
   name: { type: String, required: true },

@@ -26,7 +26,7 @@ block content
           i.fa.fa-heart-o(postId=post.id favorite=post.meta.favorite)
           span.post-favourates(postId=post.id favorite=post.meta.favorite)
             =post.meta.favorite
-        .post-comment
+        a.post-comment(href="/posts/view/" + post.slug + "#commentform")
           if post.comments.length === 0
             | 无评论
           else

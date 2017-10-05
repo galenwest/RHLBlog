@@ -45,6 +45,8 @@ block content
       #my-editormd
         textarea#js-post-content.form-control(name="content", style="display:none;")= post.content
 
+    if user
+      input(type="hidden", name="username", value=user.name)
     button.btn.btn-info(type="submit" style="margin-bottom: 100px; width: 160px;") 保 存
     //- button.btn.btn-success(type="submit" style="margin-bottom: 100px; width: 160px;") 发 布
 

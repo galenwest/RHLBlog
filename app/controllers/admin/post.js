@@ -31,6 +31,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
   var category = req.body.category.trim();
   var content = req.body.content;
   var published = req.body.published;
+  var username = req.body.username;
 
   if (published === 'true') {
     published = true;
@@ -73,7 +74,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
           post: postCheck,
         })
       } else {
-        User.findOne({}, function (err, author) {
+        User.findOne({name: username}, function (err, author) {
           if (err) return next(err);
           var post = new Post({
             title: title,

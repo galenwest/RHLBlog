@@ -2,7 +2,8 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   Category = mongoose.model('Category'),
-  Post = mongoose.model('Post');
+  Post = mongoose.model('Post'),
+  Comment = mongoose.model('Comment');
 
 module.exports = function (app) {
   app.use('/posts', router);
@@ -126,7 +127,11 @@ router.get('/view/:id', function (req, res, next) {
     conditions.published = false;
   }
   try {
-    conditions._id = mongoose.Types.ObjectId(req.params.id);
+    if (!req.query.published) {
+      conditions.slug = req.params.id;
+    } else {
+      conditions._id = mongoose.Types.ObjectId(req.params.id);
+    }
   } catch (err) {
     conditions.slug = req.params.id;
   }
@@ -134,6 +139,7 @@ router.get('/view/:id', function (req, res, next) {
     .populate('category')
     .populate('author')
     .exec(function (err, post) {
+      // return res.json(post);
       if (err) return next(err);
       Post.findOne({ _id: { '$gt': post._id }, published: true, category: post.category })
         .sort({ _id: 1 })
@@ -176,9 +182,12 @@ router.post('/comment/:id', function (req, res, next) {
     conditions.slug = req.params.id;
   }
 
+  // var comment = new Comment({
+
+  // });
+
   Post.findOne(conditions)
     .populate('category')
-    .populate('author')
     .exec(function (err, post) {
       if (err) return next(err);
       var comment = {
@@ -194,7 +203,7 @@ router.post('/comment/:id', function (req, res, next) {
         if (err) return next(err);
         else res.redirect('/posts/view/' + post.slug + '#' + comment.id);
       });
-    });;
+    });
 });
 
 router.get('/favorite/:id', function (req, res, next) {

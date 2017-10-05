@@ -42,7 +42,7 @@ block content
         .post-comment-item(id=comment.id)
           .post-comment-author
             span.comm-author= comment.author
-            span.comm-created= moment(comment.created).format('YYYY-MM-DD')
+            span.comm-created= moment(comment.created).format('YYYY-MM-DD HH:mm')
           //- h4.post-comment-email= comment.email
           p.post-comment-content= comment.comment
     else

@@ -20,9 +20,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/login', function (req, res, next) {
-  res.render('admin/index', {
-    pretty: true
-  });
+  if (req.user) {
+    res.redirect('/admin/posts');
+  } else {
+    res.render('admin/index', {
+      pretty: true
+    });
+  }
 });
 
 router.post('/login', passport.authenticate('local', {
