@@ -9,13 +9,13 @@ block content
       .post-info-meta
         .post-info
           span.post-author
-            =post.author.name
+            =post.author.nick
           span.post-created
             =moment(post.created).format('YYYY-MM-DD')
         .post-icons
           i.fa.fa-thumb-tack
       h3.post-title
-        a(href="/posts/view/" + post.slug, title="#{post.title}")
+        a(href="/category/view/" + post.slug, title="#{post.title}")
           =post.title
       .post-abstract
         = truncate(post.content, 80)
@@ -37,6 +37,14 @@ block content
   if pageCount > 1
     nav(aria-label="Page navigation")
       ul.pagination
+        if (1 === pageNum)
+          li.disabled
+            span
+              span(aria-hidden="true") &laquo;
+        else
+          li
+            a(href="/category/" + category.slug + "/" + (pageNum-1), aria-label="Previous")
+              span(aria-hidden="true") &laquo;
         - var currentPage = 1;
         while currentPage <= pageCount
           if (currentPage === pageNum)
@@ -45,4 +53,12 @@ block content
                 span= currentPage++
           else
             li
-              a(href="/posts/category/" + category.slug + '/' + currentPage)= currentPage++
+              a(href="/category/" + category.slug + "/" + currentPage)= currentPage++
+        if (pageCount === pageNum)
+          li.disabled
+            span
+              span(aria-hidden="true") &raquo;
+        else
+          li
+            a(href="/category/" + category.slug + "/" + (pageNum+1), aria-label="Next")
+              span(aria-hidden="true") &raquo;

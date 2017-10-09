@@ -6,7 +6,6 @@ append css
     link(rel="stylesheet", href="/components/font-awesome/css/font-awesome.min.css")
 append js
   script(src="/js/controller/admin.js")
-  script(src="/js/controller/querystring.js")
   script(src="/js/controller/easydialog.js")
   block scripts
 
@@ -31,7 +30,7 @@ block main
       ul.nav.navbar-nav.navbar-right
         if user
           li
-            a= user.name
+            a= user.nick
         li
           a(href="")
             i.fa.fa-question &nbsp;帮助

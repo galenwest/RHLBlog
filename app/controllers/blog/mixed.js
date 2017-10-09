@@ -1,11 +1,23 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-  Post = mongoose.model('Post');
+  Post = mongoose.model('Post'),
+  User = mongoose.model('User'),
+  passport = require('passport');
 
 module.exports = function (app) {
   app.use('/', router);
 };
+
+module.exports.requireLogin = function (req, res, next) {
+  var user = req.user;
+  if (user) {
+    next();
+  } else {
+    req.flash('error', '请登录用户后访问')
+    res.redirect('/admin/login');
+  }
+}
 
 router.get('/', function (req, res, next) {
   Post.count({ published: true })
@@ -44,4 +56,77 @@ router.get('/contact', function (req, res, next) {
     title: 'Contact Me',
     pretty: true
   });
+});
+
+router.get('/login', function (req, res, next) {
+  var user = req.user;
+  if (user) {
+    res.redirect('/');
+  } else {
+    res.render('blog/login', {
+      pretty: true
+    });
+  }
+});
+
+router.post('/login', passport.authenticate('user.login', {
+    failureRedirect: '/login',
+    failureFlash: true
+  }),
+  function (req, res, next) {
+    res.redirect('/');
+  });
+
+router.get('/register', function (req, res, next) {
+  res.render('blog/signup', {
+    pretty: true
+  });
+});
+
+router.post('/register', function (req, res, next) {
+  var nick = req.body.nick;
+  var email = req.body.email;
+  var password = req.body.password;
+
+  req.checkBody('nick','您的昵称不能为空').notEmpty();
+  req.checkBody('email','您输入的email无效').notEmpty().isEmail();
+  req.checkBody('password',"密码长度至少4位").notEmpty().isLength({min:4});
+
+  var errors = req.validationErrors();
+  if (errors) {
+    return res.render('blog/signup', {
+      errors: errors,
+      nick: nick,
+      email: email,
+      password: password,
+    })
+  }
+
+  User.findOne({'email':email},function(err,user){
+    if (err) return next(err);
+    if(user){
+      req.flash('error', '此邮箱已经被注册');
+      return res.render('blog/signup', {
+        errors: errors,
+        nick: nick,
+        email: email,
+        password: password,
+      });
+    }
+    var newUser = new User();
+    newUser.nick = nick;
+    newUser.email = email;
+    newUser.authority = 'user';
+    newUser.password = newUser.encryptPassword(password);
+    newUser.save(function(err,result){
+      if (err) return next(err);
+      res.redirect('/login');
+    });
+  });
+});
+
+router.get('/logout', function (req, res, next) {
+  var url = req.query.url;
+  req.logout();
+  res.redirect(url);
 });

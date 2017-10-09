@@ -1,0 +1,33 @@
+html.no-js
+  head
+    meta(charset="utf-8")
+    link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.min.css')
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300", rel="stylesheet", type="text/css")
+    link(rel="stylesheet", href="/css/login/animate.css")
+    link(rel="stylesheet", href="/css/login/style.css")
+  body.style-3
+    .container
+      .top(style="height:100px;")
+      .row
+        .col-md-4.col-md-push-8
+          form.fh5co-form.animate-box.fadeInRight.animated-fast(method="post", action="/register", data-animate-effect="fadeInRight")
+            h2(style="margin-bottom:10px;") 注 册
+            != messages()
+            if errors && errors.length
+              .errors
+                each error in errors
+                  p.alert(style="padding:8px;margin-bottom:8px").alert-danger=error.msg
+            .form-group(style="margin-bottom:10px;")
+              input.form-control#username(type="text", name="nick", placeholder="昵    称", autocomplete="off", required="true", value=nick)
+            .form-group(style="margin-bottom:10px;")
+              input.form-control#username(type="text", name="email", placeholder="邮    箱", autocomplete="off", required="true", value=email)
+            .form-group(style="margin-bottom:40px;")
+              input.form-control#password(type="password", name="password", placeholder="密    码", autocomplete="off", required="true", value=password)
+            .form-group
+              input.btn.btn-primary.col-sm-9(type="submit", value="注 册")
+
+    script(src="http://code.jquery.com/jquery-3.2.1.min.js")
+    script(src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    script(src="/js/login/jquery.placeholder.min.js")
+    script(src="/js/login/jquery.waypoints.min.js")
+    script(src="/js/login/login.js")

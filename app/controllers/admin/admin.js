@@ -7,7 +7,8 @@ module.exports = function (app) {
 };
 
 module.exports.requireLogin = function (req, res, next) {
-  if (req.user) {
+  var user = req.user;
+  if (user && user.authority == 'admin') {
     next();
   } else {
     req.flash('error', '请登录用户后访问')
@@ -20,7 +21,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/login', function (req, res, next) {
-  if (req.user) {
+  var user = req.user;
+  if (user && user.authority == 'admin') {
     res.redirect('/admin/posts');
   } else {
     res.render('admin/index', {
@@ -29,7 +31,7 @@ router.get('/login', function (req, res, next) {
   }
 });
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', passport.authenticate('admin.login', {
     failureRedirect: '/admin/login',
     failureFlash: '用户名或密码错误'
   }),

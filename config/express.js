@@ -42,7 +42,7 @@ module.exports = function(app, config, connection) {
       })
   });
 
-  // app.use(favicon(config.root + '/public/img/favicon.ico'));
+  app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
@@ -70,7 +70,7 @@ module.exports = function(app, config, connection) {
     secret: 'rhlblog',
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: false},
+    cookie: {secure: false, maxAge:365*24*3600*1000},
     store: new MongoStore({mongooseConnection: connection})
   }));
 
@@ -79,6 +79,7 @@ module.exports = function(app, config, connection) {
 
   app.use(function (req, res, next) {
     req.user = null;
+    // console.log(req.session.passport);
     if (req.session.passport && req.session.passport.user) {
       User.findById(req.session.passport.user, function (err, user) {
         if (err) return next(err);

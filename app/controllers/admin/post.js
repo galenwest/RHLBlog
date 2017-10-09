@@ -72,7 +72,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
         res.render('admin/post/add', {
           errors: errors,
           post: postCheck,
-        })
+        });
       } else {
         User.findOne({name: username}, function (err, author) {
           if (err) return next(err);
@@ -142,7 +142,7 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
     return;
   }
 
-  User.find({}, function (err, authors) {
+  User.find({authority:'admin'}, function (err, authors) {
     Post.count(conditions)
       .exec(function (err, count) {
         var pageSize = 12;

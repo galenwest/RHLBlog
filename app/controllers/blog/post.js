@@ -60,7 +60,6 @@ router.get('/:page', function (req, res, next) {
             posts: posts,
             pageNum: pageNum,
             pageCount: pageCount,
-            pretty: true,
             keyword: keyword,
           });
         });
@@ -92,7 +91,7 @@ router.get('/category/:slug/:page', function (req, res, next) {
     var conditions = {};
     // return res.json(category);
     Post.find({category:category,published:true})
-      .sort({ _id: 1 })
+      .sort({ _id: -1 })
       .populate('author')
       .populate('category')
       .exec(function (err, posts) {
@@ -109,7 +108,6 @@ router.get('/category/:slug/:page', function (req, res, next) {
           pageNum: pageNum,
           pageCount: pageCount,
           category: category,
-          pretty: true,
         });
       });
   });
@@ -119,7 +117,6 @@ router.get('/view/:id', function (req, res, next) {
   if (!req.params.id) {
     return next(new Error('No post id provided!'));
   }
-  // return res.jsonp(req.query);
   var conditions = {};
   if (req.query.published !== 'false') {
     conditions.published = true;
@@ -135,73 +132,86 @@ router.get('/view/:id', function (req, res, next) {
   } catch (err) {
     conditions.slug = req.params.id;
   }
+  // return res.json(conditions);
   Post.findOne(conditions)
     .populate('category')
     .populate('author')
     .exec(function (err, post) {
       // return res.json(post);
       if (err) return next(err);
-      Post.findOne({ _id: { '$gt': post._id }, published: true, category: post.category })
+      Post.findOne({ _id: { '$gt': post._id }, published: true })
         .sort({ _id: 1 })
         .exec(function (err, nextPost) {
           if (err) return next(err);
-          Post.findOne({ _id: { '$lt': post._id }, published: true, category: post.category })
+          Post.findOne({ _id: { '$lt': post._id }, published: true })
             .sort({ _id: -1 })
             .exec(function (err, prePost) {
               if (err) return next(err);
-              // return res.json(prePost);
-              res.render('blog/view', {
-                post: post,
-                nextPost: nextPost,
-                prePost: prePost,
-              });
+              Comment.find({post:post})
+                .populate('fromUser')
+                .sort({ _id: -1 })
+                .exec(function (err, comments) {
+                  if (err) return next(err);
+                  res.render('blog/view', {
+                    post: post,
+                    nextPost: nextPost,
+                    prePost: prePost,
+                    comments: comments,
+                  });
+                });
             });
         });
     });;
 });
 
-router.post('/comment/:id', function (req, res, next) {
-  if (!req.params.id) {
-    return next(new Error('No post id provided!'));
+router.post('/comment/:slug', function (req, res, next) {
+  if (!req.params.slug) {
+    return next(new Error('No post slug provided!'));
   }
-  if (!req.body.author) {
-    return next(new Error('请提供您的昵称'));
-  }
-  if (!req.body.email) {
-    return next(new Error('请提供您的邮箱'));
+  // return res.json(req.params);
+  var user = req.user;
+  if (!user) {
+    req.flash('error', '请登录后评论');
+    return res.redirect('/posts/view/' + req.params.slug + '#commentform');
   }
   if (!req.body.comment) {
-    return next(new Error('请撰写评论后发布'));
+    req.flash('error', '请撰写评论后发布');
+    return res.redirect('/posts/view/' + req.params.slug + '#commentform');
   }
 
   var conditions = {};
   conditions.published = true;
-  try {
-    conditions._id = mongoose.Types.ObjectId(req.params.id);
-  } catch (err) {
-    conditions.slug = req.params.id;
-  }
-
-  // var comment = new Comment({
-
-  // });
+  conditions.slug = req.params.slug;
 
   Post.findOne(conditions)
-    .populate('category')
     .exec(function (err, post) {
       if (err) return next(err);
-      var comment = {
-        author: req.body.author,
-        email: req.body.email,
-        comment: req.body.comment,
+
+      var comment = new Comment({
+        post: post,
+        fromUser: user,
+        content: req.body.comment,
+        meta: { favorite: 0 },
         created: new Date(),
-        id: new Date().getTime(),
-      };
-      post.comments.unshift(comment);
-      post.markModified('comments');
-      post.save(function (err, post) {
-        if (err) return next(err);
-        else res.redirect('/posts/view/' + post.slug + '#' + comment.id);
+      });
+      comment.save(function (err, comment) {
+        if (err) {
+          req.flash('error', '评论发布失败');
+          return res.redirect('/posts/view/' + post.slug + '#commentform');
+        } else {
+          var comment = comment._id;
+          post.comments.unshift(comment);
+          post.markModified('comments');
+          post.save(function (err, post) {
+            if (err) {
+              req.flash('error', '评论发布失败');
+              return res.redirect('/posts/view/' + post.slug + '#commentform');
+            } else {
+              req.flash('success', '评论发布成功');
+              res.redirect('/posts/view/' + post.slug + '#' + comment);
+            }
+          });
+        }
       });
     });
 });
@@ -209,6 +219,11 @@ router.post('/comment/:id', function (req, res, next) {
 router.get('/favorite/:id', function (req, res, next) {
   if (!req.params.id) {
     return res.send(400, 'No post id provided!');
+  }
+
+  var user = req.user;
+  if (!user) {
+    return res.send(401, 'Please login!');
   }
 
   var conditions = {};

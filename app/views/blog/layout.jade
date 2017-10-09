@@ -3,12 +3,17 @@ extends ../layout
 append css
   link(rel="stylesheet", href="/css/blog.css")
   link(rel="stylesheet", href="/components/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/css/sweetalert.css")
 
 append js
   script(src="/js/controller/blog.js")
+  script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js")
 
 block main
   block header
+    .blogtitle(style="background:url(/img/loginbg.png);")
+      .container(style="padding-top:10px;padding-bottom:10px")
+        img(src="/img/logorhl.png", alt="饶厚林的博客", style="margin-left:10px;")
     .blog-masthead
       .container
         nav.blog-nav
@@ -25,8 +30,21 @@ block main
             a.blog-nav-item.active(href="/contact") 联系我们
           else
             a.blog-nav-item(href="/contact") 联系我们
+          if (user)
+            .blog-nav-item(style="float:right;cursor:pointer;")
+              .dropdown
+                .dropdown-toggle(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href="#") 我的信息
+                  li.divider(role="separator")
+                  li
+                    a#logoutuser(href="javascript:void(0)") 注销
+          else
+            a.blog-nav-item(href="/login", style="float:right;") 登录
 
-  .container.page
+  .container.page(style="background:url(/img/loginbg.png);")
     .row
       .col-sm-8.blog-main
         block content
@@ -38,24 +56,24 @@ block main
               button#sbutton(type="submit")
                 i.fa.fa-search
         .sidebar-module.sidebar-module-inset
+          h3.widget-title 热门文章
+          ol.list-unstyled
+            li
+              a.cat-item(href="#") 测试啦啦啦
+            li
+              a.cat-item(href="#") 测试啦啦啦
+            li
+              a.cat-item(href="#") 测试啦啦啦
+            li
+              a.cat-item(href="#") 测试啦啦啦
+        .sidebar-module.sidebar-module-inset
           h3.widget-title 文章分类
           ul
             each category in categories
               li
-                a.cat-item(href="/posts/category/" + category.slug)=category.name
-        .sidebar-module
-          h3.widget-title Archives
-          ol.list-unstyled
-            li
-              a.cat-item(href="#") March 2014
-            li
-              a.cat-item(href="#") February 2014
-            li
-              a.cat-item(href="#") January 2014
-            li
-              a.cat-item(href="#") December 2013
-        .sidebar-module
-          h3.widget-title Elsewhere
+                a.cat-item(href="/category/" + category.slug)=category.name
+        .sidebar-module.sidebar-module-inset
+          h3.widget-title 标签
           ol.list-unstyled
             li
               a.cat-item(href="#") GitHub

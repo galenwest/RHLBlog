@@ -21,33 +21,35 @@ var Post = mongoose.model('Post');
 var User = mongoose.model('User');
 var Category = mongoose.model('Category');
 
-User.findOne(function (err, user) {
-  if (err || !user) {
-    return console.log('cannot find user');
+User.find({'authority':'admin'}).exec(function (err, users) {
+  if (err || users.length==0) {
+    return console.log('cannot find users');
   }
   Category.find(function (err, categories) {
     if (err || !categories) {
       return console.log('cannot find categories');
     }
-    categories.forEach(function (category) {
-      for (var i = 0; i < 35; i++) {
-        var title = loremipsum({ count: 1, units: 'sentence' });
-        var post = new Post({
-          title: title,
-          slug: slug(title),
-          content: loremipsum({ count: 30, units: 'sentence' }),
-          category: category,
-          author: user,
-          published: true,
-          meta: { favorite: 0 },
-          comments: [],
-          created: new Date,
-        });
-
-        post.save(function (err, post) {
-          return console.log('saved post:', post.slug);
-        });
-      }
-    })
-  })
-})
+    users.forEach(function (user) {
+      categories.forEach(function (category) {
+        for (var i = 0; i < 35; i++) {
+          var title = loremipsum({ count: 1, units: 'sentence' });
+          var post = new Post({
+            title: title,
+            slug: slug(title),
+            content: loremipsum({ count: 30, units: 'sentence' }),
+            category: category,
+            author: user,
+            published: true,
+            meta: { favorite: 0 },
+            comments: [],
+            created: new Date,
+          });
+  
+          post.save(function (err, post) {
+            return console.log('saved post:', post.slug);
+          });
+        }
+      });
+    });
+  });
+});

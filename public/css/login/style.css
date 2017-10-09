@@ -216,3 +216,7 @@ input, textarea {
   color: #008B00;
   background-color: #9bddad;
 }
+
+.form-group label a:link {
+  text-decoration: none;
+}
