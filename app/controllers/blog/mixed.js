@@ -20,6 +20,7 @@ module.exports.requireLogin = function (req, res, next) {
 }
 
 router.get('/', function (req, res, next) {
+  var user = req.user;
   Post.count({ published: true })
   .exec(function (err, count) {
     var pageSize = 8;
@@ -34,8 +35,32 @@ router.get('/', function (req, res, next) {
       .exec(function (err, posts) {
         // return res.json(posts);
         if (err) return next(err);
+        var isFavoUser = [];
+        var metaIds = [];
+        if (user) {
+          for (var index in posts) {
+            var post = posts[index];
+            if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+              for (var indexU = 0; indexU < post.favorite.length; indexU++) {
+                var favoUser = post.favorite[indexU];
+                if (favoUser.fromUser.toString() === user._id.toString()) {
+                  isFavoUser[index] = true;
+                  metaIds[index] = favoUser.metaId;
+                  continue;
+                } else {
+                  isFavoUser[index] = false;
+                }
+              }
+            } else {
+              isFavoUser[index] = false;
+            }
+          }
+        }
+        // return res.json(metaIds);
         res.render('blog/index', {
           posts: posts,
+          isFavoUser: isFavoUser,
+          metaIds: metaIds,
           pageNum: pageNum,
           pageCount: pageCount,
           pretty: true,

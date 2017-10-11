@@ -5,7 +5,7 @@ block content
     h1.postsby
       span 搜索：
         =keyword
-  for post in posts
+  for post, index in posts
     .post
       .post-info-meta
         .post-info
@@ -21,11 +21,18 @@ block content
       .post-abstract
         = truncate(post.content, 80)
       .post-meta
-        a.post-category(href="/posts/category/" + post.category.slug)= post.category.name
-        a.mts-like(href="javascript:void(0)" id=post._id postId=post.id favorite=post.meta.favorite)
-          i.fa.fa-heart-o(postId=post.id favorite=post.meta.favorite)
-          span.post-favourates(postId=post.id favorite=post.meta.favorite)
-            =post.meta.favorite
+        -var isfavorite = isFavoUser[index]
+        a.post-category(href="/category/" + post.category.slug)= post.category.name
+        if isfavorite
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
+            i.fa.fa-heart(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
+            span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
+              =post.meta.favorite
+        else
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
+            i.fa.fa-heart-o(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
+            span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
+              =post.meta.favorite
         a.post-comment(href="/posts/view/" + post.slug + "#commentform")
           if post.comments.length === 0
             | 无评论

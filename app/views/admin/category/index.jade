@@ -18,6 +18,6 @@ block content
         td(style="vertical-align:middle;")= category.slug
         td(style="vertical-align:middle;")= moment(category.created).format('YY-MM-DD HH:mm')
         td(style="vertical-align:middle;")
-          a(style="margin-left:8px;", href="/posts/category/" + category.slug, class="btn btn-sm btn-success", target="_blank") 查看
+          a(style="margin-left:8px;", href="/category/" + category.slug, class="btn btn-sm btn-success", target="_blank") 查看
           a(style="margin-left:8px;", href="/admin/categories/edit/" + category._id, class="btn btn-sm btn-info") 编辑
           a.deleteCategory(href="javascript:void(0)", style="margin-left:8px;", categoryid=category._id, url="/admin/categories/delete/" + category._id, class="btn btn-sm btn-danger") 删除

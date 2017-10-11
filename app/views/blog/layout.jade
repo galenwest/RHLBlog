@@ -7,7 +7,7 @@ append css
 
 append js
   script(src="/js/controller/blog.js")
-  script(src="https://unpkg.com/sweetalert/dist/sweetalert.min.js")
+  script(src="/js/controller/sweetalert.min.js")
 
 block main
   block header
@@ -21,7 +21,7 @@ block main
             a.blog-nav-item.active(href="/") 首页
           else
             a.blog-nav-item(href="/") 首页
-          a.blog-nav-item(href="/#") 教程
+          //- a.blog-nav-item(href="/#") 教程
           if pageName === '/about'
             a.blog-nav-item.active(href="/about") 关于
           else
@@ -89,4 +89,4 @@ block main
           p.col-xs-6
             | Blog Test
           p.col-xs-6
-            ©RHL2017 
+            | ©RHL2017 

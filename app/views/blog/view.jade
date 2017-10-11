@@ -19,10 +19,13 @@ block content
     .post-abstract#my-editormd-view
       textarea#append-text(style="display:none;")= post.content
     .post-meta
-      a.post-category(href="/posts/category/" + post.category.slug)= post.category.name
-      a.mts-like(href="javascript:void(0)" id=post._id postId=post.id favorite=post.meta.favorite)
-        i.fa.fa-heart-o(postId=post.id favorite=post.meta.favorite)
-        span.post-favourates(postId=post.id favorite=post.meta.favorite)
+      a.post-category(href="/category/" + post.category.slug)= post.category.name
+      a.mts-like(href="javascript:void(0)" id=post._id, postId=post.id, favorite=post.meta.favorite)
+        if isFavoUser
+            i.fa.fa-heart(postId=post.id, favorite=post.meta.favorite)
+        else
+          i.fa.fa-heart-o(postId=post.id, favorite=post.meta.favorite)
+        span.post-favourates(postId=post.id, favorite=post.meta.favorite)
           =post.meta.favorite
   nav(aria-label="Page navigation")
     ul.pager

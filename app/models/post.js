@@ -10,6 +10,7 @@ var PostSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   slug: { type: String, required: true },
   published: { type: Boolean, default: false },
+  favorite: [Schema.Types.Mixed],
   meta: { type: Schema.Types.Mixed },
   comments: [Schema.Types.Mixed],
   created: { type: Date },
