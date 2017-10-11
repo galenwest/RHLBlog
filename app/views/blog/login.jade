@@ -12,6 +12,7 @@ html.no-js
         .col-md-4.col-md-push-8
           form.fh5co-form.animate-box.fadeInRight.animated-fast(method="post", action="/login", data-animate-effect="fadeInRight")
             h2(style="margin-bottom:10px;") 登 录
+            input(type="hidden", name="url", value=loginurl)
             != messages()
             .form-group(style="margin-bottom:10px;")
               input.form-control#username(type="text", name="email", placeholder="邮    箱", autocomplete="off", required="true")

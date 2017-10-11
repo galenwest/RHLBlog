@@ -458,9 +458,10 @@ p.form-submit {
   padding-bottom: 10px;
 }
 .post-comment-author span.comm-author {
-  font-family: 'Roboto';
+  font-family: 'STKaiti';
   font-size: 20px;
-  color: #12b075;
+  font-weight: 600;
+  color: #333333;
 }
 .post-comment-author span.comm-created {
   float: right;

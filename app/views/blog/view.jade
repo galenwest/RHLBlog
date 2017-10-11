@@ -19,14 +19,17 @@ block content
     .post-abstract#my-editormd-view
       textarea#append-text(style="display:none;")= post.content
     .post-meta
-      a.post-category(href="/category/" + post.category.slug)= post.category.name
-      a.mts-like(href="javascript:void(0)" id=post._id, postId=post.id, favorite=post.meta.favorite)
+        a.post-category(href="/category/" + post.category.slug)= post.category.name
         if isFavoUser
-            i.fa.fa-heart(postId=post.id, favorite=post.meta.favorite)
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
+            i.fa.fa-heart(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
+            span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
+              =post.meta.favorite
         else
-          i.fa.fa-heart-o(postId=post.id, favorite=post.meta.favorite)
-        span.post-favourates(postId=post.id, favorite=post.meta.favorite)
-          =post.meta.favorite
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
+            i.fa.fa-heart-o(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
+            span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
+              =post.meta.favorite
   nav(aria-label="Page navigation")
     ul.pager
       if (isCategory)
@@ -71,7 +74,10 @@ block content
     
     form#commentform(action="/posts/comment/"+post.slug, method="post", enctype="application/x-www-form-urlencoded")
       p.comment-form-comment
-        textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论..." required="true")
+        if user
+          textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论..." required="true")
+        else
+          textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="请登录后撰写评论！" required="true")
       p.form-submit
         input(id="submit" type="submit" value="发布")
 

@@ -51,13 +51,16 @@ router.get('/view/:id', function (req, res, next) {
                 .exec(function (err, comments) {
                   if (err) return next(err);
                   var isFavoUser = false;
+                  var metaId = '';
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+                      biaoji:
                       for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                         var favoUser = post.favorite[indexU];
                         if (favoUser.fromUser.toString() === user._id.toString()) {
                           isFavoUser = true;
-                          continue;
+                          metaId = favoUser.metaId;
+                          break biaoji;
                         } else {
                           isFavoUser = false;
                         }
@@ -70,6 +73,7 @@ router.get('/view/:id', function (req, res, next) {
                     isCategory: true,
                     post: post,
                     isFavoUser: isFavoUser,
+                    metaId: metaId,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,
@@ -136,12 +140,13 @@ router.get('/:slug/:page', function (req, res, next) {
             for (var index in posts) {
               var post = posts[index];
               if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+                biaoji:
                 for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                   var favoUser = post.favorite[indexU];
                   if (favoUser.fromUser.toString() === user._id.toString()) {
                     isFavoUser[index] = true;
                     metaIds[index] = favoUser.metaId;
-                    continue;
+                    break biaoji;
                   } else {
                     isFavoUser[index] = false;
                   }

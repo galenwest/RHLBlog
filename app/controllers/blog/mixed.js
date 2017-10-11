@@ -41,12 +41,13 @@ router.get('/', function (req, res, next) {
           for (var index in posts) {
             var post = posts[index];
             if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+              biaoji:
               for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                 var favoUser = post.favorite[indexU];
                 if (favoUser.fromUser.toString() === user._id.toString()) {
                   isFavoUser[index] = true;
                   metaIds[index] = favoUser.metaId;
-                  continue;
+                  break biaoji;
                 } else {
                   isFavoUser[index] = false;
                 }
@@ -56,7 +57,6 @@ router.get('/', function (req, res, next) {
             }
           }
         }
-        // return res.json(metaIds);
         res.render('blog/index', {
           posts: posts,
           isFavoUser: isFavoUser,
@@ -88,8 +88,9 @@ router.get('/login', function (req, res, next) {
   if (user) {
     res.redirect('/');
   } else {
+    var loginurl = req.query.url;
     res.render('blog/login', {
-      pretty: true
+      loginurl: loginurl
     });
   }
 });
@@ -99,7 +100,8 @@ router.post('/login', passport.authenticate('user.login', {
     failureFlash: true
   }),
   function (req, res, next) {
-    res.redirect('/');
+    var url = req.body.url;
+    res.redirect(url);
   });
 
 router.get('/register', function (req, res, next) {

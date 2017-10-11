@@ -64,12 +64,13 @@ router.get('/:page', function (req, res, next) {
             for (var index in posts) {
               var post = posts[index];
               if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+                biaoji:
                 for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                   var favoUser = post.favorite[indexU];
                   if (favoUser.fromUser.toString() === user._id.toString()) {
                     isFavoUser[index] = true;
                     metaIds[index] = favoUser.metaId;
-                    continue;
+                    break biaoji;
                   } else {
                     isFavoUser[index] = false;
                   }
@@ -179,13 +180,16 @@ router.get('/view/:id', function (req, res, next) {
                 .exec(function (err, comments) {
                   if (err) return next(err);
                   var isFavoUser = false;
+                  var metaId = '';
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
+                      biaoji:
                       for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                         var favoUser = post.favorite[indexU];
                         if (favoUser.fromUser.toString() === user._id.toString()) {
                           isFavoUser = true;
-                          continue;
+                          metaId = favoUser.metaId;
+                          break biaoji;
                         } else {
                           isFavoUser = false;
                         }
@@ -197,6 +201,7 @@ router.get('/view/:id', function (req, res, next) {
                   res.render('blog/view', {
                     post: post,
                     isFavoUser: isFavoUser,
+                    metaId: metaId,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,
@@ -214,7 +219,7 @@ router.post('/comment/:slug', function (req, res, next) {
   // return res.json(req.params);
   var user = req.user;
   if (!user) {
-    req.flash('error', '请登录后评论');
+    req.flash('error', '请登录后发布评论');
     return res.redirect('/posts/view/' + req.params.slug + '#commentform');
   }
   if (!req.body.comment) {
