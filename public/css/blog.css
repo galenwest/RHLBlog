@@ -301,6 +301,7 @@ h6, .h6 {
 
 .post-abstract {
   margin-bottom: 12px;
+  padding: 10px;
 }
 
 .post-meta {
@@ -309,6 +310,24 @@ h6, .h6 {
   font-size: 15px;
   color: #8f8f8f;
   vertical-align: middle;
+}
+
+.comments-meta {
+  font-weight: normal;
+  color: #8f8f8f;
+  vertical-align: middle;
+}
+
+.comments-meta a {
+  color: #8f8f8f;
+}
+
+.comments-meta a:link {
+  text-decoration: none;
+}
+
+.comments-meta a:hover {
+  color: #12b075;
 }
 
 .post-meta a {
@@ -358,6 +377,56 @@ h6, .h6 {
   font-size: 15px;
 }
 
+.com-like {
+  position: relative;
+  float: right;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.com-like span {
+  font-size: 14px;
+  padding-left: 2px;
+}
+
+.com-like i:before {
+  color: #12b075;
+}
+
+a.com-unlike:hover {
+  color: #f34848;
+}
+
+.com-unlike {
+  position: relative;
+  float: right;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.com-unlike span {
+  font-size: 14px;
+  padding-left: 2px;
+}
+
+.com-unlike i:before {
+  color: #f34848;
+}
+
+.comment-unfold {
+  font-size: 16px;
+}
+
+.comment-reply {
+  position: relative;
+  float: right;
+  font-size: 16px;
+}
+
 .post-favourates i:before,
 .mts-like i:before {
   top: 2px;
@@ -367,6 +436,12 @@ h6, .h6 {
 
 .post-favourates {
   margin-left: 6px;
+}
+
+span.comment-favourates {
+  font-size: 15px;
+  font-weight: 500;
+  padding-left: 3px;
 }
 
 /*
@@ -427,9 +502,15 @@ input#author, input#email {
   border: 1px solid rgba(0,0,0,.09);
 }
 p.form-submit {
-  margin-top: -80px;
+  margin-top: -12px;
   padding-left: 20px;
+  padding-bottom: 8px;
   box-sizing: border-box;
+}
+#commentform input#submit:focus,
+#commentform input#submit:hover {
+  color: #ffffff;
+  background-color: #12b075;
 }
 #commentform input#submit {
   line-height: 10px;
@@ -438,25 +519,29 @@ p.form-submit {
   display: inline-block;
   padding: 13px 21px;
   border: 1px solid;
-  border-radius: 999px;
+  border-radius: 20px;
   color: #12b075;
   background-color: transparent;
   transition: all 0.2s linear;
+}
+
+.comment-form-comment {
+  margin-bottom: 0px;
 }
 
 .post-comment-item {
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
   border: 1px solid rgba(0,0,0,.09);
-  padding: 20px;
+  padding-top: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
   box-sizing: border-box;
   margin-bottom: 20px;
   border-radius: 3px;
 }
 
-.post-comment-author {
-  padding-bottom: 10px;
-}
 .post-comment-author span.comm-author {
   font-family: 'STKaiti';
   font-size: 20px;
@@ -467,9 +552,15 @@ p.form-submit {
   float: right;
   font-family: 'Roboto';
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
   color: #8f8f8f;
 }
+/* .post-comment-content {
+  font-family: 'Roboto';
+  font-weight: normal;
+  font-size: 16px;
+  color: #333333;
+} */
 #skeyword {
   width: 100%;
   float: left;
@@ -568,4 +659,15 @@ p.form-submit {
   border-radius: 4px;
   color: #008B00;
   background-color: #9bddad;
+}
+
+a.haspost {
+  color: #12b075;
+}
+a.nopost {
+  color: #8f8f8f;
+}
+
+a.editormd-preview-close-btn {
+  display: none;
 }

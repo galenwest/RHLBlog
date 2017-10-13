@@ -27,7 +27,7 @@ router.get('/', function (req, res, next) {
     var pageNum = 1;
     var pageCount = Math.ceil(count / pageSize);
     Post.find({ published: true })
-      .sort({ _id: -1 })
+      .sort({ publishtime: -1 })
       .limit(pageSize)
       .skip(0)
       .populate('author')

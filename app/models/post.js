@@ -14,6 +14,7 @@ var PostSchema = new Schema({
   meta: { type: Schema.Types.Mixed },
   comments: [Schema.Types.Mixed],
   created: { type: Date },
+  publishtime: { type: Date },
 });
 
 mongoose.model('Post', PostSchema);

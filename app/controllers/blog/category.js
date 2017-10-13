@@ -45,13 +45,15 @@ router.get('/view/:id', function (req, res, next) {
             .exec(function (err, prePost) {
               if (err) return next(err);
               if (err) return next(err);
-              Comment.find({post:post})
+              Comment.find({post:post, shielded: false})
                 .populate('fromUser')
                 .sort({ _id: -1 })
                 .exec(function (err, comments) {
                   if (err) return next(err);
                   var isFavoUser = false;
                   var metaId = '';
+                  var isSupportUser = []; //该文章下所有评论当前用户是否支持列表，前端用来判断展示用
+                  var supportId = [];
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
                       biaoji:
@@ -68,12 +70,33 @@ router.get('/view/:id', function (req, res, next) {
                     } else {
                       isFavoUser = false;
                     }
+                    
+                    for (var index in comments) {
+                      var comment = comments[index];
+                      if (comment.support && comment.support !== undefined && comment.support instanceof Array && comment.support.length > 0) {
+                        biaojiB:
+                        for (var indexS = 0; indexS < comment.support.length; indexS++) {
+                          var supportUser = comment.support[indexS];
+                          if (supportUser.fromUser.toString() === user._id.toString()) {
+                            isSupportUser[index] = true;
+                            supportId[index] = supportUser.supportId;
+                            break biaojiB; //该评论所有的支持记录中有该用户的话，跳过剩下记录的遍历，进入下一个评论的支持记录的遍历
+                          } else {
+                            isSupportUser[index] = false;
+                          }
+                        }
+                      } else {
+                        isSupportUser[index] = false;
+                      }
+                    }
                   }
                   res.render('blog/view', {
                     isCategory: true,
                     post: post,
                     isFavoUser: isFavoUser,
                     metaId: metaId,
+                    isSupportUser: isSupportUser,
+                    supportId: supportId,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,

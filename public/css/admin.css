@@ -176,3 +176,7 @@ a.navbar-my-brand {
   color: #008B00;
   background-color: #9bddad;
 }
+
+a.editormd-preview-close-btn {
+  display: none;
+}

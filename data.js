@@ -43,6 +43,7 @@ User.find({'authority':'admin'}).exec(function (err, users) {
             meta: { favorite: 0 },
             comments: [],
             created: new Date,
+            publishtime: new Date,
           });
   
           post.save(function (err, post) {

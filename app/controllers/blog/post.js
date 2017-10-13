@@ -3,7 +3,9 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Category = mongoose.model('Category'),
   Post = mongoose.model('Post'),
-  Meta = mongoose.model('Meta'),
+  PostMeta = mongoose.model('PostMeta'),
+  Support = mongoose.model('Support'),
+  Against = mongoose.model('Against'),
   Comment = mongoose.model('Comment');
 
 module.exports = function (app) {
@@ -50,7 +52,7 @@ router.get('/:page', function (req, res, next) {
         return;
       }
       Post.find(conditions)
-        .sort({ _id: -1 })
+        .sort({ publishtime: -1 })
         .limit(pageSize)
         .skip(skip)
         .populate('author')
@@ -174,22 +176,25 @@ router.get('/view/:id', function (req, res, next) {
             .sort({ _id: -1 })
             .exec(function (err, prePost) {
               if (err) return next(err);
-              Comment.find({post:post})
+              Comment.find({post:post, shielded: false})
                 .populate('fromUser')
                 .sort({ _id: -1 })
                 .exec(function (err, comments) {
                   if (err) return next(err);
-                  var isFavoUser = false;
+                  var isFavoUser = false; //当前用户是否点赞该文章
                   var metaId = '';
+                  var isSupportUser = []; //该文章下所有评论当前用户是否支持列表，前端用来判断展示用
+                  var supportId = [];
+                  //判断用户是否在线
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
-                      biaoji:
+                      biaojiA:
                       for (var indexU = 0; indexU < post.favorite.length; indexU++) {
                         var favoUser = post.favorite[indexU];
                         if (favoUser.fromUser.toString() === user._id.toString()) {
                           isFavoUser = true;
                           metaId = favoUser.metaId;
-                          break biaoji;
+                          break biaojiA;
                         } else {
                           isFavoUser = false;
                         }
@@ -197,11 +202,33 @@ router.get('/view/:id', function (req, res, next) {
                     } else {
                       isFavoUser = false;
                     }
+
+                    for (var index in comments) {
+                      var comment = comments[index];
+                      if (comment.support && comment.support !== undefined && comment.support instanceof Array && comment.support.length > 0) {
+                        biaojiB:
+                        for (var indexS = 0; indexS < comment.support.length; indexS++) {
+                          var supportUser = comment.support[indexS];
+                          if (supportUser.fromUser.toString() === user._id.toString()) {
+                            isSupportUser[index] = true;
+                            supportId[index] = supportUser.supportId;
+                            break biaojiB; //该评论所有的支持记录中有该用户的话，跳过剩下记录的遍历，进入下一个评论的支持记录的遍历
+                          } else {
+                            isSupportUser[index] = false;
+                          }
+                        }
+                      } else {
+                        isSupportUser[index] = false;
+                      }
+                    }
                   }
+                  // return res.json(isSupportUser);
                   res.render('blog/view', {
                     post: post,
                     isFavoUser: isFavoUser,
                     metaId: metaId,
+                    isSupportUser: isSupportUser,
+                    supportId: supportId,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,
@@ -220,11 +247,11 @@ router.post('/comment/:slug', function (req, res, next) {
   var user = req.user;
   if (!user) {
     req.flash('error', '请登录后发布评论');
-    return res.redirect('/posts/view/' + req.params.slug + '#commentform');
+    return res.redirect('/posts/view/' + req.params.slug + '#commentAnchorPoint');
   }
   if (!req.body.comment) {
     req.flash('error', '请撰写评论后发布');
-    return res.redirect('/posts/view/' + req.params.slug + '#commentform');
+    return res.redirect('/posts/view/' + req.params.slug + '#commentAnchorPoint');
   }
 
   var conditions = {};
@@ -239,13 +266,14 @@ router.post('/comment/:slug', function (req, res, next) {
         post: post,
         fromUser: user,
         content: req.body.comment,
-        meta: { favorite: 0 },
+        meta: { support: 0, against: 0 },
+        shielded: false,
         created: new Date(),
       });
       comment.save(function (err, comment) {
         if (err) {
           req.flash('error', '评论发布失败');
-          return res.redirect('/posts/view/' + post.slug + '#commentform');
+          return res.redirect('/posts/view/' + post.slug + '#commentAnchorPoint');
         } else {
           var comment = comment._id;
           post.comments.unshift(comment);
@@ -253,7 +281,7 @@ router.post('/comment/:slug', function (req, res, next) {
           post.save(function (err, post) {
             if (err) {
               req.flash('error', '评论发布失败');
-              return res.redirect('/posts/view/' + post.slug + '#commentform');
+              return res.redirect('/posts/view/' + post.slug + '#commentAnchorPoint');
             } else {
               req.flash('success', '评论发布成功');
               res.redirect('/posts/view/' + post.slug + '#' + comment);
@@ -288,7 +316,7 @@ router.get('/favorite/:id', function (req, res, next) {
     .exec(function (err, post) {
       if (err) return res.send(500, 'The server is having problems');
 
-      var meta = new Meta({
+      var meta = new PostMeta({
         post: post,
         favorite: true,
         fromUser: user,
@@ -341,7 +369,7 @@ router.get('/unfavorite/:id/:metaId', function (req, res, next) {
     .populate('author')
     .exec(function (err, post) {
       if (err) return res.send(500, 'The server is having problems');
-      Meta.findOne({_id: req.params.metaId})
+      PostMeta.findOne({_id: req.params.metaId})
         .exec(function (err, meta) {
           if (err) {
             return res.send(500, 'The server is having problems');
@@ -372,6 +400,95 @@ router.get('/unfavorite/:id/:metaId', function (req, res, next) {
                   if (err) return res.send(500, 'The server is having problems');
                   else return res.send(200, post.meta.favorite);
                   // }, 5000);
+                });
+              }
+            });
+          }
+        });
+    });
+});
+
+router.get('/comment/support/:id', function (req, res, next) {
+
+  if (!req.params.id) {
+    return res.send(400, 'No comment id provided!');
+  }
+  var user = req.user;
+  if (!user) {
+    return res.send(401, 'Please login!');
+  }
+
+  Comment.findOne({_id:req.params.id})
+    .exec(function (err, comment) {
+      if (err) return res.send(500, 'The server is having problems');
+
+      var support = new Support({
+        comment: comment._id,
+        issupport: true,
+        fromUser: user._id,
+        created: new Date(),
+      });
+      support.save(function (err, support) {
+        if (err) {
+          return res.send(500, 'The server is having problems');
+        } else {
+          comment.support.unshift({fromUser:user._id, supportId: support._id});
+          comment.meta.support = comment.meta.support ? comment.meta.support + 1 : 1;
+          comment.markModified('meta');
+          comment.markModified('support');
+          comment.save(function (err) {
+            if (err) return res.send(500, 'The server is having problems');
+            else return res.send(200, {supportCount: comment.meta.support, supportId: support._id});
+          });
+        }
+      });
+    });
+});
+
+router.get('/comment/unsupport/:id/:supportid', function (req, res, next) {
+  if (!req.params.id) {
+    return res.send(400, 'No comment id provided!');
+  }
+  if (!req.params.supportid) {
+    return res.send(400, 'No support id provided!');
+  }
+  var user = req.user;
+  if (!user) {
+    return res.send(401, 'Please login!');
+  }
+
+  Comment.findOne({_id:req.params.id})
+    .exec(function (err, comment) {
+      if (err) return res.send(500, 'The server is having problems');
+
+      Support.findOne({_id: req.params.supportid})
+        .exec(function (err, support) {
+          if (err) {
+            return res.send(500, 'The server is having problems');
+          } else {
+            if (comment.support && comment.support !== undefined && comment.support instanceof Array && comment.support.length > 0) {
+              for (var i = 0; i < comment.support.length; i++) {
+                if (comment.support[i].supportId.toString() == support._id.toString()) {
+                  comment.support.splice(i,1);
+                }
+              }
+            } else {
+              return res.send(200, comment.meta.support);
+            }
+            comment.meta.support = comment.meta.support ? comment.meta.support - 1 : 0;
+            comment.markModified('meta');
+            comment.markModified('support');
+            comment.save(function (err) {
+              if (err) {
+                return res.send(500, 'The server is having problems');
+              } else {
+                support.issupport = false;
+                support.cancelTime = new Date();
+                support.markModified('issupport');
+                support.markModified('cancelTime');
+                support.save(function (err) {
+                  if (err) return res.send(500, 'The server is having problems');
+                  else return res.send(200, comment.meta.support);
                 });
               }
             });

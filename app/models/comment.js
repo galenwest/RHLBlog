@@ -9,6 +9,8 @@ var CommentSchema = new Schema({
   fromUser: { type: Schema.Types.ObjectId, ref: 'User' },
   shielded: { type: Boolean, default: false },
   meta: { type: Schema.Types.Mixed },
+  support: [Schema.Types.Mixed],
+  against: [Schema.Types.Mixed],
   created: { type: Date },
 });
 

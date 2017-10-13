@@ -86,6 +86,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
             created: new Date(),
             comments: [],
             published: published,
+            publishtime: new Date(),
           });
           post.save(function (err, post) {
             if (err) {
@@ -291,7 +292,9 @@ router.get('/published/:id', auth.requireLogin, function (req, res, next) {
     .exec(function (err, post) {
       if (err) return next(err);
       post.published = true;
+      post.publishtime = new Date();
       post.markModified('published');
+      post.markModified('publishtime');
       post.save(function (err, published) {
         if (err) return next(err);
         if (published) {

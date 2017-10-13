@@ -70,7 +70,7 @@ module.exports = function(app, config, connection) {
     secret: 'rhlblog',
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: false, maxAge:365*24*3600*1000},
+    cookie: {secure: false, maxAge:5*24*3600*1000},
     store: new MongoStore({mongooseConnection: connection})
   }));
 

@@ -24,16 +24,16 @@ block content
         -var isfavorite = isFavoUser[index]
         a.post-category(href="/category/" + post.category.slug)= post.category.name
         if isfavorite
-          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index], title="取消点赞")
             i.fa.fa-heart(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
             span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaIds[index])
               =post.meta.favorite
         else
-          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index], title="点赞")
             i.fa.fa-heart-o(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
             span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaIds[index])
               =post.meta.favorite
-        a.post-comment(href="/posts/view/" + post.slug + "#commentform")
+        a.post-comment(href="/posts/view/" + post.slug + "#commentAnchorPoint")
           if post.comments.length === 0
             | 无评论
           else

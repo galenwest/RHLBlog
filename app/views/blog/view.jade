@@ -21,12 +21,12 @@ block content
     .post-meta
         a.post-category(href="/category/" + post.category.slug)= post.category.name
         if isFavoUser
-          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId, title="取消点赞")
             i.fa.fa-heart(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
             span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="true", metaid=metaId)
               =post.meta.favorite
         else
-          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
+          a.mts-like(href="javascript:void(0)", id=post._id, postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId, title="点赞")
             i.fa.fa-heart-o(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
             span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
               =post.meta.favorite
@@ -35,37 +35,56 @@ block content
       if (isCategory)
         li.previous
           if (prePost)
-            a.prenex(href="/category/view/" + prePost.slug title="#{prePost.title}") 上一篇
+            a.haspost.prenex(href="/category/view/" + prePost.slug title="#{prePost.title}") 上一篇
           else
-            a.prenex(href="#") 没有文章了
+            a.nopost.prenex(href="#") 没有文章了
         li.next
           if (nextPost)
-            a.prenex(href="/category/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
+            a.haspost.prenex(href="/category/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
           else
-            a.prenex(href="#") 没有文章了
+            a.nopost.prenex(href="#") 没有文章了
       else
         li.previous
           if (prePost)
-            a.prenex(href="/posts/view/" + prePost.slug title="#{prePost.title}") 上一篇
+            a.haspost.prenex(href="/posts/view/" + prePost.slug title="#{prePost.title}") 上一篇
           else
-            a.prenex(href="#") 没有文章了
+            a.nopost.prenex(href="#") 没有文章了
         li.next
           if (nextPost)
-            a.prenex(href="/posts/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
+            a.haspost.prenex(href="/posts/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
           else
-            a.prenex(href="#") 没有文章了
+            a.nopost.prenex(href="#") 没有文章了
 
   .post-comments
     if comments.length
       - var commentLength = comments.length + '个评论';
       .total-comments= commentLength
-      .post-comments-list
-      each comment in comments
-        .post-comment-item(id=comment._id)
-          .post-comment-author
-            span.comm-author= comment.fromUser.nick
-            span.comm-created= moment(comment.created).format('YYYY-MM-DD HH:mm')
-          p.post-comment-content= comment.content
+      #post-comments-list
+        each comment, index in comments
+          .post-comment-item(commentid=comment._id)
+            .post-comment-author
+              span.comm-author= comment.fromUser.nick
+              span.comm-created= moment(comment.created).format('YYYY-MM-DD HH:mm')
+            .post-comment-content(id=comment._id)
+              textarea(style="display:none;")= comment.content
+            //- p.post-comment-content= comment.content
+            .comments-meta
+              a.comment-unfold(href="javascript:void(0)") 展开
+              a.comment-reply(href="javascript:void(0)") 回复
+              a.com-unlike(href="javascript:void(0)", title="反对", id=comment._id+"against")
+                i.fa.fa-thumbs-o-down
+                span.comment-favourates
+                  = comment.meta.against
+              if isSupportUser[index]
+                a.com-like(href="javascript:void(0)", title="取消支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
+                  i.fa.fa-thumbs-up(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
+                  span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
+                    = comment.meta.support
+              else
+                a.com-like(href="javascript:void(0)", title="支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
+                  i.fa.fa-thumbs-o-up(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
+                  span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
+                    = comment.meta.support
     else
       .total-comments 没有评论
       
@@ -75,15 +94,18 @@ block content
     form#commentform(action="/posts/comment/"+post.slug, method="post", enctype="application/x-www-form-urlencoded")
       p.comment-form-comment
         if user
-          textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="在此写评论..." required="true")
+          #form-comment-edit
+            textarea(id="comment" name="comment" style="display:none;")
         else
-          textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="请登录后撰写评论！" required="true")
+          #form-comment-edit
+            textarea(id="comment" name="comment" style="display:none;") 请登录后撰写评论！
       p.form-submit
         input(id="submit" type="submit" value="发布")
 
   p ╰❥ª.•° ✿ゞ .•°❤ ┈━═☆
 
 block scripts
+  script(src="/components/bootstrap/dist/js/bootstrap.min.js")
   script(src="/components/editor.md/editormd.min.js")
   script(src="/components/editor.md/lib/marked.min.js")
   script(src="/components/editor.md/lib/prettify.min.js")
