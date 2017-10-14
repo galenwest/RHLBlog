@@ -54,6 +54,9 @@ router.get('/view/:id', function (req, res, next) {
                   var metaId = '';
                   var isSupportUser = []; //该文章下所有评论当前用户是否支持列表，前端用来判断展示用
                   var supportId = [];
+                  var isAgainstUser = [];
+                  var againstId = [];
+                  var ballot = [];
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
                       biaoji:
@@ -88,6 +91,28 @@ router.get('/view/:id', function (req, res, next) {
                       } else {
                         isSupportUser[index] = false;
                       }
+
+                      if (comment.against && comment.against !== undefined && comment.against instanceof Array && comment.against.length > 0) {
+                        biaojiC:
+                        for (var indexS = 0; indexS < comment.against.length; indexS++) {
+                          var againstUser = comment.against[indexS];
+                          if (againstUser.fromUser.toString() === user._id.toString()) {
+                            isAgainstUser[index] = true;
+                            againstId[index] = againstUser.againstId;
+                            break biaojiC; //该评论所有的反对记录中有该用户的话，跳过剩下记录的遍历，进入下一个评论的反对记录的遍历
+                          } else {
+                            isAgainstUser[index] = false;
+                          }
+                        }
+                      } else {
+                        isAgainstUser[index] = false;
+                      }
+
+                      if (isSupportUser[index] == false && isAgainstUser[index] == false) {
+                        ballot[index] = true;
+                      } else {
+                        ballot[index] = false;
+                      }
                     }
                   }
                   res.render('blog/view', {
@@ -97,6 +122,9 @@ router.get('/view/:id', function (req, res, next) {
                     metaId: metaId,
                     isSupportUser: isSupportUser,
                     supportId: supportId,
+                    isAgainstUser: isAgainstUser,
+                    againstId: againstId,
+                    ballot: ballot,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,

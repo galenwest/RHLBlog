@@ -71,17 +71,23 @@ block content
             .comments-meta
               a.comment-unfold(href="javascript:void(0)") 展开
               a.comment-reply(href="javascript:void(0)") 回复
-              a.com-unlike(href="javascript:void(0)", title="反对", id=comment._id+"against")
-                i.fa.fa-thumbs-o-down
-                span.comment-favourates
-                  = comment.meta.against
+              if isAgainstUser[index]
+                a.com-unlike(href="javascript:void(0)", title="取消反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against, ballot=ballot[index].toString())
+                  i.fa.fa-thumbs-down(commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against)
+                  span.comment-favourates(commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against)
+                    = comment.meta.against
+              else
+                a.com-unlike(href="javascript:void(0)", title="反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against, ballot=ballot[index].toString())
+                  i.fa.fa-thumbs-o-down(commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against)
+                  span.comment-favourates(commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against)
+                    = comment.meta.against
               if isSupportUser[index]
-                a.com-like(href="javascript:void(0)", title="取消支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
+                a.com-like(href="javascript:void(0)", title="取消支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support, ballot=ballot[index].toString())
                   i.fa.fa-thumbs-up(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
                   span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
                     = comment.meta.support
               else
-                a.com-like(href="javascript:void(0)", title="支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
+                a.com-like(href="javascript:void(0)", title="支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support, ballot=ballot[index].toString())
                   i.fa.fa-thumbs-o-up(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                   span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                     = comment.meta.support

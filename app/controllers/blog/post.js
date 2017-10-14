@@ -185,6 +185,9 @@ router.get('/view/:id', function (req, res, next) {
                   var metaId = '';
                   var isSupportUser = []; //该文章下所有评论当前用户是否支持列表，前端用来判断展示用
                   var supportId = [];
+                  var isAgainstUser = [];
+                  var againstId = [];
+                  var ballot = [];
                   //判断用户是否在线
                   if (user) {
                     if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
@@ -220,15 +223,40 @@ router.get('/view/:id', function (req, res, next) {
                       } else {
                         isSupportUser[index] = false;
                       }
+
+                      if (comment.against && comment.against !== undefined && comment.against instanceof Array && comment.against.length > 0) {
+                        biaojiC:
+                        for (var indexS = 0; indexS < comment.against.length; indexS++) {
+                          var againstUser = comment.against[indexS];
+                          if (againstUser.fromUser.toString() === user._id.toString()) {
+                            isAgainstUser[index] = true;
+                            againstId[index] = againstUser.againstId;
+                            break biaojiC; //该评论所有的反对记录中有该用户的话，跳过剩下记录的遍历，进入下一个评论的反对记录的遍历
+                          } else {
+                            isAgainstUser[index] = false;
+                          }
+                        }
+                      } else {
+                        isAgainstUser[index] = false;
+                      }
+
+                      if (isSupportUser[index] == false && isAgainstUser[index] == false) {
+                        ballot[index] = true;
+                      } else {
+                        ballot[index] = false;
+                      }
                     }
                   }
-                  // return res.json(isSupportUser);
+                  // return res.json(ballot);
                   res.render('blog/view', {
                     post: post,
                     isFavoUser: isFavoUser,
                     metaId: metaId,
                     isSupportUser: isSupportUser,
                     supportId: supportId,
+                    isAgainstUser: isAgainstUser,
+                    againstId: againstId,
+                    ballot: ballot,
                     nextPost: nextPost,
                     prePost: prePost,
                     comments: comments,
@@ -496,3 +524,93 @@ router.get('/comment/unsupport/:id/:supportid', function (req, res, next) {
         });
     });
 });
+
+router.get('/comment/against/:id', function (req, res, next) {
+  
+    if (!req.params.id) {
+      return res.send(400, 'No comment id provided!');
+    }
+    var user = req.user;
+    if (!user) {
+      return res.send(401, 'Please login!');
+    }
+  
+    Comment.findOne({_id:req.params.id})
+      .exec(function (err, comment) {
+        if (err) return res.send(500, 'The server is having problems');
+  
+        var against = new Against({
+          comment: comment._id,
+          isagainst: true,
+          fromUser: user._id,
+          created: new Date(),
+        });
+        against.save(function (err, against) {
+          if (err) {
+            return res.send(500, 'The server is having problems');
+          } else {
+            comment.against.unshift({fromUser:user._id, againstId: against._id});
+            comment.meta.against = comment.meta.against ? comment.meta.against + 1 : 1;
+            comment.markModified('meta');
+            comment.markModified('against');
+            comment.save(function (err) {
+              if (err) return res.send(500, 'The server is having problems');
+              else return res.send(200, {againstCount: comment.meta.against, againstId: against._id});
+            });
+          }
+        });
+      });
+  });
+  
+  router.get('/comment/unagainst/:id/:againstid', function (req, res, next) {
+    if (!req.params.id) {
+      return res.send(400, 'No comment id provided!');
+    }
+    if (!req.params.againstid) {
+      return res.send(400, 'No against id provided!');
+    }
+    var user = req.user;
+    if (!user) {
+      return res.send(401, 'Please login!');
+    }
+  
+    Comment.findOne({_id:req.params.id})
+      .exec(function (err, comment) {
+        if (err) return res.send(500, 'The server is having problems');
+  
+        Against.findOne({_id: req.params.againstid})
+          .exec(function (err, against) {
+            if (err) {
+              return res.send(500, 'The server is having problems');
+            } else {
+              if (comment.against && comment.against !== undefined && comment.against instanceof Array && comment.against.length > 0) {
+                for (var i = 0; i < comment.against.length; i++) {
+                  if (comment.against[i].againstId.toString() == against._id.toString()) {
+                    comment.against.splice(i,1);
+                  }
+                }
+              } else {
+                return res.send(200, comment.meta.against);
+              }
+              comment.meta.against = comment.meta.against ? comment.meta.against - 1 : 0;
+              comment.markModified('meta');
+              comment.markModified('against');
+              comment.save(function (err) {
+                if (err) {
+                  return res.send(500, 'The server is having problems');
+                } else {
+                  against.isagainst = false;
+                  against.cancelTime = new Date();
+                  against.markModified('isagainst');
+                  against.markModified('cancelTime');
+                  against.save(function (err) {
+                    if (err) return res.send(500, 'The server is having problems');
+                    else return res.send(200, comment.meta.against);
+                  });
+                }
+              });
+            }
+          });
+      });
+  });
+  
