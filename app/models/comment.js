@@ -11,6 +11,7 @@ var CommentSchema = new Schema({
   meta: { type: Schema.Types.Mixed },
   support: [Schema.Types.Mixed],
   against: [Schema.Types.Mixed],
+  reply: [Schema.Types.Mixed],
   created: { type: Date },
 });
 

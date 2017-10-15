@@ -6,6 +6,7 @@ var express = require('express'),
   PostMeta = mongoose.model('PostMeta'),
   Support = mongoose.model('Support'),
   Against = mongoose.model('Against'),
+  CommentReply = mongoose.model('CommentReply'),
   Comment = mongoose.model('Comment');
 
 module.exports = function (app) {
@@ -313,6 +314,51 @@ router.post('/comment/:slug', function (req, res, next) {
             } else {
               req.flash('success', '评论发布成功');
               res.redirect('/posts/view/' + post.slug + '#' + comment);
+            }
+          });
+        }
+      });
+    });
+});
+
+router.post('/comment/reply/:postid/:commentid', function (req, res, next) {
+  if (!req.params.postid) {
+    return res.send(400, 'No post id provided!');
+  }
+  if (!req.params.commentid) {
+    return res.send(400, 'No comment id provided!');
+  }
+  // return res.json(req.params);
+  var user = req.user;
+  if (!user) {
+    return res.send(401, 'Please login!');
+  }
+  if (!req.body.comment) {
+    return res.send(404, 'Please write content!');
+  }
+  Comment.findOne({_id:mongoose.Types.ObjectId(req.params.commentid)})
+    .exec(function (err, comment) {
+      if (err) return res.send(500, 'The server is having problems');
+      var commentReply = new CommentReply({
+        post: req.params.postid,
+        comment: comment,
+        content: req.body.comment,
+        fromUser: user,
+        shielded: false,
+        created: new Date(),
+      });
+      commentReply.save(function (err, reply) {
+        if (err) {
+          return res.send(500, 'The server is having problems');
+        } else {
+          var replyid = reply._id;
+          comment.reply.unshift(replyid);
+          comment.markModified('reply');
+          comment.save(function (err, comment) {
+            if (err) {
+              return res.send(500, 'The server is having problems');
+            } else {
+              return res.send(200, {content:reply.content, created: reply.created});
             }
           });
         }

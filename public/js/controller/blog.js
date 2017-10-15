@@ -205,6 +205,7 @@ $(document).ready(function () {
     }
   });
 
+  // '/comment/reply/:postid/:commentid'
   $(".comment-reply").click(function (event) {
     var commentId = event.target.getAttribute('commentid');
     var isreply = $("#"+commentId).attr("isreply");
@@ -214,13 +215,20 @@ $(document).ready(function () {
       $("#"+commentId).attr("isreply", "false");
       event.target.innerText = '取消回复';
       $("#"+commentId).append($("#commentform"));
+      $("#submit").attr("isreply", "true");
     } else {
+      $("#submit").removeAttr("isreply");
       $("#"+commentId).attr("isreply", "true");
       event.target.innerText = '回复';
       $("#movecomment").append($("#commentform"));
     }
-
   });
-  // $("#59e23c6ac5b333032034d7d6").append($("#commentform"));
-  // $("#movecomment").append($("#commentform"));
+
+  $("#submit").click(function (event) {
+    if (event.target.getAttribute("isreply")) {
+      console.log('comment submit lalala');
+      return false;
+    }
+  });
+
 });
