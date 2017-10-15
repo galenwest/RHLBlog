@@ -8,6 +8,7 @@ $(document).ready(function () {
     var likeHtml = domLike[0].innerHTML;
     if (isFavorite === 'true') {
       $.ajax({
+        type: 'POST',
         url: "/posts/unfavorite/" + postId + "/" + metaId,
         success: function (result) {
           isFavorite = false;
@@ -30,6 +31,7 @@ $(document).ready(function () {
       });
     } else {
       $.ajax({
+        type: 'POST',
         url: "/posts/favorite/" + postId,
         success: function (result) {
           isFavorite = true;
@@ -77,6 +79,7 @@ $(document).ready(function () {
     var supportHtml = domSupport[0].innerHTML;
     if (isSupport === 'true') {
       $.ajax({
+        type: 'POST',
         url: "/posts/comment/unsupport/" + commentId + "/" + supportId,
         success: function (result) {
           ballot = true;
@@ -106,6 +109,7 @@ $(document).ready(function () {
         return;
       }
       $.ajax({
+        type: 'POST',
         url: "/posts/comment/support/" + commentId,
         success: function (result) {
           ballot = false;
@@ -143,6 +147,7 @@ $(document).ready(function () {
     var againstHtml = domagainst[0].innerHTML;
     if (isagainst === 'true') {
       $.ajax({
+        type: 'POST',
         url: "/posts/comment/unagainst/" + commentId + "/" + againstId,
         success: function (result) {
           ballot = true;
@@ -172,6 +177,7 @@ $(document).ready(function () {
         return;
       }
       $.ajax({
+        type: 'POST',
         url: "/posts/comment/against/" + commentId,
         success: function (result) {
           ballot = false;
@@ -199,4 +205,22 @@ $(document).ready(function () {
     }
   });
 
+  $(".comment-reply").click(function (event) {
+    var commentId = event.target.getAttribute('commentid');
+    var isreply = $("#"+commentId).attr("isreply");
+    if (isreply == "true") {
+      $(".post-comment-item").attr("isreply", "true");
+      $(".comment-reply").text("回复");
+      $("#"+commentId).attr("isreply", "false");
+      event.target.innerText = '取消回复';
+      $("#"+commentId).append($("#commentform"));
+    } else {
+      $("#"+commentId).attr("isreply", "true");
+      event.target.innerText = '回复';
+      $("#movecomment").append($("#commentform"));
+    }
+
+  });
+  // $("#59e23c6ac5b333032034d7d6").append($("#commentform"));
+  // $("#movecomment").append($("#commentform"));
 });

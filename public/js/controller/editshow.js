@@ -10,7 +10,7 @@ $(function () {
   });
   var commentListDiv = $('#post-comments-list').children();
   for (var commentCount = 0; commentCount < commentListDiv.length; commentCount++) {
-    editormd.markdownToHTML(commentListDiv[commentCount].getAttribute('commentid'), {
+    editormd.markdownToHTML(commentListDiv[commentCount].getAttribute('commentid')+'content', {
       // markdown: $("#append-text").text(),
       htmlDecode: "style,script,iframe",  // you can filter tags decode
       emoji: true,
@@ -23,12 +23,12 @@ $(function () {
   
   editormd("form-comment-edit", {
     width: "100%",
-    height: 360,
+    height: 300,
     path : '/components/editor.md/lib/',
-    placeholder: '可用Markdown格式撰写评论，点击编辑器右上角可预览效果...',
-    watch : false,
+    placeholder: '可用Markdown格式撰写评论...',
+    // watch : false,
     toolbarIcons : function() {
-        return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "fullscreen", "preview"]
+        return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
     },
   });
 });

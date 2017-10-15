@@ -501,10 +501,7 @@ input#author, input#email {
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
   border: 1px solid rgba(0,0,0,.09);
 }
-p.form-submit {
-  margin-top: -12px;
-  padding-left: 20px;
-  padding-bottom: 8px;
+.form-submit {
   box-sizing: border-box;
 }
 #commentform input#submit:focus,
@@ -523,6 +520,7 @@ p.form-submit {
   color: #12b075;
   background-color: transparent;
   transition: all 0.2s linear;
+  margin-bottom: 10px;
 }
 
 .comment-form-comment {

@@ -320,7 +320,7 @@ router.post('/comment/:slug', function (req, res, next) {
     });
 });
 
-router.get('/favorite/:id', function (req, res, next) {
+router.post('/favorite/:id', function (req, res, next) {
   if (!req.params.id) {
     return res.send(400, 'No post id provided!');
   }
@@ -371,7 +371,7 @@ router.get('/favorite/:id', function (req, res, next) {
     });
 });
 
-router.get('/unfavorite/:id/:metaId', function (req, res, next) {
+router.post('/unfavorite/:id/:metaId', function (req, res, next) {
   if (!req.params.id) {
     return res.send(400, 'No post id provided!');
   }
@@ -436,7 +436,7 @@ router.get('/unfavorite/:id/:metaId', function (req, res, next) {
     });
 });
 
-router.get('/comment/support/:id', function (req, res, next) {
+router.post('/comment/support/:id', function (req, res, next) {
 
   if (!req.params.id) {
     return res.send(400, 'No comment id provided!');
@@ -473,7 +473,7 @@ router.get('/comment/support/:id', function (req, res, next) {
     });
 });
 
-router.get('/comment/unsupport/:id/:supportid', function (req, res, next) {
+router.post('/comment/unsupport/:id/:supportid', function (req, res, next) {
   if (!req.params.id) {
     return res.send(400, 'No comment id provided!');
   }
@@ -525,7 +525,7 @@ router.get('/comment/unsupport/:id/:supportid', function (req, res, next) {
     });
 });
 
-router.get('/comment/against/:id', function (req, res, next) {
+router.post('/comment/against/:id', function (req, res, next) {
   
     if (!req.params.id) {
       return res.send(400, 'No comment id provided!');
@@ -562,7 +562,7 @@ router.get('/comment/against/:id', function (req, res, next) {
       });
   });
   
-  router.get('/comment/unagainst/:id/:againstid', function (req, res, next) {
+  router.post('/comment/unagainst/:id/:againstid', function (req, res, next) {
     if (!req.params.id) {
       return res.send(400, 'No comment id provided!');
     }

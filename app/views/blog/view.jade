@@ -61,33 +61,33 @@ block content
       .total-comments= commentLength
       #post-comments-list
         each comment, index in comments
-          .post-comment-item(commentid=comment._id)
+          .post-comment-item(id=comment._id, commentid=comment._id, isreply="true")
             .post-comment-author
               span.comm-author= comment.fromUser.nick
               span.comm-created= moment(comment.created).format('YYYY-MM-DD HH:mm')
-            .post-comment-content(id=comment._id)
+            .post-comment-content(id=comment._id+"content")
               textarea(style="display:none;")= comment.content
             //- p.post-comment-content= comment.content
             .comments-meta
               a.comment-unfold(href="javascript:void(0)") 展开
-              a.comment-reply(href="javascript:void(0)") 回复
+              a.comment-reply(href="javascript:void(0)", commentid=comment._id) 回复
               if isAgainstUser[index]
-                a.com-unlike(href="javascript:void(0)", title="取消反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against, ballot=ballot[index].toString())
+                a.com-unlike(href="javascript:void(0)", title="取消反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against, ballot=ballot[index]+"")
                   i.fa.fa-thumbs-down(commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against)
                   span.comment-favourates(commentid=comment._id, againstid=againstId[index], isagainst="true", againstcount=comment.meta.against)
                     = comment.meta.against
               else
-                a.com-unlike(href="javascript:void(0)", title="反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against, ballot=ballot[index].toString())
+                a.com-unlike(href="javascript:void(0)", title="反对", id=comment._id+"against", commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against, ballot=ballot[index]+"")
                   i.fa.fa-thumbs-o-down(commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against)
                   span.comment-favourates(commentid=comment._id, againstid=againstId[index], isagainst="false", againstcount=comment.meta.against)
                     = comment.meta.against
               if isSupportUser[index]
-                a.com-like(href="javascript:void(0)", title="取消支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support, ballot=ballot[index].toString())
+                a.com-like(href="javascript:void(0)", title="取消支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support, ballot=ballot[index]+"")
                   i.fa.fa-thumbs-up(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
                   span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="true", supportcount=comment.meta.support)
                     = comment.meta.support
               else
-                a.com-like(href="javascript:void(0)", title="支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support, ballot=ballot[index].toString())
+                a.com-like(href="javascript:void(0)", title="支持", id=comment._id+"support", commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support, ballot=ballot[index]+"")
                   i.fa.fa-thumbs-o-up(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                   span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                     = comment.meta.support
@@ -96,22 +96,19 @@ block content
       
     .total-comments#commentAnchorPoint 写一个评论
     != messages()
-    
-    form#commentform(action="/posts/comment/"+post.slug, method="post", enctype="application/x-www-form-urlencoded")
-      p.comment-form-comment
+    #movecomment
+      form#commentform(action="/posts/comment/"+post.slug, method="post", enctype="application/x-www-form-urlencoded")
         if user
           #form-comment-edit
             textarea(id="comment" name="comment" style="display:none;")
         else
           #form-comment-edit
-            textarea(id="comment" name="comment" style="display:none;") 请登录后撰写评论！
-      p.form-submit
-        input(id="submit" type="submit" value="发布")
+            textarea(id="comment" name="comment" style="display:none;") ### 请登录后撰写评论！
+        input.form-submit(id="submit" type="submit" value="发布")
 
   p ╰❥ª.•° ✿ゞ .•°❤ ┈━═☆
 
 block scripts
-  script(src="/components/bootstrap/dist/js/bootstrap.min.js")
   script(src="/components/editor.md/editormd.min.js")
   script(src="/components/editor.md/lib/marked.min.js")
   script(src="/components/editor.md/lib/prettify.min.js")
