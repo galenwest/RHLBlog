@@ -8,6 +8,7 @@ var express = require('express'),
   Against = mongoose.model('Against'),
   CommentReply = mongoose.model('CommentReply'),
   Comment = mongoose.model('Comment');
+var moment = require('moment');
 
 module.exports = function (app) {
   app.use('/posts', router);
@@ -286,7 +287,7 @@ router.post('/comment/:slug', function (req, res, next) {
   var conditions = {};
   conditions.published = true;
   conditions.slug = req.params.slug;
-
+  
   Post.findOne(conditions)
     .exec(function (err, post) {
       if (err) return next(err);
@@ -323,25 +324,24 @@ router.post('/comment/:slug', function (req, res, next) {
 
 router.post('/comment/reply/:postid/:commentid', function (req, res, next) {
   if (!req.params.postid) {
-    return res.send(400, 'No post id provided!');
+    return res.status(400).send('No post id provided!');
   }
   if (!req.params.commentid) {
-    return res.send(400, 'No comment id provided!');
+    return res.status(400).send('No comment id provided!');
   }
-  // return res.json(req.params);
   var user = req.user;
   if (!user) {
-    return res.send(401, 'Please login!');
+    return res.status(401).send('Please login!');
   }
   if (!req.body.comment) {
-    return res.send(404, 'Please write content!');
+    return res.status(404).send('Please write content!');
   }
   Comment.findOne({_id:mongoose.Types.ObjectId(req.params.commentid)})
     .exec(function (err, comment) {
-      if (err) return res.send(500, 'The server is having problems');
+      if (err) return res.status(500).send('The server is having problems');
       var commentReply = new CommentReply({
         post: req.params.postid,
-        comment: comment,
+        comment: comment._id,
         content: req.body.comment,
         fromUser: user,
         shielded: false,
@@ -349,16 +349,16 @@ router.post('/comment/reply/:postid/:commentid', function (req, res, next) {
       });
       commentReply.save(function (err, reply) {
         if (err) {
-          return res.send(500, 'The server is having problems');
+          return res.status(500).send('The server is having problems');
         } else {
           var replyid = reply._id;
           comment.reply.unshift(replyid);
           comment.markModified('reply');
           comment.save(function (err, comment) {
             if (err) {
-              return res.send(500, 'The server is having problems');
+              return res.status(500).send('The server is having problems');
             } else {
-              return res.send(200, {content:reply.content, created: reply.created});
+              return res.status(200).send({replyid: reply._id, nick: reply.fromUser.nick, created: moment(reply.created).format('YYYY-MM-DD HH:mm')});
             }
           });
         }
@@ -366,14 +366,38 @@ router.post('/comment/reply/:postid/:commentid', function (req, res, next) {
     });
 });
 
+router.get('/comment/replys/:postid/:commentid', function (req, res, next) {
+  if (!req.params.postid) {
+    return res.status(400).send('No post id provided!');
+  }
+  if (!req.params.commentid) {
+    return res.status(400).send('No comment id provided!');
+  }
+  CommentReply.find({post:mongoose.Types.ObjectId(req.params.postid),comment:mongoose.Types.ObjectId(req.params.commentid)})
+    .populate('fromUser')
+    .exec(function (err, replys) {
+      if (err) {
+        return res.status(500).send('The server is having problems');
+      } else {
+        var commentReplys = [];
+        replys.forEach(function(reply) {
+          commentReplys.push({replyid: reply._id, nick: reply.fromUser.nick, created: moment(reply.created).format('YYYY-MM-DD HH:mm'), content: reply.content});
+        }, this);
+        // setTimeout(function () {
+          return res.status(200).send(commentReplys);
+        // }, 5000);
+      }
+    });
+});
+
 router.post('/favorite/:id', function (req, res, next) {
   if (!req.params.id) {
-    return res.send(400, 'No post id provided!');
+    return res.status(400).send('No post id provided!');
   }
 
   var user = req.user;
   if (!user) {
-    return res.send(401, 'Please login!');
+    return res.status(401).send('Please login!');
   }
 
   var conditions = {};
@@ -388,7 +412,7 @@ router.post('/favorite/:id', function (req, res, next) {
     .populate('category')
     .populate('author')
     .exec(function (err, post) {
-      if (err) return res.send(500, 'The server is having problems');
+      if (err) return res.status(500).send('The server is having problems');
 
       var meta = new PostMeta({
         post: post,
@@ -398,7 +422,7 @@ router.post('/favorite/:id', function (req, res, next) {
       });
       meta.save(function (err, meta) {
         if (err) {
-          return res.send(500, 'The server is having problems');
+          return res.status(500).send('The server is having problems');
         } else {
           
           var favorite = {fromUser:user._id, metaId: meta._id};
@@ -408,8 +432,8 @@ router.post('/favorite/:id', function (req, res, next) {
           post.markModified('favorite');
           post.save(function (err) {
             // setTimeout(function () {
-            if (err) return res.send(500, 'The server is having problems');
-            else return res.send(200, {favorCount: post.meta.favorite, metaId: meta._id});
+            if (err) return res.status(500).send('The server is having problems');
+            else return res.status(200).send({favorCount: post.meta.favorite, metaId: meta._id});
             // }, 5000);
           });
         }
@@ -419,15 +443,15 @@ router.post('/favorite/:id', function (req, res, next) {
 
 router.post('/unfavorite/:id/:metaId', function (req, res, next) {
   if (!req.params.id) {
-    return res.send(400, 'No post id provided!');
+    return res.status(400).send('No post id provided!');
   }
   if (!req.params.metaId) {
-    return res.send(400, 'No meta id provided!');
+    return res.status(400).send('No meta id provided!');
   }
 
   var user = req.user;
   if (!user) {
-    return res.send(401, 'Please login!');
+    return res.status(401).send('Please login!');
   }
 
   var conditions = {};
@@ -442,11 +466,11 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
     .populate('category')
     .populate('author')
     .exec(function (err, post) {
-      if (err) return res.send(500, 'The server is having problems');
+      if (err) return res.status(500).send('The server is having problems');
       PostMeta.findOne({_id: req.params.metaId})
         .exec(function (err, meta) {
           if (err) {
-            return res.send(500, 'The server is having problems');
+            return res.status(500).send('The server is having problems');
           } else {
             if (post.favorite && post.favorite !== undefined && post.favorite instanceof Array && post.favorite.length > 0) {
               for (var i = 0; i < post.favorite.length; i++) {
@@ -455,7 +479,7 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
                 }
               }
             } else {
-              return res.send(200, post.meta.favorite);
+              return res.status(200).send({favocount: post.meta.favorite});
             }
 
             post.meta.favorite = post.meta.favorite ? post.meta.favorite - 1 : 0;
@@ -463,7 +487,7 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
             post.markModified('favorite');
             post.save(function (err) {
               if (err) {
-                return res.send(500, 'The server is having problems');
+                return res.status(500).send('The server is having problems');
               } else {
                 meta.favorite = false;
                 meta.cancelTime = new Date();
@@ -471,8 +495,8 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
                 meta.markModified('cancelTime');
                 meta.save(function (err) {
                   // setTimeout(function () {
-                  if (err) return res.send(500, 'The server is having problems');
-                  else return res.send(200, post.meta.favorite);
+                  if (err) return res.status(500).send('The server is having problems');
+                  else return res.status(200).send({favocount: post.meta.favorite});
                   // }, 5000);
                 });
               }
@@ -485,16 +509,16 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
 router.post('/comment/support/:id', function (req, res, next) {
 
   if (!req.params.id) {
-    return res.send(400, 'No comment id provided!');
+    return res.status(400).send('No comment id provided!');
   }
   var user = req.user;
   if (!user) {
-    return res.send(401, 'Please login!');
+    return res.status(401).send('Please login!');
   }
 
   Comment.findOne({_id:req.params.id})
     .exec(function (err, comment) {
-      if (err) return res.send(500, 'The server is having problems');
+      if (err) return res.status(500).send('The server is having problems');
 
       var support = new Support({
         comment: comment._id,
@@ -504,15 +528,15 @@ router.post('/comment/support/:id', function (req, res, next) {
       });
       support.save(function (err, support) {
         if (err) {
-          return res.send(500, 'The server is having problems');
+          return res.status(500).send('The server is having problems');
         } else {
           comment.support.unshift({fromUser:user._id, supportId: support._id});
           comment.meta.support = comment.meta.support ? comment.meta.support + 1 : 1;
           comment.markModified('meta');
           comment.markModified('support');
           comment.save(function (err) {
-            if (err) return res.send(500, 'The server is having problems');
-            else return res.send(200, {supportCount: comment.meta.support, supportId: support._id});
+            if (err) return res.status(500).send('The server is having problems');
+            else return res.status(200).send({supportCount: comment.meta.support, supportId: support._id});
           });
         }
       });
@@ -521,24 +545,24 @@ router.post('/comment/support/:id', function (req, res, next) {
 
 router.post('/comment/unsupport/:id/:supportid', function (req, res, next) {
   if (!req.params.id) {
-    return res.send(400, 'No comment id provided!');
+    return res.status(400).send('No comment id provided!');
   }
   if (!req.params.supportid) {
-    return res.send(400, 'No support id provided!');
+    return res.status(400).send('No support id provided!');
   }
   var user = req.user;
   if (!user) {
-    return res.send(401, 'Please login!');
+    return res.status(401).send('Please login!');
   }
 
   Comment.findOne({_id:req.params.id})
     .exec(function (err, comment) {
-      if (err) return res.send(500, 'The server is having problems');
+      if (err) return res.status(500).send('The server is having problems');
 
       Support.findOne({_id: req.params.supportid})
         .exec(function (err, support) {
           if (err) {
-            return res.send(500, 'The server is having problems');
+            return res.status(500).send('The server is having problems');
           } else {
             if (comment.support && comment.support !== undefined && comment.support instanceof Array && comment.support.length > 0) {
               for (var i = 0; i < comment.support.length; i++) {
@@ -547,22 +571,22 @@ router.post('/comment/unsupport/:id/:supportid', function (req, res, next) {
                 }
               }
             } else {
-              return res.send(200, comment.meta.support);
+              return res.status(200).send({suppcount: comment.meta.support});
             }
             comment.meta.support = comment.meta.support ? comment.meta.support - 1 : 0;
             comment.markModified('meta');
             comment.markModified('support');
             comment.save(function (err) {
               if (err) {
-                return res.send(500, 'The server is having problems');
+                return res.status(500).send('The server is having problems');
               } else {
                 support.issupport = false;
                 support.cancelTime = new Date();
                 support.markModified('issupport');
                 support.markModified('cancelTime');
                 support.save(function (err) {
-                  if (err) return res.send(500, 'The server is having problems');
-                  else return res.send(200, comment.meta.support);
+                  if (err) return res.status(500).send('The server is having problems');
+                  else return res.status(200).send({suppcount: comment.meta.support});
                 });
               }
             });
@@ -574,16 +598,16 @@ router.post('/comment/unsupport/:id/:supportid', function (req, res, next) {
 router.post('/comment/against/:id', function (req, res, next) {
   
     if (!req.params.id) {
-      return res.send(400, 'No comment id provided!');
+      return res.status(400).send('No comment id provided!');
     }
     var user = req.user;
     if (!user) {
-      return res.send(401, 'Please login!');
+      return res.status(401).send('Please login!');
     }
   
     Comment.findOne({_id:req.params.id})
       .exec(function (err, comment) {
-        if (err) return res.send(500, 'The server is having problems');
+        if (err) return res.status(500).send('The server is having problems');
   
         var against = new Against({
           comment: comment._id,
@@ -593,15 +617,15 @@ router.post('/comment/against/:id', function (req, res, next) {
         });
         against.save(function (err, against) {
           if (err) {
-            return res.send(500, 'The server is having problems');
+            return res.status(500).send('The server is having problems');
           } else {
             comment.against.unshift({fromUser:user._id, againstId: against._id});
             comment.meta.against = comment.meta.against ? comment.meta.against + 1 : 1;
             comment.markModified('meta');
             comment.markModified('against');
             comment.save(function (err) {
-              if (err) return res.send(500, 'The server is having problems');
-              else return res.send(200, {againstCount: comment.meta.against, againstId: against._id});
+              if (err) return res.status(500).send('The server is having problems');
+              else return res.status(200).send({againstCount: comment.meta.against, againstId: against._id});
             });
           }
         });
@@ -610,24 +634,24 @@ router.post('/comment/against/:id', function (req, res, next) {
   
   router.post('/comment/unagainst/:id/:againstid', function (req, res, next) {
     if (!req.params.id) {
-      return res.send(400, 'No comment id provided!');
+      return res.status(400).send('No comment id provided!');
     }
     if (!req.params.againstid) {
-      return res.send(400, 'No against id provided!');
+      return res.status(400).send('No against id provided!');
     }
     var user = req.user;
     if (!user) {
-      return res.send(401, 'Please login!');
+      return res.status(401).send('Please login!');
     }
   
     Comment.findOne({_id:req.params.id})
       .exec(function (err, comment) {
-        if (err) return res.send(500, 'The server is having problems');
+        if (err) return res.status(500).send('The server is having problems');
   
         Against.findOne({_id: req.params.againstid})
           .exec(function (err, against) {
             if (err) {
-              return res.send(500, 'The server is having problems');
+              return res.status(500).send('The server is having problems');
             } else {
               if (comment.against && comment.against !== undefined && comment.against instanceof Array && comment.against.length > 0) {
                 for (var i = 0; i < comment.against.length; i++) {
@@ -636,22 +660,22 @@ router.post('/comment/against/:id', function (req, res, next) {
                   }
                 }
               } else {
-                return res.send(200, comment.meta.against);
+                return res.status(200).send({againcount: comment.meta.against});
               }
               comment.meta.against = comment.meta.against ? comment.meta.against - 1 : 0;
               comment.markModified('meta');
               comment.markModified('against');
               comment.save(function (err) {
                 if (err) {
-                  return res.send(500, 'The server is having problems');
+                  return res.status(500).send('The server is having problems');
                 } else {
                   against.isagainst = false;
                   against.cancelTime = new Date();
                   against.markModified('isagainst');
                   against.markModified('cancelTime');
                   against.save(function (err) {
-                    if (err) return res.send(500, 'The server is having problems');
-                    else return res.send(200, comment.meta.against);
+                    if (err) return res.status(500).send('The server is having problems');
+                    else return res.status(200).send({againcount: comment.meta.against});
                   });
                 }
               });

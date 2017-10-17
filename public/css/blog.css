@@ -669,3 +669,10 @@ a.nopost {
 a.editormd-preview-close-btn {
   display: none;
 }
+
+.comments-meta a span {
+  font-size: 13px;
+  /* background-color: #12b075;
+  font-weight: 500;
+  padding: 2px 5px; */
+}
