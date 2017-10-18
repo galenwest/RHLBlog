@@ -534,7 +534,7 @@ input#author, input#email {
   padding-top: 16px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   box-sizing: border-box;
   margin-bottom: 20px;
   border-radius: 3px;
@@ -675,4 +675,9 @@ a.editormd-preview-close-btn {
   /* background-color: #12b075;
   font-weight: 500;
   padding: 2px 5px; */
+}
+
+#my-editormd-view {
+  font: 16px/32px "Microsoft Yahei";
+  /* font-size: 18px; */
 }

@@ -16,7 +16,7 @@ block content
         i.fa.fa-thumb-tack
     h3.post-title
       =post.title
-    .post-abstract#my-editormd-view
+    .post-abstract#my-editormd-view(style="padding-left: 6px;padding-right: 6px;")
       textarea#append-text(style="display:none;")= post.content
     .post-meta
         a.post-category(href="/category/" + post.category.slug)= post.category.name
@@ -95,7 +95,7 @@ block content
                   i.fa.fa-thumbs-o-up(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                   span.comment-favourates(commentid=comment._id, supportid=supportId[index], issupport="false", supportcount=comment.meta.support)
                     = comment.meta.support
-            #replyloading(style="height:18px; margin-bottom: 0px;")
+            #replyloading(style="height:12px; margin-bottom: 0px;")
               .bodyspan(id=comment._id+"loading")
                 span.l-1
                 span.l-2
@@ -117,7 +117,7 @@ block content
         else
           #form-comment-edit(style="margin-bottom: 0px;")
             textarea(id="commentcontent" name="comment" style="display:none;") ### 请登录后撰写评论！
-        #submitloading(style="height:18px; margin-bottom: 0px;")
+        #submitloading(style="height:12px; margin-bottom: 0px;")
           .bodyspan
             span.l-1
             span.l-2
