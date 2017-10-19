@@ -33,7 +33,7 @@ module.exports = function(app, config, connection) {
     app.locals.pageName = req.path;
     app.locals.moment = moment;
     app.locals.truncate = mytruncate;
-    Category.find().sort('-created')
+    Category.find().sort({'postNum':-1})
       .exec(function (err, categories) {
         if (err) {
           return next(err);

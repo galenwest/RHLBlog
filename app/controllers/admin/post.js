@@ -75,7 +75,6 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
         });
       } else {
         User.findOne({name: username}, function (err, author) {
-          if (err) return next(err);
           var post = new Post({
             title: title,
             slug: slugTitle,
@@ -96,8 +95,21 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
               req.flash('error', '文章保存失败');
               res.redirect('/admin/posts/add');
             } else {
-              req.flash('info', '文章保存成功');
-              res.redirect('/admin/posts');
+              Category.findOne({_id: category}, function (err, category) {
+                if (err) return next(err);
+                if (post.published) {
+                  category.postNum = category.postNum ? category.postNum + 1 : 1;
+                  category.markModified('postNum');
+                  category.save(function (err, category) {
+                    if (err) return next(err);
+                    req.flash('info', '文章保存成功');
+                    res.redirect('/admin/posts');
+                  });
+                } else {
+                  req.flash('info', '文章保存成功');
+                  res.redirect('/admin/posts');
+                }
+              });
             }
           });
         });
@@ -344,7 +356,15 @@ router.get('/published/:id', auth.requireLogin, function (req, res, next) {
       post.save(function (err, published) {
         if (err) return next(err);
         if (published) {
-          req.flash('success', '文章发布成功');
+          Category.findOne({_id: post.category}, function (err, category) {
+            if (err) return next(err);
+            category.postNum = category.postNum ? category.postNum + 1 : 1;
+            category.markModified('postNum');
+            category.save(function (err) {
+              if (err) return next(err);
+              req.flash('success', '文章发布成功');
+            });
+          });
         } else {
           req.flash('failure', '文章发布失败');
         }
@@ -375,7 +395,15 @@ router.get('/unpublish/:id', auth.requireLogin, function (req, res, next) {
       post.save(function (err, published) {
         if (err) return next(err);
         if (published) {
-          req.flash('success', '文章取消发布成功');
+          Category.findOne({_id: post.category}, function (err, category) {
+            if (err) return next(err);
+            category.postNum = category.postNum ? category.postNum - 1 : 0;
+            category.markModified('postNum');
+            category.save(function (err) {
+              if (err) return next(err);
+              req.flash('success', '文章取消发布成功');
+            });
+          });
         } else {
           req.flash('failure', '文章取消发布失败');
         }
