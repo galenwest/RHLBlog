@@ -15,6 +15,7 @@ var PostSchema = new Schema({
   comments: [Schema.Types.Mixed],
   created: { type: Date },
   publishtime: { type: Date },
+  pageCount: {type: Number, default: 0},
 });
 
 mongoose.model('Post', PostSchema);
