@@ -115,19 +115,23 @@ router.get('/view/:id', function (req, res, next) {
                       }
                     }
                   }
-                  res.render('blog/view', {
-                    isCategory: true,
-                    post: post,
-                    isFavoUser: isFavoUser,
-                    metaId: metaId,
-                    isSupportUser: isSupportUser,
-                    supportId: supportId,
-                    isAgainstUser: isAgainstUser,
-                    againstId: againstId,
-                    ballot: ballot,
-                    nextPost: nextPost,
-                    prePost: prePost,
-                    comments: comments,
+                  post.pageCount = post.pageCount ? post.pageCount + 1 : 1;
+                  post.markModified('pageCount');
+                  post.save(function (err, post) {
+                    res.render('blog/view', {
+                      isCategory: true,
+                      post: post,
+                      isFavoUser: isFavoUser,
+                      metaId: metaId,
+                      isSupportUser: isSupportUser,
+                      supportId: supportId,
+                      isAgainstUser: isAgainstUser,
+                      againstId: againstId,
+                      ballot: ballot,
+                      nextPost: nextPost,
+                      prePost: prePost,
+                      comments: comments,
+                    });
                   });
                 });
             });
