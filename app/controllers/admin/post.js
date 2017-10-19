@@ -103,6 +103,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
 });
 
 router.get('/:page', auth.requireLogin, function (req, res, next) {
+  var user = req.user;
   var sortby = req.query.sortby ? req.query.sortby : 'created';
   var sortdir = req.query.sortdir ? req.query.sortdir : 'desc';
 
@@ -128,10 +129,13 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
   if (req.query.category) {
     conditions.category = req.query.category.trim();
   }
-  if (req.query.author) {
-    conditions.author = req.query.author.trim();
+  if (user.authority == 'user') {
+    conditions.author = user._id;
+  } else {
+    if (req.query.author) {
+      conditions.author = req.query.author.trim();
+    }
   }
-
   var pNum = parseInt(req.params.page, 10);
   var pageNum = Math.abs(pNum);
   if (isNaN(pNum) || pNum === 0) {
@@ -143,7 +147,45 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
     return;
   }
 
-  User.find({authority:'admin'}, function (err, authors) {
+  if (user.authority == 'admin') {
+    User.find({authority:'admin'}, function (err, authors) {
+      Post.count(conditions)
+        .exec(function (err, count) {
+          var pageSize = 12;
+          var pageCount = Math.ceil(count / pageSize);
+          var skip = (pageNum - 1) * pageSize;
+          if (pageCount !== 0 && pageNum > pageCount) {
+            pageNum = pageCount;
+            res.redirect('/admin/posts/' + pageNum);
+            return;
+          }
+          Post.find(conditions)
+            .sort(sortObj)
+            .limit(pageSize)
+            .skip(skip)
+            .populate('author')
+            .populate('category')
+            .exec(function (err, posts) {
+              if (err) return next(err);
+              // return res.json(posts);
+              res.render('admin/post/index', {
+                posts: posts,
+                pageNum: pageNum,
+                pageCount: pageCount,
+                sortdir: sortdir,
+                sortby: sortby,
+                authors: authors,
+                filter: {
+                  category: req.query.category || '',
+                  author: req.query.author || '',
+                  keyword: req.query.keyword || '',
+                },
+                pretty: true,
+              });
+            });
+        });
+    });
+  } else {
     Post.count(conditions)
       .exec(function (err, count) {
         var pageSize = 12;
@@ -169,7 +211,6 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
               pageCount: pageCount,
               sortdir: sortdir,
               sortby: sortby,
-              authors: authors,
               filter: {
                 category: req.query.category || '',
                 author: req.query.author || '',
@@ -179,7 +220,7 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
             });
           });
       });
-  });
+  }
 });
 
 router.get('/edit/:id', auth.requireLogin, function (req, res, next) {
@@ -258,19 +299,21 @@ router.post('/edit/:id', auth.requireLogin, function (req, res, next) {
     });
 });
 
-router.get('/delete/:id', auth.requireLogin, function (req, res, next) {
+router.post('/delete/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
-    return next(new Error('no post id provided'));
+    return res.status(400).send('No post id provided!');
   }
   Post.deleteOne({ _id: req.params.id })
     .exec(function (err, rowsRemoved) {
-      if (err) return next(err);
+      if (err) return res.status(500).send('The server is having problems');
       if (rowsRemoved) {
-        req.flash('success', '文章删除成功');
+        // req.flash('success', '文章删除成功');
+        return res.status(200).send({});
       } else {
-        req.flash('failure', '文章删除失败');
+        // req.flash('failure', '文章删除失败');
+        return res.status(404).send({});
       }
-      res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author + "&keyword=" + req.query.keyword);
+      // res.redirect('/admin/posts/' + req.query.page + '?sortby=' + req.query.sortby + '&sortdir=' + req.query.sortdir + '&category=' + req.query.category + '&author=' + req.query.author + "&keyword=" + req.query.keyword);
     });
 });
 

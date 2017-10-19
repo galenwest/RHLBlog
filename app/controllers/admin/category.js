@@ -12,8 +12,9 @@ module.exports = function (app) {
 };
 
 router.get('/', auth.requireLogin, function (req, res, next) {
+  var user = req.user;
   res.render('admin/category/index', {
-    pretty: true,
+    user: user,
   });
 });
 
@@ -55,6 +56,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
         var category = new Category({
           name: name,
           slug: slugName,
+          author: req.user,
           created: new Date(),
         });
         category.save(function (err, category) {
@@ -108,26 +110,29 @@ router.post('/edit/:id', auth.requireLogin, getCateforyById, function (req, res,
   });
 });
 
-router.get('/delete/:id', auth.requireLogin, function (req, res, next) {
+router.post('/delete/:id', auth.requireLogin, function (req, res, next) {
   if (!req.params.id) {
-    return next(new Error('no category id provided'));
+    return res.status(400).send('No category id provided!');
   }
   Post.find({category: req.params.id})
     .exec(function (err, posts) {
-      if (err) return next(err);
+      if (err) return res.status(500).send('The server is having problems');
       if (posts.length > 0) {
-        req.flash('error', '该分类下存在文章，暂不能删除');
-        res.redirect('/admin/categories/');
+        return res.status(403).send({});
+        // req.flash('error', '该分类下存在文章，暂不能删除');
+        // res.redirect('/admin/categories/');
       } else {
         Category.deleteOne({ _id: req.params.id })
         .exec(function (err, rowsRemoved) {
-          if (err) return next(err);
+          if (err) return res.status(500).send('The server is having problems');
           if (rowsRemoved) {
-            req.flash('success', '删除成功');
+            // req.flash('success', '删除成功');
+            return res.status(200).send({});
           } else {
-            req.flash('failure', '删除失败');
+            // req.flash('failure', '删除失败');
+            return res.status(404).send({});
           }
-          res.redirect('/admin/categories/');
+          // res.redirect('/admin/categories/');
         });
       }
     });

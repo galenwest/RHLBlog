@@ -34,6 +34,7 @@
     "pinyin": "^2.8.3",
     "serve-favicon": "^2.3.0",
     "slug": "^0.9.1",
+    "sync-request": "^4.1.0",
     "truncate": "^2.0.0"
   },
   "devDependencies": {

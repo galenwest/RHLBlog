@@ -8,7 +8,7 @@ module.exports = function (app) {
 
 module.exports.requireLogin = function (req, res, next) {
   var user = req.user;
-  if (user && user.authority == 'admin') {
+  if (user) {
     next();
   } else {
     req.flash('error', '请登录用户后访问')
@@ -22,12 +22,11 @@ router.get('/', function (req, res, next) {
 
 router.get('/login', function (req, res, next) {
   var user = req.user;
-  if (user && user.authority == 'admin') {
+  // if (user && user.authority == 'admin') {
+  if (user) {
     res.redirect('/admin/posts');
   } else {
-    res.render('admin/index', {
-      pretty: true
-    });
+    res.render('blog/login');
   }
 });
 
@@ -41,5 +40,6 @@ router.post('/login', passport.authenticate('admin.login', {
 
 router.get('/logout', function (req, res, next) {
   req.logout();
-  res.redirect('/admin/login');
+  // res.redirect('/admin/login');
+  res.redirect('/login');
 });

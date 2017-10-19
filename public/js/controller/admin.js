@@ -45,7 +45,21 @@ $(document).ready(function () {
           },
           yesText: '删除',
           yesFn :  function() {
-            window.location.replace(window.location.origin + "/admin/posts/delete/" + postId + uri);
+            $.ajax({
+              type: 'POST',
+              url: '/admin/posts/delete/'+postId,
+              success: function (result) {
+                window.location.reload();
+              },
+              error: function (arg) {
+                if (arg.status == 404) {
+                  sweetAlert("删除失败", "或许已经删除！");
+                }else {
+                  swal("服务器异常，请重试!", JSON.stringify(arg));
+                }
+              }
+            });
+            // window.location.replace(window.location.origin + "/admin/posts/delete/" + postId + uri);
             return true;
           },
           noFn : true
@@ -59,7 +73,22 @@ $(document).ready(function () {
           drag: false,
           yesText: '删除',
           yesFn :  function() {
-            window.location.replace(window.location.origin + "/admin/posts/delete/" + postId + uri);
+            $.ajax({
+              type: 'POST',
+              url: '/admin/posts/delete/'+postId,
+              success: function (result) {
+                window.location.reload();
+              },
+              error: function (arg) {
+                console.log(arg);
+                if (arg.status == 404) {
+                  sweetAlert("删除失败", "或许已经删除！");
+                }else {
+                  swal("服务器异常，请重试!", JSON.stringify(arg));
+                }
+              }
+            });
+            // window.location.replace(window.location.origin + "/admin/posts/delete/" + postId + uri);
             return true;
           },
           noFn : true
@@ -70,7 +99,7 @@ $(document).ready(function () {
 
   $('a.deleteCategory').on('click', function () {
     var categoryId = event.target.getAttribute('categoryid');
-    var uri = event.target.getAttribute('url');
+    // var uri = event.target.getAttribute('url');
     easyDialog.open({
       container : {
         header : '是否删除此分类?',
@@ -78,7 +107,23 @@ $(document).ready(function () {
         drag: false,
         yesText: '删除',
         yesFn :  function() {
-          window.location.replace(window.location.origin + uri);
+          $.ajax({
+            type: 'POST',
+            url: '/admin/categories//delete/'+categoryId,
+            success: function (result) {
+              window.location.reload();
+              // window.location.replace(window.location.origin + '/admin/categories/');
+            },
+            error: function (arg) {
+              if (arg.status == 404) {
+                sweetAlert("删除失败", "或许已经删除！");
+              } else if (arg.status == 403) {
+                sweetAlert("删除失败", "该分类下存在文章，暂不能删除！");
+              } else {
+                swal("服务器异常，请重试!", JSON.stringify(arg));
+              }
+            }
+          });
           return true;
         },
         noFn : true

@@ -41,5 +41,8 @@ $(function () {
     //   //this.height(480);
     //   //this.resize("100%", 640);
     // }
+    toolbarIcons : function() {
+      return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link", "code", "code-block", "table",  "||", "search", "watch", "preview", "|", "help"]
+    },
   });
 });

@@ -101,7 +101,11 @@ router.post('/login', passport.authenticate('user.login', {
   }),
   function (req, res, next) {
     var url = req.body.url;
-    res.redirect(url);
+    if (url) {
+      res.redirect(url);
+    } else {
+      res.redirect('/');
+    }
   });
 
 router.get('/register', function (req, res, next) {

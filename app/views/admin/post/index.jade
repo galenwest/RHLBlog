@@ -10,12 +10,13 @@ block content
         option(value="", selected=(filter.category === "")) - 选择分类 -
         each category in categories
           option(value=category._id, selected=(category._id.toString() === filter.category))= category.name
-    .form-group
-      label 作者
-      select#js-author.form-control(name="author")
-        option(value="", selected=(filter.author === "")) - 选择作者 -
-        each author in authors
-          option(value=author._id, selected=(author._id.toString() === filter.author))= author.name
+    if authors
+      .form-group
+        label 作者
+        select#js-author.form-control(name="author")
+          option(value="", selected=(filter.author === "")) - 选择作者 -
+          each author in authors
+            option(value=author._id, selected=(author._id.toString() === filter.author))= author.name
     .form-group
       input#js-keyword.form-control(name="keyword", type="text", placeholder="关键词", value=filter.keyword)
     button#js-filter-submit.btn.btn-info
@@ -130,7 +131,9 @@ block content
           a(style="margin-right:8px;", href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
           a(style="margin-right:8px;", href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
           a.deletePost(href="javascript:void(0)", postid=post._id, ispublish=post.published+"", url="?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-danger") 删除
-
+  if posts.length == 0
+    h2(style="padding-top: 10px;") 没有文章，
+      a(href="/admin/posts/add") 添加文章
   if pageCount > 1
     nav(aria-label="Page navigation")
       ul.pagination

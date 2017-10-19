@@ -7,10 +7,10 @@ var md5 = require('md5');
 
 var UserSchema = new Schema({
   name: { type: String },
-  email: { type: String, required: true },
-  nick: { type: String, required: true },
-  password: { type: String, required: true },
-  authority: { type: String, required: true },
+  email: { type: String },
+  nick: { type: String },
+  password: { type: String },
+  authority: { type: String },
   created: { type: Date },
 });
 
