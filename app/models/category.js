@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var CategorySchema = new Schema({
   name: { type: String, required: true },
   slug: { type: String, required: true },
+  postNum: {type: Number, default: 0},
   created: { type: Date },
 });
 

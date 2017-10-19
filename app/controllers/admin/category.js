@@ -55,6 +55,7 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
         var category = new Category({
           name: name,
           slug: slugName,
+          postNum: 0,
           created: new Date(),
         });
         category.save(function (err, category) {
