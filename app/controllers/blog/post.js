@@ -251,6 +251,8 @@ router.get('/view/:id', function (req, res, next) {
                   }
                   post.pageCount = post.pageCount ? post.pageCount + 1 : 1;
                   post.markModified('pageCount');
+                  post.ratings = post.ratings ? post.ratings + 1 : 1;
+                  post.markModified('ratings');
                   post.save(function (err, post) {
                     if (err) return next(err);
                     // return res.json(post);
@@ -310,6 +312,10 @@ router.post('/comment/:slug', function (req, res, next) {
           req.flash('error', '评论发布失败');
           return res.redirect('/posts/view/' + post.slug + '#commentAnchorPoint');
         } else {
+          post.ratings = post.ratings ? post.ratings + 30 : 30;
+          post.markModified('ratings');
+          post.meta.comments = post.meta.comments ? post.meta.comments + 1 : 1;
+          post.markModified('meta');
           var comment = comment._id;
           post.comments.unshift(comment);
           post.markModified('comments');
@@ -429,7 +435,8 @@ router.post('/favorite/:id', function (req, res, next) {
         if (err) {
           return res.status(500).send('The server is having problems');
         } else {
-          
+          post.ratings = post.ratings ? post.ratings + 20 : 20;
+          post.markModified('ratings');
           var favorite = {fromUser:user._id, metaId: meta._id};
           post.meta.favorite = post.meta.favorite ? post.meta.favorite + 1 : 1;
           post.favorite.unshift(favorite);
@@ -486,7 +493,8 @@ router.post('/unfavorite/:id/:metaId', function (req, res, next) {
             } else {
               return res.status(200).send({favocount: post.meta.favorite});
             }
-
+            post.ratings = post.ratings ? post.ratings - 20 : 0;
+            post.markModified('ratings');
             post.meta.favorite = post.meta.favorite ? post.meta.favorite - 1 : 0;
             post.markModified('meta');
             post.markModified('favorite');

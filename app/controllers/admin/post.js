@@ -82,11 +82,14 @@ router.post('/add', auth.requireLogin, function (req, res, next) {
             category: category,
             content: content,
             author: author,
-            meta: { favorite: 0 },
+            meta: { favorite: 0, comments: 0 },
             created: new Date(),
             comments: [],
+            favorite: [],
             published: published,
             publishtime: new Date(),
+            pageCount: 0,
+            ratings: 0,
           });
           post.save(function (err, post) {
             if (err) {
