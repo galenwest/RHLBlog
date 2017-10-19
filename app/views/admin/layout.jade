@@ -20,43 +20,26 @@ block main
       a.navbar-my-brand(href="/") Lenovo技术博客
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.mr-auto
-        li.nav-item.active
+        li.nav-item(class={active: pageName === "/admin/posts/"+pageNum})
           a(href="/admin") 首页
-        li.nav-item
-          a(href="#") 评论
-        li.nav-item
-          a(href="#") 设置
+        li.nav-item(class={active: pageName === "/admin/comments"})
+          a(href="/admin/comments") 评论
+        //- li.nav-item
+        //-   a(href="#") 设置
       .navbar-form.navbar-right
       ul.nav.navbar-nav.navbar-right
         if user
           li
             a= user.nick
-        li
-          a(href="")
-            i.fa.fa-question &nbsp;帮助
+        //- li
+        //-   a(href="")
+        //-     i.fa.fa-question &nbsp;帮助
         li
           a(href="/admin/logout")
             i.fa.fa-lock &nbsp;注销
   .container-fluid
     .row
       .col-sm-3.col-md-2.sidebar
-        ul.nav.nav-sidebar
-          li(class={active: pageName === "/admin/posts/"+pageNum})
-            a(href="/admin/posts")
-              i.fa.fa-files-o &nbsp;文章列表
-          li(class={active: pageName === "/admin/posts/add"})
-            a(href="/admin/posts/add")
-              i.fa.fa-file-o &nbsp;添加文章
-          li(class={active: pageName === "/admin/categories"})
-            a(href="/admin/categories")
-              i.fa.fa-th-list &nbsp;分类列表
-          li(class={active: pageName === "/admin/categories/add"})
-            a(href="/admin/categories/add")
-              i.fa.fa-plus &nbsp;添加分类
-        ul.nav.nav-sidebar
-          li(class={active: pageName === "/admin/users/password"})
-            a(href="/admin/users/password")
-              i.fa.fa-unlock-alt &nbsp;修改密码
-
+        block sidebar
       .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main(style="padding-left:26px;padding-right:26px;")
         block content

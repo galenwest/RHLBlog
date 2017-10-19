@@ -1,0 +1,16 @@
+extends ./layout
+
+block sidebar
+  ul.nav.nav-sidebar
+    li(class={active: pageName === "/admin/comments"})
+      a(href="/admin/comments")
+        i.fa.fa-files-o &nbsp;文章评论
+    li(class={active: pageName === "#"})
+      a(href="#")
+        i.fa.fa-file-o &nbsp;我的评论
+    li(class={active: pageName === "#"})
+      a(href="#")
+        i.fa.fa-th-list &nbsp;我的跟评
+    li(class={active: pageName === "#"})
+      a(href="#")
+        i.fa.fa-plus &nbsp;回复我的

@@ -59,13 +59,13 @@ h6, .h6 {
 }
 .blog-nav-item:focus,
 .blog-nav-item:hover {
-  color: #12b075;
+  color: #05a6ff;
   text-decoration: none;
 }
 
 /* Active state gets a caret at the bottom */
 .blog-nav .active {
-  color: #12b075;
+  color: #05a6ff;
   font-weight: 600
 }
 .blog-nav .active:after {
@@ -160,7 +160,7 @@ h6, .h6 {
 }
 .cat-item:focus,
 .cat-item:hover {
-  color: #12b075;
+  color: #05a6ff;
   text-decoration: none;
 }
 
@@ -232,14 +232,14 @@ h6, .h6 {
 }
 
 .post-author {
-  color: #12b075;
+  color: #05a6ff;
 }
 
 .post-icons {
   position: relative;
   line-height: 36px;
   width: 26px;
-  background: #12b075;
+  background: #05a6ff;
   color: #fff;
   text-align: center;
   font-size: 14px;
@@ -296,7 +296,7 @@ h6, .h6 {
 }
 
 .post-title a:hover {
-  color: #12b075;
+  color: #05a6ff;
 }
 
 .post-abstract {
@@ -327,7 +327,7 @@ h6, .h6 {
 }
 
 .comments-meta a:hover {
-  color: #12b075;
+  color: #05a6ff;
 }
 
 .post-meta a {
@@ -339,7 +339,7 @@ h6, .h6 {
 }
 
 .post-meta a:hover {
-  color: #12b075;
+  color: #05a6ff;
 }
 
 .post-category {
@@ -350,13 +350,13 @@ h6, .h6 {
 }
 .post-category:focus,
 .post-category:hover {
-  color: #12b075;
+  color: #05a6ff;
   text-decoration: none;
 }
 
 .prenex:focus,
 .prenex:hover {
-  color: #12b075;
+  color: #05a6ff;
   text-decoration: none;
 }
 
@@ -392,7 +392,7 @@ h6, .h6 {
 }
 
 .com-like i:before {
-  color: #12b075;
+  color: #05a6ff;
 }
 
 a.com-unlike:hover {
@@ -431,7 +431,7 @@ a.com-unlike:hover {
 .mts-like i:before {
   top: 2px;
   position: relative;
-  color: #12b075;
+  color: #05a6ff;
 }
 
 .post-favourates {
@@ -507,7 +507,7 @@ input#author, input#email {
 #commentform input#submit:focus,
 #commentform input#submit:hover {
   color: #ffffff;
-  background-color: #12b075;
+  background-color: #05a6ff;
 }
 #commentform input#submit {
   line-height: 10px;
@@ -517,7 +517,7 @@ input#author, input#email {
   padding: 13px 21px;
   border: 1px solid;
   border-radius: 20px;
-  color: #12b075;
+  color: #05a6ff;
   background-color: transparent;
   transition: all 0.2s linear;
   margin-bottom: 10px;
@@ -586,7 +586,7 @@ input#author, input#email {
 }
 #sbutton:focus,
 #sbutton:hover {
-  color: #12b075;
+  color: #05a6ff;
 }
 #searchform {
   padding: 0;
@@ -660,7 +660,7 @@ input#author, input#email {
 }
 
 a.haspost {
-  color: #12b075;
+  color: #05a6ff;
 }
 a.nopost {
   color: #8f8f8f;
@@ -672,7 +672,7 @@ a.editormd-preview-close-btn {
 
 .comments-meta a span {
   font-size: 13px;
-  /* background-color: #12b075;
+  /* background-color: #05a6ff;
   font-weight: 500;
   padding: 2px 5px; */
 }

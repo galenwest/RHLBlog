@@ -13,7 +13,7 @@ block main
   block header
     .blogtitle(style="background:url(/img/loginbg.png);")
       .container(style="padding-top:10px;padding-bottom:10px")
-        img(src="/img/logorhl.png", alt="饶厚林的博客", style="margin-left:10px;")
+        img(src="/img/lenovo.png", alt="联想技术博客", style="margin-left:10px;")
     .blog-masthead
       .container
         nav.blog-nav
@@ -68,14 +68,12 @@ block main
               li
                 a.cat-item(href="/category/" + category.slug)=category.name
         .sidebar-module.sidebar-module-inset
-          h3.widget-title 标签
+          h3.widget-title 友情链接
           ol.list-unstyled
             li
-              a.cat-item(href="#") GitHub
+              a.cat-item(href="http://mobility.lenovo.com", target="_blank") MADP移动开发平台
             li
-              a.cat-item(href="#") Twitter
-            li
-              a.cat-item(href="#") Facebook
+              a.cat-item(href="http://microservice.lenovo.com", target="_blank") 联想微服务开发平台
 
   block footer
     .blog-footer

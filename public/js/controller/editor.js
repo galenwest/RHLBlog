@@ -2,7 +2,7 @@ $(function () {
   var myEditormd;
   myEditormd = editormd("my-editormd", {
     width: "100%",
-    height: 740,
+    height: 600,
     path: '/components/editor.md/lib/',
     // theme: "dark",
     // previewTheme: "dark",
