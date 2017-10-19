@@ -58,14 +58,9 @@ block main
         .sidebar-module.sidebar-module-inset
           h3.widget-title 热门文章
           ol.list-unstyled
-            li
-              a.cat-item(href="#") 测试啦啦啦
-            li
-              a.cat-item(href="#") 测试啦啦啦
-            li
-              a.cat-item(href="#") 测试啦啦啦
-            li
-              a.cat-item(href="#") 测试啦啦啦
+            each popularpost in popularposts
+              li
+                a.cat-item(href="/posts/view/" + popularpost.slug)=popularpost.title
         .sidebar-module.sidebar-module-inset
           h3.widget-title 文章分类
           ul

@@ -117,6 +117,8 @@ router.get('/view/:id', function (req, res, next) {
                   }
                   post.pageCount = post.pageCount ? post.pageCount + 1 : 1;
                   post.markModified('pageCount');
+                  post.ratings = post.ratings ? post.ratings + 1 : 1;
+                  post.markModified('ratings');
                   post.save(function (err, post) {
                     res.render('blog/view', {
                       isCategory: true,

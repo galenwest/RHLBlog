@@ -19,6 +19,7 @@ var MongoStore = require('connect-mongo')(session);
 
 var User = mongoose.model('User');
 var Category = mongoose.model('Category');
+var Post = mongoose.model('Post');
 
 module.exports = function(app, config, connection) {
   var env = process.env.NODE_ENV || 'development';
@@ -38,7 +39,14 @@ module.exports = function(app, config, connection) {
           return next(err);
         }
         app.locals.categories = categories;
-        next();
+        Post.find({'published':true}).sort({'ratings':-1,'publishtime':-1}).limit(6)
+        .exec(function (err, posts) {
+          if (err) {
+            return next(err);
+          }
+          app.locals.popularposts = posts;
+          next();
+        })
       })
   });
 

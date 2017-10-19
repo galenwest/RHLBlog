@@ -16,6 +16,7 @@ var PostSchema = new Schema({
   created: { type: Date },
   publishtime: { type: Date },
   pageCount: {type: Number, default: 0},
+  ratings: {type: Number, default: 0},
 });
 
 mongoose.model('Post', PostSchema);
