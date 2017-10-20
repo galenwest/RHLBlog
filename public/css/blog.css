@@ -474,12 +474,62 @@ span.comment-favourates {
   margin-bottom: 10px;
 }
 
+#contactform p {
+  margin-bottom: 19px;
+  /* float: left; */
+  width: 100%;
+  clear: both;
+}
+
+#contactform textarea {
+  width: 100%;
+  padding: 20px;
+  line-height: 25px;
+  font-family: inherit;
+  box-sizing: border-box;
+  font-size: inherit;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  border: 1px solid rgba(0,0,0,.09);
+}
+#contactform input#submit:focus,
+#contactform input#submit:hover {
+  color: #ffffff;
+  background-color: #12b075;
+}
+#contactform input#submit {
+  line-height: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 21px;
+  border: 1px solid;
+  border-radius: 20px;
+  color: #12b075;
+  background-color: transparent;
+  transition: all 0.2s linear;
+  margin-bottom: 10px;
+}
+.single_post {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  border: 1px solid rgba(0,0,0,.09);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 3px;
+  font-size: 20px;
+}
+
+
 #commentform p {
   margin-bottom: 19px;
   float: left;
   width: 100%;
   clear: both;
 }
+
 input#author, input#email {
   width: 340px;
   max-width: 100%;

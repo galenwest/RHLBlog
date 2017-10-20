@@ -3,4 +3,14 @@ extends layout
 block content
   h1.postsby
     span 联系我们
+    .single_post
+      form#contactform(action="/posts/comment/", method="post", enctype="application/x-www-form-urlencoded")
+        p.comment-form-author
+          input(id="author" type="text" name="author" placeholder="昵称" )
+        p.comment-form-email
+          input(id="email" type="text" name="email" placeholder="邮箱" )
+        p.comment-form-comment
+          textarea(id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="发表您的信息...")
+        p.form-submit
+          input(id="submit" type="submit" value="发布")
  
