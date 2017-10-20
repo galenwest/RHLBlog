@@ -495,7 +495,7 @@ span.comment-favourates {
 #contactform input#submit:focus,
 #contactform input#submit:hover {
   color: #ffffff;
-  background-color: #12b075;
+  background-color: #45a7e6;
 }
 #contactform input#submit {
   line-height: 10px;
@@ -505,7 +505,7 @@ span.comment-favourates {
   padding: 13px 21px;
   border: 1px solid;
   border-radius: 20px;
-  color: #12b075;
+  color: #45a7e6;
   background-color: transparent;
   transition: all 0.2s linear;
   margin-bottom: 10px;

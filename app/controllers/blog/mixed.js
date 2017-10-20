@@ -3,6 +3,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Post = mongoose.model('Post'),
   User = mongoose.model('User'),
+  Contact = mongoose.model('Contact'),
   passport = require('passport');
 
 module.exports = function (app) {
@@ -77,9 +78,52 @@ router.get('/about', function (req, res, next) {
 });
 
 router.get('/contact', function (req, res, next) {
+  var vmuser = {
+    name: req.query.name,
+    email: req.query.email,
+    content: req.query.content
+  }
   res.render('blog/contact', {
     title: 'Contact Me',
-    pretty: true
+    user: req.user,
+    vmuser: vmuser,
+  });
+});
+
+router.post('/contact', function (req, res, next) {
+  var vmuser = {
+    name: req.body.author,
+    email: req.body.email,
+    content: req.body.content
+  }
+
+  if (!vmuser.name) {
+    req.flash('error', '为了解决您的问题，请告诉我们您的名字');
+    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+  }
+  if (!vmuser.email) {
+    req.flash('error', '为了解决您的问题，请告诉我们您的邮箱');
+    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+  }
+  if (!vmuser.content) {
+    req.flash('error', '为了解决您的问题，请填写您要说的话');
+    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+  }
+  var emailreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+  if (!emailreg.test(vmuser.email)) {
+    req.flash('error', '为了解决您的问题，请您输入正确的邮箱');
+    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+  }
+
+  var contact = new Contact();
+  contact.name = vmuser.name;
+  contact.email = vmuser.email;
+  contact.content = vmuser.content;
+  contact.created = new Date();
+  contact.save(function (err) {
+    if (err) return next(err);
+    req.flash('success', '感谢您提供反馈');
+    res.redirect('/contact');
   });
 });
 
