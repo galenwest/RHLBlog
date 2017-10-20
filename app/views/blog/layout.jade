@@ -67,6 +67,9 @@ block main
             each category in categories
               li
                 a.cat-item(href="/category/" + category.slug)=category.name
+            //- if (categories.length > 6)
+            //-   li
+            //-     a.cat-item(href="") 更多...
         .sidebar-module.sidebar-module-inset
           h3.widget-title 友情链接
           ol.list-unstyled
