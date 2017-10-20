@@ -8,8 +8,8 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    port: 80,
+    db: 'mongodb://10.122.12.243/nodeblog'
   },
 
   test: {
@@ -17,8 +17,8 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    port: 80,
+    db: 'mongodb://10.122.12.243/nodeblog'
   },
 
   production: {
@@ -26,8 +26,8 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    port: 80,
+    db: 'mongodb://10.122.12.243/nodeblog'
   }
 };
 
