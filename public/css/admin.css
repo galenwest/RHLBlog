@@ -180,3 +180,46 @@ a.navbar-my-brand {
 a.editormd-preview-close-btn {
   display: none;
 }
+
+
+#contactform p {
+  margin-bottom: 19px;
+  /* float: left; */
+  width: 100%;
+  clear: both;
+}
+
+#contactform input#submit:focus,
+#contactform input#submit:hover {
+  color: #ffffff;
+  background-color: #45a7e6;
+}
+#contactform input#submit {
+  line-height: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 21px;
+  margin-top: 18px;
+  border: 1px solid;
+  border-radius: 20px;
+  color: #45a7e6;
+  background-color: transparent;
+  transition: all 0.2s linear;
+  margin-bottom: 10px;
+}
+input.changepwd {
+  width: 340px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  height: 45px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  border: 1px solid rgba(43, 15, 15, 0.09);
+}
+
+input#password:focus, input#newpwd:focus,
+input#newpwd2:focus {
+  border-color: #45a7e6;
+}

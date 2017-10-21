@@ -1,0 +1,42 @@
+extends ../main
+
+block content
+  h2.page-header 联系我们
+  != messages()
+  
+  table.table.table-bordered
+    thead
+      tr
+        th(style="text-align:center;width:80px") 名称
+        th(style="text-align:center;width:150px") 邮箱
+        th(style="text-align:center;width:112px") 添加时间
+        th 反馈
+    tbody
+    each contact in contacts
+      tr
+        td(style="vertical-align:middle;")= contact.name
+        td(style="vertical-align:middle;")= contact.email
+        td(style="vertical-align:middle;")= moment(contact.created).format('YY-MM-DD HH:mm')
+        td(style="vertical-align:middle;")= contact.content
+        //- td(style="vertical-align:middle;")
+          if (!post.published)
+            a(style="margin-right:8px;",href="/admin/posts/published/" + post._id + "?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-primary") 发布
+          else
+            button(style="margin-right:8px;",class="btn btn-sm btn-default", disabled="disabled") 发布
+          a(style="margin-right:8px;", href="/posts/view/" + post._id + "?published=" + post.published, class="btn btn-sm btn-success", target="_blank") 查看
+          a(style="margin-right:8px;", href="/admin/posts/edit/" + post._id, class="btn btn-sm btn-info") 编辑
+          a.deletePost(href="javascript:void(0)", postid=post._id, ispublish=post.published+"", url="?page=" + pageNum + "&sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword, class="btn btn-sm btn-danger") 删除
+  if contacts.length == 0
+    h2(style="padding-top: 10px;") 暂无反馈
+  if pageCount > 1
+    nav(aria-label="Page navigation")
+      ul.pagination
+        - var currentPage = 1;
+        while currentPage <= pageCount
+          if (currentPage === pageNum)
+            li.active
+              span
+                span= currentPage++
+          else
+            li
+              a(href="/user/contact/" + currentPage)= currentPage++
