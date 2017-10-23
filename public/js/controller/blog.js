@@ -227,7 +227,7 @@ $(document).ready(function () {
           $("#"+commentId).attr("unfolded", "true");
           $("#"+commentId+"replytext").text("收起");
           result.forEach(function(element) {
-            domReplyComments.prepend('<div replyid='+element.replyid+' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">'+element.nick+'</span><span class="comm-created">'+element.created+'</span></div><div id='+element.replyid+' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">'+element.content+'</div></div>');
+            domReplyComments.prepend('<div replyid='+element.replyid+' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">'+element.nick+'</span><span class="comm-created">'+element.created+'</span></div><div id='+element.replyid+' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">'+element.content+'</div><div class="reply-reply"><a href="javascript:void(0)">回复</a></div></div>');
           }, this);
         },
         error: function (arg) {

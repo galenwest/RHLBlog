@@ -7,6 +7,7 @@ var express = require('express'),
   Support = mongoose.model('Support'),
   Against = mongoose.model('Against'),
   CommentReply = mongoose.model('CommentReply'),
+  CommentReplyPC = mongoose.model('CommentReplyPC'),
   Comment = mongoose.model('Comment');
 var moment = require('moment');
 
@@ -369,7 +370,17 @@ router.post('/comment/reply/:postid/:commentid', function (req, res, next) {
             if (err) {
               return res.status(500).send('The server is having problems');
             } else {
-              return res.status(200).send({replyid: reply._id, nick: reply.fromUser.nick, created: moment(reply.created).format('YYYY-MM-DD HH:mm')});
+              var commentReplyPC = new CommentReplyPC({
+                parent: comment,
+                child: reply,
+              });
+              commentReplyPC.save(function (err) {
+                if (err) {
+                  return res.status(500).send('The server is having problems');
+                } else {
+                  return res.status(200).send({replyid: reply._id, nick: reply.fromUser.nick, created: moment(reply.created).format('YYYY-MM-DD HH:mm')});
+                }
+              });
             }
           });
         }
