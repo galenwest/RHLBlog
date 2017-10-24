@@ -34,6 +34,7 @@ router.get('/view/:id', function (req, res, next) {
     .populate('category')
     .populate('author')
     .exec(function (err, post) {
+      if (!post) return next(err);
       // return res.json(post);
       if (err) return next(err);
       Post.findOne({ _id: { '$gt': post._id }, published: true, category: post.category })

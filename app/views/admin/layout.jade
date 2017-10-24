@@ -20,7 +20,7 @@ block main
       a.navbar-my-brand(href="/") Lenovo技术博客
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.mr-auto
-        li.nav-item(class={active: pageName === "/admin/posts/"+pageNum})
+        li.nav-item(class={active: (pageName === "/admin/posts/"+pageNum || pageName === "/admin/posts/add" || pageName === "/admin/categories" || pageName === "/admin/categories/add")})
           a(href="/admin") 首页
         li.nav-item(class={active: pageName === "/admin/comments"})
           a(href="/admin/comments") 评论
@@ -30,7 +30,20 @@ block main
       ul.nav.navbar-nav.navbar-right
         if user
           li
-            a= user.nick
+            if (user.authority == "admin")
+              a.dropdown-toggle(href="javascript:void(0)" type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href="/user/contact") 联系我们
+                li.divider(role="separator")
+                li
+                  a(href="/admin/password") 修改密码
+                //- li.divider(role="separator")
+                //- li
+                //-   a#logoutuser(href="javascript:void(0)") 注销
+            else
+              a= user.nick
         //- li
         //-   a(href="")
         //-     i.fa.fa-question &nbsp;帮助

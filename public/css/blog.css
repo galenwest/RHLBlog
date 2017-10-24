@@ -540,6 +540,11 @@ input#author, input#email {
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
   border: 1px solid rgba(43, 15, 15, 0.09);
 }
+input#author:focus, input#email:focus,
+textarea#comment:focus {
+  border-color: #45a7e6;
+}
+
 #commentform textarea {
   width: 100%;
   padding: 20px;

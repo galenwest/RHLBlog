@@ -144,11 +144,16 @@ router.post('/login', passport.authenticate('user.login', {
     failureFlash: true
   }),
   function (req, res, next) {
-    var url = req.body.url;
-    if (url) {
-      res.redirect(url);
+    var user = req.user;
+    if (user.authority == 'admin') {
+      res.redirect('/admin');
     } else {
-      res.redirect('/');
+      var url = req.body.url;
+      if (url) {
+        res.redirect(url);
+      } else {
+        res.redirect('/');
+      }
     }
   });
 
