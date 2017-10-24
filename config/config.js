@@ -8,7 +8,7 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: 80,
+    port: 3000,
     db: 'mongodb://10.122.12.243/nodeblog'
   },
 
@@ -17,7 +17,7 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: 80,
+    port: 3000,
     db: 'mongodb://10.122.12.243/nodeblog'
   },
 
@@ -26,7 +26,7 @@ var config = {
     app: {
       name: 'blogone'
     },
-    port: 80,
+    port: 3000,
     db: 'mongodb://10.122.12.243/nodeblog'
   }
 };
