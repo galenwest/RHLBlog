@@ -96,23 +96,22 @@ router.post('/contact', function (req, res, next) {
     email: req.body.email,
     content: req.body.content
   }
-
   if (!vmuser.name) {
     req.flash('error', '为了解决您的问题，请告诉我们您的名字');
-    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+    return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
   }
   if (!vmuser.email) {
     req.flash('error', '为了解决您的问题，请告诉我们您的邮箱');
-    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+    return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
   }
   if (!vmuser.content) {
     req.flash('error', '为了解决您的问题，请填写您要说的话');
-    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+    return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
   }
-  var emailreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+  var emailreg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
   if (!emailreg.test(vmuser.email)) {
     req.flash('error', '为了解决您的问题，请您输入正确的邮箱');
-    res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
+    return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
   }
 
   var contact = new Contact();
