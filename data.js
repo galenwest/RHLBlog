@@ -21,7 +21,7 @@ var Post = mongoose.model('Post');
 var User = mongoose.model('User');
 var Category = mongoose.model('Category');
 
-User.find({'authority':'admin'}).exec(function (err, users) {
+User.find({'authority':'user'}).exec(function (err, users) {
   if (err || users.length==0) {
     return console.log('cannot find users');
   }
@@ -39,11 +39,14 @@ User.find({'authority':'admin'}).exec(function (err, users) {
             content: loremipsum({ count: 30, units: 'sentence' }),
             category: category,
             author: user,
+            favorite: [],
             published: true,
             meta: { favorite: 0 },
             comments: [],
             created: new Date,
             publishtime: new Date,
+            pageCount: 0,
+            ratings: 0,
           });
   
           post.save(function (err, post) {

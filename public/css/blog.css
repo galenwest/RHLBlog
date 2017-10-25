@@ -736,3 +736,19 @@ a.editormd-preview-close-btn {
   font: 16px/32px "Microsoft Yahei";
   /* font-size: 18px; */
 }
+
+.reply-reply a {
+  color: #8f8f8f;
+  position: relative;
+  float: right;
+  font-size: 14px;
+}
+.reply-reply a:link {
+  text-decoration: none;
+}
+.reply-reply a:hover {
+  color: #45a7e6;
+}
+.reply-reply {
+  height: 20px;
+}
