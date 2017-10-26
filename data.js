@@ -1,12 +1,9 @@
-
-
 var loremipsum = require('lorem-ipsum'),
   slug = require('slug'),
   config = require('./config/config'),
   glob = require('glob'),
   mongoose = require('mongoose');
-
-  mongoose.connect(config.db, { useMongoClient: true });
+mongoose.connect(config.db, { useMongoClient: true });
 var db = mongoose.connection;
 db.on('error', function () {
   throw new Error('unable to connect to database at ' + config.db);
@@ -21,7 +18,7 @@ var Post = mongoose.model('Post');
 var User = mongoose.model('User');
 var Category = mongoose.model('Category');
 
-User.find({'authority':'user'}).exec(function (err, users) {
+User.find({'authority':'admin'}).exec(function (err, users) {
   if (err || users.length==0) {
     return console.log('cannot find users');
   }

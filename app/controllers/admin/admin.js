@@ -8,22 +8,22 @@ module.exports = function (app) {
 
 module.exports.requireLogin = function (req, res, next) {
   var user = req.user;
-  if (user) {
+  if (user && user.authority == 'admin') {
     next();
   } else {
-    req.flash('error', '请登录用户后访问')
-    res.redirect('/admin/login');
+    // req.flash('error', '请登录用户后访问')
+    res.redirect('/login');
   }
 }
 
 router.get('/', function (req, res, next) {
-  res.redirect('/admin/login');
+  res.redirect('/login');
 });
 
 router.get('/login', function (req, res, next) {
   var user = req.user;
-  // if (user && user.authority == 'admin') {
-  if (user) {
+  if (user && user.authority == 'admin') {
+  // if (user) {
     res.redirect('/admin/posts');
   } else {
     res.render('blog/login');

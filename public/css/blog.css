@@ -59,13 +59,13 @@ h6, .h6 {
 }
 .blog-nav-item:focus,
 .blog-nav-item:hover {
-  color: #45a7e6;
+  color: #12b075;
   text-decoration: none;
 }
 
 /* Active state gets a caret at the bottom */
 .blog-nav .active {
-  color: #45a7e6;
+  color: #12b075;
   font-weight: 600
 }
 .blog-nav .active:after {
@@ -160,7 +160,7 @@ h6, .h6 {
 }
 .cat-item:focus,
 .cat-item:hover {
-  color: #45a7e6;
+  color: #12b075;
   text-decoration: none;
 }
 
@@ -232,14 +232,14 @@ h6, .h6 {
 }
 
 .post-author {
-  color: #45a7e6;
+  color: #12b075;
 }
 
 .post-icons {
   position: relative;
   line-height: 36px;
   width: 26px;
-  background: #45a7e6;
+  background: #12b075;
   color: #fff;
   text-align: center;
   font-size: 14px;
@@ -296,7 +296,7 @@ h6, .h6 {
 }
 
 .post-title a:hover {
-  color: #45a7e6;
+  color: #12b075;
 }
 
 .post-abstract {
@@ -327,7 +327,7 @@ h6, .h6 {
 }
 
 .comments-meta a:hover {
-  color: #45a7e6;
+  color: #12b075;
 }
 
 .post-meta a {
@@ -339,7 +339,7 @@ h6, .h6 {
 }
 
 .post-meta a:hover {
-  color: #45a7e6;
+  color: #12b075;
 }
 
 .post-category {
@@ -350,13 +350,13 @@ h6, .h6 {
 }
 .post-category:focus,
 .post-category:hover {
-  color: #45a7e6;
+  color: #12b075;
   text-decoration: none;
 }
 
 .prenex:focus,
 .prenex:hover {
-  color: #45a7e6;
+  color: #12b075;
   text-decoration: none;
 }
 
@@ -392,7 +392,7 @@ h6, .h6 {
 }
 
 .com-like i:before {
-  color: #45a7e6;
+  color: #12b075;
 }
 
 a.com-unlike:hover {
@@ -431,7 +431,7 @@ a.com-unlike:hover {
 .mts-like i:before {
   top: 2px;
   position: relative;
-  color: #45a7e6;
+  color: #12b075;
 }
 
 .post-favourates {
@@ -495,7 +495,7 @@ span.comment-favourates {
 #contactform input#submit:focus,
 #contactform input#submit:hover {
   color: #ffffff;
-  background-color: #45a7e6;
+  background-color: #12b075;
 }
 #contactform input#submit {
   line-height: 10px;
@@ -505,7 +505,7 @@ span.comment-favourates {
   padding: 13px 21px;
   border: 1px solid;
   border-radius: 20px;
-  color: #45a7e6;
+  color: #12b075;
   background-color: transparent;
   transition: all 0.2s linear;
   margin-bottom: 10px;
@@ -542,7 +542,7 @@ input#author, input#email {
 }
 input#author:focus, input#email:focus,
 textarea#comment:focus {
-  border-color: #45a7e6;
+  border-color: #12b075;
 }
 
 #commentform textarea {
@@ -562,7 +562,7 @@ textarea#comment:focus {
 #commentform input#submit:focus,
 #commentform input#submit:hover {
   color: #ffffff;
-  background-color: #45a7e6;
+  background-color: #12b075;
 }
 #commentform input#submit {
   line-height: 10px;
@@ -572,7 +572,7 @@ textarea#comment:focus {
   padding: 13px 21px;
   border: 1px solid;
   border-radius: 20px;
-  color: #45a7e6;
+  color: #12b075;
   background-color: transparent;
   transition: all 0.2s linear;
   margin-bottom: 10px;
@@ -641,7 +641,7 @@ textarea#comment:focus {
 }
 #sbutton:focus,
 #sbutton:hover {
-  color: #45a7e6;
+  color: #12b075;
 }
 #searchform {
   padding: 0;
@@ -715,7 +715,7 @@ textarea#comment:focus {
 }
 
 a.haspost {
-  color: #45a7e6;
+  color: #12b075;
 }
 a.nopost {
   color: #8f8f8f;
@@ -727,7 +727,7 @@ a.editormd-preview-close-btn {
 
 .comments-meta a span {
   font-size: 13px;
-  /* background-color: #45a7e6;
+  /* background-color: #12b075;
   font-weight: 500;
   padding: 2px 5px; */
 }
@@ -747,8 +747,20 @@ a.editormd-preview-close-btn {
   text-decoration: none;
 }
 .reply-reply a:hover {
-  color: #45a7e6;
+  color: #12b075;
 }
 .reply-reply {
   height: 20px;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+  background-color: #12b075;
+  border-color: #12b075;
+}
+
+.pagination>li>a, .pagination>li>span {
+  color: #12b075;
+}
+.pagination>li>a:hover {
+  color: #12b075;
 }

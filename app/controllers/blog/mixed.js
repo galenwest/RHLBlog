@@ -145,7 +145,7 @@ router.post('/login', passport.authenticate('user.login', {
   function (req, res, next) {
     var user = req.user;
     if (user.authority == 'admin') {
-      res.redirect('/admin');
+      res.redirect('/admin/posts/1');
     } else {
       var url = req.body.url;
       if (url) {

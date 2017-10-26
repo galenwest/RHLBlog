@@ -163,7 +163,7 @@ router.get('/:page', auth.requireLogin, function (req, res, next) {
   }
 
   if (user.authority == 'admin') {
-    User.find({}, function (err, authors) {
+    User.find({authority:'admin'}, function (err, authors) {
       Post.count(conditions)
         .exec(function (err, count) {
           var pageSize = 12;

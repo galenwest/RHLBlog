@@ -8,9 +8,9 @@ block content
       form#contactform(action="/contact", method="post", enctype="application/x-www-form-urlencoded")
         if user
           p.comment-form-author
-            input(id="author" type="text" name="author" placeholder="名称" value=user.name )
+            input(id="author" type="text" name="author" placeholder="名称" value=user.nick )
           p.comment-form-email
-            input(id="email" type="text" name="email" placeholder="邮箱" value=user.name+"@lenovo.com" )
+            input(id="email" type="text" name="email" placeholder="邮箱" value=user.email)
         else
           p.comment-form-author
             input(id="author" type="text" name="author" placeholder="名称" value=vmuser.name)
