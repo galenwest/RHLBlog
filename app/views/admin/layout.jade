@@ -21,7 +21,7 @@ block main
     #navbar.navbar-collapse.collapse
       ul.nav.navbar-nav.mr-auto
         li.nav-item(class={active: (pageName === "/admin/posts/"+pageNum || pageName === "/admin/posts/add" || pageName === "/admin/categories" || pageName === "/admin/categories/add")})
-          a(href="/admin") 首页
+          a(href="/admin/posts") 首页
         li.nav-item(class={active: pageName === "/admin/comments"})
           a(href="/admin/comments") 评论
         //- li.nav-item
