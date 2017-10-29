@@ -18,7 +18,8 @@ block content
         a(href="/category/view/" + post.slug, title="#{post.title}")
           =post.title
       .post-abstract
-        = truncate(post.content, 80)
+        a(href="/category/view/" + post.slug, title="#{post.title}")
+          = truncate(post.content, 120)
       .post-meta
         -var isfavorite = isFavoUser[index]
         a.post-category(href="/category/" + post.category.slug)= post.category.name
@@ -41,31 +42,158 @@ block content
   else
     p 该分类还没有文章发布
 
-  if pageCount > 1
-    nav(aria-label="Page navigation")
-      ul.pagination
+  if (pageCount > 1 && pageCount <= 8)
+    nav(aria-label="...")
+      ul.pagination(style="width: 345px;")
         if (1 === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &laquo;
+          li.page-item.disabled
+            span.page-link &laquo;
         else
-          li
-            a(href="/category/" + category.slug + "/" + (pageNum-1), aria-label="Previous")
-              span(aria-hidden="true") &laquo;
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum-1))
+              | &laquo;
         - var currentPage = 1;
         while currentPage <= pageCount
           if (currentPage === pageNum)
-            li.active
-              span
-                span= currentPage++
+            li.page-item.active
+              span.page-link= currentPage++
           else
-            li
-              a(href="/category/" + category.slug + "/" + currentPage)= currentPage++
+            li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + currentPage)= currentPage++
         if (pageCount === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &raquo;
+          li.page-item.disabled
+            span.page-link &raquo;
         else
-          li
-            a(href="/category/" + category.slug + "/" + (pageNum+1), aria-label="Next")
-              span(aria-hidden="true") &raquo;
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum+1))
+              | &raquo;
+
+  if (pageCount > 8)
+    nav(aria-label="...")
+      ul.pagination(style="width: 345px;")
+        if (1 === pageNum)
+          li.page-item.disabled
+            span.page-link &laquo;
+        else
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum-1))
+              | &laquo;
+        if (1 === pageNum)
+          li.page-item.active
+            span.page-link= 1
+        else
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + 1)= 1
+        if (1 === pageNum)
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 2)= 2
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 3)= 3
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 4)= 4
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
+        if (2 === pageNum)
+          li.page-item.active
+            span.page-link= 2
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 3)= 3
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 4)= 4
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
+        if (3 === pageNum)
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 2)= 2
+          li.page-item.active
+            span.page-link= 3
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 4)= 4
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
+        if (4 === pageNum)
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 2)= 2
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 3)= 3
+          li.page-item.active
+            span.page-link= 4
+          li.page-item
+              a.page-link(href="/category/" + category.slug + "/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
+      
+        if (pageNum > 4 && pageNum < pageCount-3)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum-1))= pageNum-1
+          li.page-item.active
+            span.page-link= pageNum
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum+1))= pageNum+1
+          li.page-item.disabled
+            span.page-link ...
+        if (pageCount-3 === pageNum)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-4))= pageCount-4
+          li.page-item.active
+            span.page-link= pageCount-3
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-2))= pageCount-2
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-1))= pageCount-1
+        if (pageCount-2 === pageNum)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-4))= pageCount-4
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-3))= pageCount-3
+          li.page-item.active
+            span.page-link= pageCount-2
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-1))= pageCount-1
+        if (pageCount-1 === pageNum)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-4))= pageCount-4
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-3))= pageCount-3
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-2))= pageCount-2
+          li.page-item.active
+            span.page-link= pageCount-1
+        if (pageCount === pageNum)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-4))= pageCount-4
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-3))= pageCount-3
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-2))= pageCount-2
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageCount-1))= pageCount-1
+        if (pageCount === pageNum)
+          li.page-item.active
+            span.page-link= pageCount
+        else
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + pageCount)= pageCount
+        if (pageCount === pageNum)
+          li.page-item.disabled
+            span.page-link &raquo;
+        else
+          li.page-item
+            a.page-link(href="/category/" + category.slug + "/" + (pageNum+1))
+              | &raquo;

@@ -145,6 +145,6 @@ module.exports = function(app, config, connection) {
   return app;
 };
 
-function mytruncate (str) {
-  return truncate(str.replace(/[&\|\\\*~+=`#\-]/g,""), 90);
+function mytruncate (str, num) {
+  return truncate(str.replace(/[&\|\\\*~+=`#\-]/g,""), num);
 }

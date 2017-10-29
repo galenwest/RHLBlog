@@ -1,18 +1,18 @@
 extends ./layout
 
 block sidebar
-  ul.nav.nav-sidebar
-    li(class={active: pageName === "/admin/posts/"+pageNum})
-      a(href="/admin/posts")
+  ul.nav.nav-pills.flex-column
+    li.nav-item
+      a.nav-link(href="/admin/posts", class={active: pageName === "/admin/posts/"+pageNum}, style="border-radius:0")
         i.fa.fa-files-o &nbsp;文章列表
-    li(class={active: pageName === "/admin/posts/add"})
-      a(href="/admin/posts/add")
+    li.nav-item
+      a.nav-link(href="/admin/posts/add", class={active: pageName === "/admin/posts/add"}, style="border-radius:0")
         i.fa.fa-file-o &nbsp;添加文章
-    li(class={active: pageName === "/admin/categories"})
-      a(href="/admin/categories")
+    li.nav-item
+      a.nav-link(href="/admin/categories", class={active: pageName === "/admin/categories"}, style="border-radius:0")
         i.fa.fa-th-list &nbsp;分类列表
-    li(class={active: pageName === "/admin/categories/add"})
-      a(href="/admin/categories/add")
+    li.nav-item
+      a.nav-link(href="/admin/categories/add", class={active: pageName === "/admin/categories/add"}, style="border-radius:0")
         i.fa.fa-plus &nbsp;添加分类
   //- if (authors[0].authority == "admin")
   //-   ul.nav.nav-sidebar

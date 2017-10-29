@@ -5,21 +5,21 @@ block content
   != messages()
   form#form-post-filter.form.form-inline.form-filter(action="")
     .form-group
-      label 分类
+      label 分类：
       select#js-category.form-control(name="category")
         option(value="", selected=(filter.category === "")) - 选择分类 -
         each category in categories
           option(value=category._id, selected=(category._id.toString() === filter.category))= category.name
     if authors
-      .form-group
-        label 作者
+      .form-group(style="margin-left:10px")
+        label 作者：
         select#js-author.form-control(name="author")
           option(value="", selected=(filter.author === "")) - 选择作者 -
           each author in authors
             option(value=author._id, selected=(author._id.toString() === filter.author))= author.name
-    .form-group
+    .form-group(style="margin-left:10px")
       input#js-keyword.form-control(name="keyword", type="text", placeholder="关键词", value=filter.keyword)
-    button#js-filter-submit.btn.btn-info
+    button#js-filter-submit.btn.btn-info(style="margin-left:10px")
       i.fa.fa-search &nbsp;筛选
     a.btn.btn-info(href="/admin/posts/1", style="margin-left:3px")
       i.fa.fa-refresh &nbsp;重置
@@ -57,7 +57,7 @@ block content
                 i.fa.fa-arrow-up
           else
             a(href="/admin/posts/" + pageNum + "?sortby=author&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 作者
-        th(style="text-align:center;width:112px")
+        th(style="text-align:center;width:136px")
           if sortby === 'created'
             if (sortdir === 'desc')
               a(href="/admin/posts/" + pageNum + "?sortby=created&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 添加时间
@@ -87,7 +87,7 @@ block content
                 i.fa.fa-arrow-up
           else
             a(href="/admin/posts/" + pageNum + "?sortby=comments&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 评论
-        th(style="text-align:center;width:59px")
+        th(style="text-align:center;width:73px")
           if sortby === 'published'
             if (sortdir === 'desc')
               a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=asc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 状态
@@ -97,7 +97,7 @@ block content
                 i.fa.fa-arrow-up
           else
             a(href="/admin/posts/" + pageNum + "?sortby=published&sortdir=desc" + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword) 状态
-        th(style="text-align:center;width:226px") 管理
+        th(style="text-align:center;width:235px") 管理
     tbody
     each post in posts
       tr
@@ -135,14 +135,27 @@ block content
     h2(style="padding-top: 10px;") 没有文章，
       a(href="/admin/posts/add") 添加文章
   if pageCount > 1
-    nav(aria-label="Page navigation")
+    nav(aria-label="...", style="margin-bottom:60px;")
       ul.pagination
+        if (1 === pageNum)
+          li.page-item.disabled
+            span.page-link &laquo;
+        else
+          li.page-item
+            a.page-link(href="/admin/posts/" + (pageNum-1) + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword)
+              | &laquo;
         - var currentPage = 1;
         while currentPage <= pageCount
           if (currentPage === pageNum)
-            li.active
-              span
-                span= currentPage++
+            li.page-item.active
+              span.page-link= currentPage++
           else
-            li
-              a(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword)= currentPage++
+            li.page-item
+              a.page-link(href="/admin/posts/" + currentPage + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword)= currentPage++
+        if (pageCount === pageNum)
+          li.page-item.disabled
+            span.page-link &raquo;
+        else
+          li.page-item
+            a.page-link(href="/admin/posts/" + (pageNum+1) + "?sortby=" + sortby + "&sortdir=" + sortdir + "&category=" + filter.category + "&author=" + filter.author + "&keyword=" + filter.keyword)
+              | &raquo;

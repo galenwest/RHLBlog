@@ -31,18 +31,15 @@ block main
           else
             a.blog-nav-item(href="/contact") 联系我们
           if (user)
-            .blog-nav-item(style="float:right;cursor:pointer;")
+            .blog-nav-item(style="float:right;cursor:pointer;padding-left: 0px;")
               .dropdown
-                .dropdown-toggle(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
-                  span.caret
-                ul.dropdown-menu
-                  li
-                    a(href="/admin/posts/1") 我的信息
-                  li.divider(role="separator")
-                  li
-                    a#logoutuser(href="javascript:void(0)") 注销
+                .dropdown-toggle(data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
+                .dropdown-menu(aria-labelledby="dropdownMenuLink")
+                  a.dropdown-item(href="/admin/posts/1") 我的信息
+                  .dropdown-divider
+                  a#logoutuser.dropdown-item(href="javascript:void(0)") 注销
           else
-            a#loginuser.blog-nav-item(href="javascript:void(0)", style="float:right;") 登录
+            a#loginuser.blog-nav-item(href="javascript:void(0)", style="float:right;padding-left: 0px;") 登录
 
   .container.page(style="background:url(/img/loginbg.png);")
     .row
@@ -81,8 +78,8 @@ block main
   block footer
     .blog-footer
       .container
-        .row
-          p.col-xs-6
+        .row(style="display: inline;")
+          p(style="float:left;margin-bottom:0;")
             | RHL Blog
-          p.col-xs-6
+          p(style="float:right;margin-bottom:0;")
             | ©RHL2017 

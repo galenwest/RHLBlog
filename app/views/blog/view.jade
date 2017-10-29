@@ -30,28 +30,32 @@ block content
             i.fa.fa-heart-o(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
             span.post-favourates(postId=post._id, favorite=post.meta.favorite, isfavorite="false", metaid=metaId)
               =post.meta.favorite
-  nav(aria-label="Page navigation")
+  nav
     ul.pager
       if (isCategory)
         li.previous
           if (prePost)
-            a.haspost.prenex(href="/category/view/" + prePost.slug title="#{prePost.title}") 上一篇
+            a.haspost.prenex(href="/category/view/" + prePost.slug title="#{prePost.title}") 上一篇：
+              = prePost.title
           else
             a.nopost.prenex(href="#") 没有文章了
         li.next
           if (nextPost)
-            a.haspost.prenex(href="/category/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
+            a.haspost.prenex(href="/category/view/" + nextPost.slug title="#{nextPost.title}") 下一篇：
+              = nextPost.title
           else
             a.nopost.prenex(href="#") 没有文章了
       else
         li.previous
           if (prePost)
-            a.haspost.prenex(href="/posts/view/" + prePost.slug title="#{prePost.title}") 上一篇
+            a.haspost.prenex(href="/posts/view/" + prePost.slug title="#{prePost.title}") 上一篇：
+              = prePost.title
           else
             a.nopost.prenex(href="#") 没有文章了
         li.next
           if (nextPost)
-            a.haspost.prenex(href="/posts/view/" + nextPost.slug title="#{nextPost.title}") 下一篇
+            a.haspost.prenex(href="/posts/view/" + nextPost.slug title="#{nextPost.title}") 下一篇：
+              = nextPost.title
           else
             a.nopost.prenex(href="#") 没有文章了
 

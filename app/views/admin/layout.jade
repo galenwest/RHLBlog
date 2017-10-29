@@ -8,51 +8,38 @@ append js
   script(src="/js/controller/admin.js")
   script(src="/js/controller/easydialog.js")
   block scripts
-
+//- navbar navbar-expand-md navbar-dark fixed-top bg-dark
 block main
-  nav.navbar.navbar-inverse.navbar-fixed-top
-    .navbar-header
-      button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar")
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a.navbar-my-brand(href="/") 饶厚林的博客
-    #navbar.navbar-collapse.collapse
-      ul.nav.navbar-nav.mr-auto
-        li.nav-item(class={active: (pageName === "/admin/posts/"+pageNum || pageName === "/admin/posts/add" || pageName === "/admin/categories" || pageName === "/admin/categories/add")})
-          a(href="/admin/posts") 首页
-        li.nav-item(class={active: pageName === "/admin/comments"})
-          a(href="/admin/comments") 评论
-        //- li.nav-item
-        //-   a(href="#") 设置
-      .navbar-form.navbar-right
-      ul.nav.navbar-nav.navbar-right
-        if user
-          li
-            if (user.authority == "admin")
-              a.dropdown-toggle(href="javascript:void(0)" type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
-                span.caret
-              ul.dropdown-menu
-                li
-                  a(href="/user/contact") 联系我们
-                li.divider(role="separator")
-                li
-                  a(href="/admin/password") 修改密码
-                //- li.divider(role="separator")
-                //- li
-                //-   a#logoutuser(href="javascript:void(0)") 注销
-            else
-              a= user.nick
-        //- li
-        //-   a(href="")
-        //-     i.fa.fa-question &nbsp;帮助
-        li
-          a(href="/admin/logout")
-            i.fa.fa-lock &nbsp;注销
+  header
+    nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+      a.navbar-brand(href="/") 饶厚林的博客
+      button(class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation")
+        span(class="navbar-toggler-icon")
+      #navbarsExampleDefault.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item(class={active: (pageName === "/admin/posts/"+pageNum || pageName === "/admin/posts/add" || pageName === "/admin/categories" || pageName === "/admin/categories/add")})
+            a.nav-link(href="/admin/posts") 首页
+          li.nav-item(class={active: pageName === "/admin/comments"})
+            a.nav-link(href="/admin/comments") 评论
+        //- .navbar-form.navbar-right
+        ul.navbar-nav.navbar-right
+          if user
+            li.nav-item
+              if (user.authority == "admin")
+                .dropdown
+                  a.dropdown-toggle.nav-link(href="javascript:void(0)", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")= user.nick
+                  .dropdown-menu(aria-labelledby="dropdownMenuLink")
+                    a.dropdown-item(href="/user/contact") 联系我们
+                    .dropdown-divider
+                    a#logoutuser.dropdown-item(href="/admin/password") 修改密码
+              else
+                a= user.nick
+          li.nav-item
+            a.nav-link(href="/admin/logout")
+              i.fa.fa-lock &nbsp;注销
   .container-fluid
     .row
-      .col-sm-3.col-md-2.sidebar
+      .col-sm-3.col-md-2.d-none.d-sm-block.bg-light.sidebar(style="padding-left: 0px;padding-right: 0px;")
         block sidebar
-      .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main(style="padding-left:26px;padding-right:26px;")
+      .col-sm-9.ml-sm-auto.col-md-10.pt-3(role="main")
         block content

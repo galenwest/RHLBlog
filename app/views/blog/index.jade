@@ -20,7 +20,7 @@ block content
           =post.title
       .post-abstract
         a(href="/posts/view/" + post.slug, title="#{post.title}")
-          = truncate(post.content, 100)
+          = truncate(post.content, 120)
       .post-meta
         -var isfavorite = isFavoUser[index]
         a.post-category(href="/category/" + post.category.slug)= post.category.name
@@ -43,342 +43,266 @@ block content
   else
     p 暂时还没有文章发布
 
-  if (pageCount > 1 && pageCount <= 12)
-    nav(aria-label="Page navigation")
-      ul.pagination
+  if (pageCount > 1 && pageCount <= 8)
+    nav(aria-label="...")
+      ul.pagination(style="width: 345px;")
         if (1 === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &laquo;
+          li.page-item.disabled
+            span.page-link &laquo;
         else
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageNum-1) + "?keyword=" + keyword, aria-label="Previous")
-                span(aria-hidden="true") &laquo;
+              a.page-link(href="/posts/" + (pageNum-1) + "?keyword=" + keyword, aria-label="Previous")
+                | &laquo;
             else
-              a(href="/posts/" + (pageNum-1), aria-label="Previous")
-                span(aria-hidden="true") &laquo;
+              a.page-link(href="/posts/" + (pageNum-1), aria-label="Previous")
+                | &laquo;
         - var currentPage = 1;
         while currentPage <= pageCount
           if (currentPage === pageNum)
-            li.active
-              span
-                span= currentPage++
+            li.page-item.active
+              span.page-link= currentPage++
           else
-            li
+            li.page-item
               if (keyword)
-                a(href="/posts/" + currentPage + "?keyword=" + keyword)= currentPage++
+                a.page-link(href="/posts/" + currentPage + "?keyword=" + keyword)= currentPage++
               else
-                a(href="/posts/" + currentPage)= currentPage++
+                a.page-link(href="/posts/" + currentPage)= currentPage++
         if (pageCount === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &raquo;
+          li.page-item.disabled
+            span.page-link &raquo;
         else
           li
             if (keyword)
-              a(href="/posts/" + (pageNum+1) + "?keyword=" + keyword, aria-label="Next")
-                span(aria-hidden="true") &raquo;
+              a.page-link(href="/posts/" + (pageNum+1) + "?keyword=" + keyword, aria-label="Next")
+                | &raquo;
             else
-              a(href="/posts/" + (pageNum+1), aria-label="Next")
-                span(aria-hidden="true") &raquo;
+              a.page-link(href="/posts/" + (pageNum+1), aria-label="Next")
+                | &raquo;
   if (pageCount > 12)
-    nav(aria-label="Page navigation")
-      ul.pagination
+    nav(aria-label="...")
+      ul.pagination(style="width: 345px;")
         if (1 === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &laquo;
+          li.page-item.disabled
+            span.page-link &laquo;
         else
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageNum-1) + "?keyword=" + keyword, aria-label="Previous")
-                span(aria-hidden="true") &laquo;
+              a.page-link(href="/posts/" + (pageNum-1) + "?keyword=" + keyword)
+                | &laquo;
             else
-              a(href="/posts/" + (pageNum-1), aria-label="Previous")
-                span(aria-hidden="true") &laquo;
+              a.page-link(href="/posts/" + (pageNum-1))
+                | &laquo;
         if (1 === pageNum)
-          li.active
-            span
-              span= 1
+          li.page-item.active
+            span.page-link= 1
         else
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 1 + "?keyword=" + keyword)= 1
+              a.page-link(href="/posts/" + 1 + "?keyword=" + keyword)= 1
             else
-              a(href="/posts/" + 1)= 1
+              a.page-link(href="/posts/" + 1)= 1
+        if (1 === pageNum)
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 2 + "?keyword=" + keyword)= 2
+            else
+              a.page-link(href="/posts/" + 2)= 2
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 3 + "?keyword=" + keyword)= 3
+            else
+              a.page-link(href="/posts/" + 3)= 3
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 4 + "?keyword=" + keyword)= 4
+            else
+              a.page-link(href="/posts/" + 4)= 4
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 5 + "?keyword=" + keyword)= 5
+            else
+              a.page-link(href="/posts/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
         if (2 === pageNum)
-          li.active
-            span
-              span= 2
-        else
-          li
+          li.page-item.active
+            span.page-link= 2
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 2 + "?keyword=" + keyword)= 2
+              a.page-link(href="/posts/" + 3 + "?keyword=" + keyword)= 3
             else
-              a(href="/posts/" + 2)= 2
+              a.page-link(href="/posts/" + 3)= 3
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 4 + "?keyword=" + keyword)= 4
+            else
+              a.page-link(href="/posts/" + 4)= 4
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + 5 + "?keyword=" + keyword)= 5
+            else
+              a.page-link(href="/posts/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
         if (3 === pageNum)
-          li.active
-            span
-              span= 3
-        else
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 3 + "?keyword=" + keyword)= 3
+              a.page-link(href="/posts/" + 2 + "?keyword=" + keyword)= 2
             else
-              a(href="/posts/" + 3)= 3
-        if (1 === pageNum || 2 == pageNum || 3 === pageNum)
-          li
+              a.page-link(href="/posts/" + 2)= 2
+          li.page-item.active
+            span.page-link= 3
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 4 + "?keyword=" + keyword)= 4
+              a.page-link(href="/posts/" + 4 + "?keyword=" + keyword)= 4
             else
-              a(href="/posts/" + 4)= 4
-          li
+              a.page-link(href="/posts/" + 4)= 4
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 5 + "?keyword=" + keyword)= 5
+              a.page-link(href="/posts/" + 5 + "?keyword=" + keyword)= 5
             else
-              a(href="/posts/" + 5)= 5
-          li
-            if (keyword)
-              a(href="/posts/" + 6 + "?keyword=" + keyword)= 6
-            else
-              a(href="/posts/" + 6)= 6
-          li
-            if (keyword)
-              a(href="/posts/" + 7 + "?keyword=" + keyword)= 7
-            else
-              a(href="/posts/" + 7)= 7
-          li
-            span
-              span ...
+              a.page-link(href="/posts/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
         if (4 === pageNum)
-          li.active
-            span
-              span= 4
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 5 + "?keyword=" + keyword)= 5
+              a.page-link(href="/posts/" + 2 + "?keyword=" + keyword)= 2
             else
-              a(href="/posts/" + 5)= 5
-          li
+              a.page-link(href="/posts/" + 2)= 2
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 6 + "?keyword=" + keyword)= 6
+              a.page-link(href="/posts/" + 3 + "?keyword=" + keyword)= 3
             else
-              a(href="/posts/" + 6)= 6
-          li
+              a.page-link(href="/posts/" + 3)= 3
+          li.page-item.active
+            span.page-link= 4
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 7 + "?keyword=" + keyword)= 7
+              a.page-link(href="/posts/" + 5 + "?keyword=" + keyword)= 5
             else
-              a(href="/posts/" + 7)= 7
-          li
-            span
-              span ...
-        if (5 === pageNum)
-          li
-            if (keyword)
-              a(href="/posts/" + 4 + "?keyword=" + keyword)= 4
-            else
-              a(href="/posts/" + 4)= 4
-          li.active
-            span
-              span= 5
-          li
-            if (keyword)
-              a(href="/posts/" + 6 + "?keyword=" + keyword)= 6
-            else
-              a(href="/posts/" + 6)= 6
-          li
-            if (keyword)
-              a(href="/posts/" + 7 + "?keyword=" + keyword)= 7
-            else
-              a(href="/posts/" + 7)= 7
-          li
-            span
-              span ...
+              a.page-link(href="/posts/" + 5)= 5
+          li.page-item.disabled
+            span.page-link ...
 
-        if (6 === pageNum)
-          li
+        if (pageNum > 4 && pageNum < pageCount-3)
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 4 + "?keyword=" + keyword)= 4
+              a.page-link(href="/posts/" + (pageNum-1) + "?keyword=" + keyword)= pageNum-1
             else
-              a(href="/posts/" + 4)= 4
-          li
+              a.page-link(href="/posts/" + (pageNum-1))= pageNum-1
+          li.page-item.active
+            span.page-link= pageNum
+          li.page-item
             if (keyword)
-              a(href="/posts/" + 5 + "?keyword=" + keyword)= 5
+              a.page-link(href="/posts/" + (pageNum+1) + "?keyword=" + keyword)= pageNum+1
             else
-              a(href="/posts/" + 5)= 5
-          li.active
-            span
-              span= 6
-          li
-            if (keyword)
-              a(href="/posts/" + 7 + "?keyword=" + keyword)= 7
-            else
-              a(href="/posts/" + 7)= 7
-          li
-            span
-              span ...
-
-        if (pageNum > 6 && pageNum < pageCount-5)
-          li
-            span
-              span ...
-          li
-            if (keyword)
-              a(href="/posts/" + (pageNum-2) + "?keyword=" + keyword)= pageNum-2
-            else
-              a(href="/posts/" + (pageNum-2))= pageNum-2
-          li
-            if (keyword)
-              a(href="/posts/" + (pageNum-1) + "?keyword=" + keyword)= pageNum-1
-            else
-              a(href="/posts/" + (pageNum-1))= pageNum-1
-          li.active
-            span
-              span= pageNum
-          li
-            if (keyword)
-              a(href="/posts/" + (pageNum+1) + "?keyword=" + keyword)= pageNum+1
-            else
-              a(href="/posts/" + (pageNum+1))= pageNum+1
-          li
-            if (keyword)
-              a(href="/posts/" + (pageNum+2) + "?keyword=" + keyword)= pageNum+2
-            else
-              a(href="/posts/" + (pageNum+2))= pageNum+2
-          li
-            span
-              span ...
-        
-        if (pageCount-5 === pageNum)
-          li
-            span
-              span ...
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-6) + "?keyword=" + keyword)= pageCount-6
-            else
-              a(href="/posts/" + (pageCount-6))= pageCount-6
-          li.active
-            span
-              span= pageNum
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
-            else
-              a(href="/posts/" + (pageCount-4))= pageCount-4
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
-            else
-              a(href="/posts/" + (pageCount-3))= pageCount-3
-        if (pageCount-4 === pageNum)
-          li
-            span
-              span ...
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-6) + "?keyword=" + keyword)= pageCount-6
-            else
-              a(href="/posts/" + (pageCount-6))= pageCount-6
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-5) + "?keyword=" + keyword)= pageCount-5
-            else
-              a(href="/posts/" + (pageCount-5))= pageCount-5
-          li.active
-            span
-              span= pageNum
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
-            else
-              a(href="/posts/" + (pageCount-3))= pageCount-3
+              a.page-link(href="/posts/" + (pageNum+1))= pageNum+1
+          li.page-item.disabled
+            span.page-link ...
         if (pageCount-3 === pageNum)
-          li
-            span
-              span ...
-          li
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageCount-6) + "?keyword=" + keyword)= pageCount-6
+              a.page-link(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
             else
-              a(href="/posts/" + (pageCount-6))= pageCount-6
-          li
+              a.page-link(href="/posts/" + (pageCount-4))= pageCount-4
+          li.page-item.active
+            span.page-link= pageNum
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageCount-5) + "?keyword=" + keyword)= pageCount-5
+              a.page-link(href="/posts/" + (pageCount-2) + "?keyword=" + keyword)= pageCount-2
             else
-              a(href="/posts/" + (pageCount-5))= pageCount-5
-          li
+              a.page-link(href="/posts/" + (pageCount-2))= pageCount-2
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
+              a.page-link(href="/posts/" + (pageCount-1) + "?keyword=" + keyword)= pageCount-1
             else
-              a(href="/posts/" + (pageCount-4))= pageCount-4
-          li.active
-            span
-              span= pageNum
-        if (pageCount-2 === pageNum || pageCount-1 == pageNum || pageCount === pageNum)
-          li
-            span
-              span ...
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-6) + "?keyword=" + keyword)= pageCount-6
-            else
-              a(href="/posts/" + (pageCount-6))= pageCount-6
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-5) + "?keyword=" + keyword)= pageCount-5
-            else
-              a(href="/posts/" + (pageCount-5))= pageCount-5
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
-            else
-              a(href="/posts/" + (pageCount-4))= pageCount-4
-          li
-            if (keyword)
-              a(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
-            else
-              a(href="/posts/" + (pageCount-3))= pageCount-3
+              a.page-link(href="/posts/" + (pageCount-1))= pageCount-1
         if (pageCount-2 === pageNum)
-          li.active
-            span
-              span= pageCount-2
-        else
-          li
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageCount-2) + "?keyword=" + keyword)= pageCount-2
+              a.page-link(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
             else
-              a(href="/posts/" + (pageCount-2))= pageCount-2
+              a.page-link(href="/posts/" + (pageCount-4))= pageCount-4
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
+            else
+              a.page-link(href="/posts/" + (pageCount-3))= pageCount-3
+          li.page-item.active
+            span.page-link= pageNum
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-1) + "?keyword=" + keyword)= pageCount-1
+            else
+              a.page-link(href="/posts/" + (pageCount-1))= pageCount-1
         if (pageCount-1 === pageNum)
-          li.active
-            span
-              span= pageCount-1
-        else
-          li
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageCount-1) + "?keyword=" + keyword)= pageCount-1
+              a.page-link(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
             else
-              a(href="/posts/" + (pageCount-1))= pageCount-1
+              a.page-link(href="/posts/" + (pageCount-4))= pageCount-4
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
+            else
+              a.page-link(href="/posts/" + (pageCount-3))= pageCount-3
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-2) + "?keyword=" + keyword)= pageCount-2
+            else
+              a.page-link(href="/posts/" + (pageCount-2))= pageCount-2
+          li.page-item.active
+            span.page-link= pageNum
         if (pageCount === pageNum)
-          li.active
-            span
-              span= pageCount
-        else
-          li
+          li.page-item.disabled
+            span.page-link ...
+          li.page-item
             if (keyword)
-              a(href="/posts/" + pageCount + "?keyword=" + keyword)= pageCount
+              a.page-link(href="/posts/" + (pageCount-4) + "?keyword=" + keyword)= pageCount-4
             else
-              a(href="/posts/" + pageCount)= pageCount
+              a.page-link(href="/posts/" + (pageCount-4))= pageCount-4
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-3) + "?keyword=" + keyword)= pageCount-3
+            else
+              a.page-link(href="/posts/" + (pageCount-3))= pageCount-3
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-2) + "?keyword=" + keyword)= pageCount-2
+            else
+              a.page-link(href="/posts/" + (pageCount-2))= pageCount-2
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageCount-1) + "?keyword=" + keyword)= pageCount-1
+            else
+              a.page-link(href="/posts/" + (pageCount-1))= pageCount-1
         if (pageCount === pageNum)
-          li.disabled
-            span
-              span(aria-hidden="true") &raquo;
+          li.page-item.active
+            span.page-link= pageCount
         else
-          li
+          li.page-item
             if (keyword)
-              a(href="/posts/" + (pageNum+1) + "?keyword=" + keyword, aria-label="Next")
-                span(aria-hidden="true") &raquo;
+              a.page-link(href="/posts/" + pageCount + "?keyword=" + keyword)= pageCount
             else
-              a(href="/posts/" + (pageNum+1), aria-label="Next")
-                span(aria-hidden="true") &raquo;
+              a.page-link(href="/posts/" + pageCount)= pageCount
+        if (pageCount === pageNum)
+          li.page-item.disabled
+            span.page-link(aria-hidden="true") &raquo;
+        else
+          li.page-item
+            if (keyword)
+              a.page-link(href="/posts/" + (pageNum+1) + "?keyword=" + keyword)
+                | &raquo;
+            else
+              a.page-link(href="/posts/" + (pageNum+1))
+                | &raquo;
