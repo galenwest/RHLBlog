@@ -299,6 +299,18 @@ h6, .h6 {
   color: #12b075;
 }
 
+.post-abstract a{
+  color: #333333;
+}
+
+.post-abstract a:link {
+  text-decoration: none;
+}
+
+.post-abstract a:hover {
+  color: #12b075;
+}
+
 .post-abstract {
   margin-bottom: 12px;
   padding: 10px;

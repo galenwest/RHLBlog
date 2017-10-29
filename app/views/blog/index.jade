@@ -19,7 +19,8 @@ block content
         a(href="/posts/view/" + post.slug, title="#{post.title}")
           =post.title
       .post-abstract
-        = truncate(post.content, 80)
+        a(href="/posts/view/" + post.slug, title="#{post.title}")
+          = truncate(post.content, 100)
       .post-meta
         -var isfavorite = isFavoUser[index]
         a.post-category(href="/category/" + post.category.slug)= post.category.name
