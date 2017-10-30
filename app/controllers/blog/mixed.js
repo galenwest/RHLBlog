@@ -108,7 +108,7 @@ router.post('/contact', function (req, res, next) {
     req.flash('error', '为了解决您的问题，请填写您要说的话');
     return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
   }
-  var emailreg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+  var emailreg = /^[A-Za-z0-9]+([-_.][A-Za-z0-9]+)*@([A-Za-z0-9]+[-.])+[A-Za-z]{2,5}$/;
   if (!emailreg.test(vmuser.email)) {
     req.flash('error', '为了解决您的问题，请您输入正确的邮箱');
     return res.redirect('/contact?name='+vmuser.name+'&email='+vmuser.email+'&content='+vmuser.content);
