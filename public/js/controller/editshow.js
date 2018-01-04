@@ -11,7 +11,7 @@ $(function () {
   var commentListDiv = $('#post-comments-list').children();
   for (var commentCount = 0; commentCount < commentListDiv.length; commentCount++) {
     var commentId = commentListDiv[commentCount].getAttribute('commentid');
-    editormd.markdownToHTML(commentId+'content', {
+    editormd.markdownToHTML(commentId + 'content', {
       // markdown: $("#append-text").text(),
       htmlDecode: "style,script,iframe",  // you can filter tags decode
       emoji: true,
@@ -20,7 +20,7 @@ $(function () {
       flowChart: true,  // 默认不解析
       sequenceDiagram: true,  // 默认不解析
     });
-    var replyComments = $("#"+commentId+"reply").children();
+    var replyComments = $("#" + commentId + "reply").children();
     for (var replyCount = 0; replyCount < replyComments.length; replyCount++) {
       editormd.markdownToHTML(replyComments[replyCount].getAttribute('replyid'), {
         // markdown: $("#append-text").text(),
@@ -34,88 +34,149 @@ $(function () {
     }
   }
 
-  var editorCommentMd = editormd("form-comment-edit", {
-    width: "100%",
-    height: 300,
-    path : '/components/editor.md/lib/',
-    placeholder: '可用Markdown格式撰写评论...',
-    // watch : false,
-    toolbarIcons : function() {
-        return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
-    },
-  });
+  // var editorCommentMd = editormd("form-comment-edit", {
+  //   width: "100%",
+  //   height: 300,
+  //   path : '/components/editor.md/lib/',
+  //   placeholder: '可用Markdown格式撰写评论...',
+  //   // watch : false,
+  //   toolbarIcons : function() {
+  //       return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
+  //   },
+  // });
+  var editorCommentMd = undefined;
+  $("#commentform").hide();
+
+  function openEdit() {
+    if (editorCommentMd !== undefined) {
+      editorCommentMd.editor.remove();
+      $("form-comment-edit").remove();
+    }
+
+    $.getScript("../../components/editor.md/editormd.min.js", function () {
+      $("#commentform").prepend("<div id=\"form-comment-edit\" style=\"margin-bottom: 0px;\"><textarea id=\"commentcontent\" name=\"comment\" style=\"display:none;\"></textarea></div>");
+      editorCommentMd = editormd("form-comment-edit", {
+        width: "100%",
+        height: 300,
+        path: '/components/editor.md/lib/',
+        placeholder: '可用Markdown格式撰写评论...',
+        // watch : false,
+        toolbarIcons: function () {
+          return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
+        },
+      });
+    });
+
+    $("#commentform").show();
+  }
+
+  function closeEdit() {
+    editorCommentMd.editor.remove();
+    let objEvent = $._data($('#commentAnchorPoint')[0], 'events');
+    if (!objEvent || !objEvent["click"]) {
+      $("#commentAnchorPoint").css("color", "#12b075").bind("click", commentClick);
+    }
+    $("#commentform").hide();
+  }
+
+  function commentClick() {
+    let user = $("#commentAnchorPoint").attr("user");
+    if (!user) {
+      showMessage('请登录后进行操作', 1000);
+      return;
+    }
+    $("#submit").removeAttr("isreply");
+    $("#submit").removeAttr("commentid");
+    $("#" + commentId).attr("isreply", "true");
+    $(".comment-reply").text("回复");
+    $("#movecomment").append($("#commentform"));
+    $("#commentAnchorPoint").css("color", "#333333").unbind();
+    openEdit();
+  }
+
+  $("#commentAnchorPoint").click(commentClick);
 
   $(".comment-reply").click(function (event) {
+    let user = $("#commentAnchorPoint").attr("user");
+    if (!user) {
+      showMessage('请登录后进行操作', 1000);
+      return;
+    }
     var commentId = event.target.getAttribute('commentid');
-    var isreply = $("#"+commentId).attr("isreply");
+    var isreply = $("#" + commentId).attr("isreply");
     if (isreply == "true") {
-      $(".post-comment-item").attr("isreply", "true");
-      $(".comment-reply").text("回复");
-      $("#"+commentId).attr("isreply", "false");
+      // $(".post-comment-item").attr("isreply", "true");
+      // $(".comment-reply").text("回复");
+      $("#" + commentId).attr("isreply", "false");
       event.target.innerText = '取消回复';
-      $("#"+commentId+"meta").after($("#commentform"));
+      $("#" + commentId + "meta").after($("#commentform"));
       $("#submit").attr("isreply", "true");
       $("#submit").attr("commentid", commentId);
+      let objEvent = $._data($('#commentAnchorPoint')[0], 'events');
+      if (!objEvent || !objEvent["click"]) {
+        $("#commentAnchorPoint").css("color", "#12b075").bind("click", commentClick);
+      }
+      openEdit();
     } else {
       $("#submit").removeAttr("isreply");
       $("#submit").removeAttr("commentid");
-      $("#"+commentId).attr("isreply", "true");
+      $("#" + commentId).attr("isreply", "true");
       event.target.innerText = '回复';
-      $("#movecomment").append($("#commentform"));
+      closeEdit();
+      // $("#movecomment").append($("#commentform"));
     }
-    editorCommentMd = editormd("form-comment-edit", {
-      width: "100%",
-      height: 300,
-      path : '/components/editor.md/lib/',
-      placeholder: '可用Markdown格式撰写评论...',
-      // watch : false,
-      toolbarIcons : function() {
-          return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
-      },
-    });
+    // editorCommentMd = editormd("form-comment-edit", {
+    //   width: "100%",
+    //   height: 300,
+    //   path : '/components/editor.md/lib/',
+    //   placeholder: '可用Markdown格式撰写评论...',
+    //   // watch : false,
+    //   toolbarIcons : function() {
+    //       return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
+    //   },
+    // });
     // editorCommentMd.setMarkdown("");
   });
 
   // '/comment/reply/:postid/:commentid'
   $("#submit").click(function (event) {
-    console.log('submit click ...');
     if (event.target.getAttribute("isreply")) {
       var postId = $(".post-comments").attr("postid");
       var commentId = $("#submit").attr("commentid");
-      var domReplyComments = $("#"+commentId+"reply");
+      var domReplyComments = $("#" + commentId + "reply");
       var content = editorCommentMd.getMarkdown();
       var contentPreviewd = editorCommentMd.getPreviewedHTML();
       $.ajax({
         type: 'POST',
         url: "/posts/comment/reply/" + postId + "/" + commentId,
-        data: {comment:content},
+        data: { comment: content },
         success: function (result) {
           // toast的使用 展开接口
           $(".bodyspan").css("display", "none");
 
           $("#submit").removeAttr("isreply");
           $("#submit").removeAttr("commentid");
-          $("#"+commentId).attr("isreply", "true");
-          $("#"+commentId+"huifutext").text('回复');
-          $("#"+commentId+"replycount").text(Number($("#"+commentId+"replycount").text())+1);
-          
-          $("#"+commentId).attr("unfolded", "true");
-          $("#"+commentId+"replytext").text("收起");
+          $("#" + commentId).attr("isreply", "true");
+          $("#" + commentId + "huifutext").text('回复');
+          $("#" + commentId + "replycount").text(Number($("#" + commentId + "replycount").text()) + 1);
+
+          $("#" + commentId).attr("unfolded", "true");
+          $("#" + commentId + "replytext").text("收起");
 
           $("#movecomment").append($("#commentform"));
 
-          domReplyComments.prepend('<div replyid='+result.replyid+' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">'+result.nick+'</span><span class="comm-created">'+result.created+'</span></div><div id='+result.replyid+' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">'+contentPreviewd+'</div></div>');
-          
-          editorCommentMd = editormd("form-comment-edit", {
-            width: "100%",
-            height: 300,
-            path : '/components/editor.md/lib/',
-            placeholder: '可用Markdown格式撰写评论...',
-            toolbarIcons : function() {
-                return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
-            },
-          });
-          showMessage('回复成功！',2000);
+          domReplyComments.prepend('<div replyid=' + result.replyid + ' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">' + result.nick + '</span><span class="comm-created">' + result.created + '</span></div><div id=' + result.replyid + ' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">' + contentPreviewd + '</div></div>');
+
+          // editorCommentMd = editormd("form-comment-edit", {
+          //   width: "100%",
+          //   height: 300,
+          //   path : '/components/editor.md/lib/',
+          //   placeholder: '可用Markdown格式撰写评论...',
+          //   toolbarIcons : function() {
+          //       return ["undo", "redo", "|", "bold", "quote", "|", "h1", "h2", "h3", "h4", "|", "list-ul", "list-ol", "hr", "|", "code", "code-block", "||", "watch", "preview"]
+          //   },
+          // });
+          showMessage('回复成功！', 2000);
           // editorCommentMd.setMarkdown("");
           return false;
         },

@@ -501,6 +501,15 @@ span.comment-favourates {
   margin-bottom: 10px;
 }
 
+a.total-comments#commentAnchorPoint {
+  font-family: 'Roboto';
+  font-weight: 700;
+  font-size: 23px;
+  color: #12b075;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
 #contactform p {
   margin-bottom: 19px;
   /* float: left; */
