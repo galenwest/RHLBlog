@@ -9,7 +9,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    db: 'mongodb://naruto:naruto@47.94.92.161:27017/nodeblog'
   },
 
   test: {
@@ -18,7 +18,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    db: 'mongodb://naruto:naruto@47.94.92.161:27017/nodeblog'
   },
 
   production: {
@@ -27,7 +27,7 @@ var config = {
       name: 'blogone'
     },
     port: process.env.PORT || 3000,
-    db: 'mongodb://localhost/nodeblog'
+    db: 'mongodb://naruto:naruto@47.94.92.161:27017/nodeblog'
   }
 };
 
