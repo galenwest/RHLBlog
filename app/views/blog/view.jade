@@ -111,16 +111,16 @@ block content
     else
       .total-comments 没有评论
       
-    .total-comments#commentAnchorPoint 写一个评论
+    a.total-comments#commentAnchorPoint(href="javascript:void(0)", user=user?user:undefined) 写一个评论
     != messages()
     #movecomment
       form#commentform(action="/posts/comment/"+post.slug, method="post", enctype="application/x-www-form-urlencoded")
-        if user
-          #form-comment-edit(style="margin-bottom: 0px;")
-            textarea(id="commentcontent" name="comment" style="display:none;")
-        else
-          #form-comment-edit(style="margin-bottom: 0px;")
-            textarea(id="commentcontent" name="comment" style="display:none;") ### 请登录后撰写评论！
+        //- if user
+        //-   #form-comment-edit(style="margin-bottom: 0px;")
+        //-     textarea(id="commentcontent" name="comment" style="display:none;")
+        //- else
+        //-   #form-comment-edit(style="margin-bottom: 0px;")
+        //-     textarea(id="commentcontent" name="comment" style="display:none;") ### 请登录后撰写评论！
         #submitloading(style="height:12px; margin-bottom: 0px;")
           .bodyspan
             span.l-1

@@ -12,9 +12,9 @@ $(document).ready(function () {
         url: "/posts/unfavorite/" + postId + "/" + metaId,
         success: function (result) {
           isFavorite = false;
-          $("#"+postId).attr("isfavorite",isFavorite);
-          $("#"+postId).attr("favorite",result.favocount);
-          $("#"+postId).attr("title",'点赞');
+          $("#" + postId).attr("isfavorite", isFavorite);
+          $("#" + postId).attr("favorite", result.favocount);
+          $("#" + postId).attr("title", '点赞');
           domLike.html('<i postid="' + postId + '" favorite="' + result.favocount + '" isfavorite="' + isFavorite + '" metaid="' + metaId + '" class="fa fa-heart-o"></i><span postid="' + postId + '" favorite="' + result.favocount + '" isfavorite="' + isFavorite + '" metaid="' + metaId + '" class="post-favourates">' + result.favocount + '</span>');
         },
         error: function (arg) {
@@ -35,10 +35,10 @@ $(document).ready(function () {
         url: "/posts/favorite/" + postId,
         success: function (result) {
           isFavorite = true;
-          $("#"+postId).attr("isfavorite",isFavorite);
-          $("#"+postId).attr("favorite",result.favorCount);
-          $("#"+postId).attr("metaid",result.metaId);
-          $("#"+postId).attr("title",'取消点赞');
+          $("#" + postId).attr("isfavorite", isFavorite);
+          $("#" + postId).attr("favorite", result.favorCount);
+          $("#" + postId).attr("metaid", result.metaId);
+          $("#" + postId).attr("title", '取消点赞');
           domLike.html('<i postid="' + postId + '" favorite="' + result.favorCount + '" isfavorite="' + isFavorite + '" metaid="' + result.metaId + '" class="fa fa-heart"></i><span postid="' + postId + '" favorite="' + result.favorCount + '" isfavorite="' + isFavorite + '" metaid="' + result.metaId + '" class="post-favourates">' + result.favorCount + '</span>');
         },
         error: function (arg) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
             swal("服务器异常，请重试!", JSON.stringify(arg));
           }
           domLike.html(likeHtml);
-          
+
         },
         beforeSend: function () {
           domLike.html('<i class="fa fa-spinner fa-spin"></i><span class="post-favourates">' + favorite + '</span>');
@@ -60,18 +60,18 @@ $(document).ready(function () {
   $("#logoutuser").click(function (event) {
     var query = queryString.parse(location.search);
     var url = window.location.origin + window.location.pathname + queryString.stringify(query);
-    window.open('/logout?url='+url, '_self');
+    window.open('/logout?url=' + url, '_self');
   });
 
   $("#loginuser").click(function (event) {
     var query = queryString.parse(location.search);
     var url = window.location.origin + window.location.pathname + queryString.stringify(query);
-    window.open('/login?url='+url, '_self');
+    window.open('/login?url=' + url, '_self');
   });
 
   $(".com-like").click(function (event) {
     var commentId = event.target.getAttribute('commentid');
-    var ballot = $("#"+commentId+"support").attr('ballot');
+    var ballot = $("#" + commentId + "support").attr('ballot');
     var supportId = event.target.getAttribute('supportid');
     var isSupport = event.target.getAttribute('issupport');
     var supportCount = event.target.getAttribute('supportcount');
@@ -83,12 +83,12 @@ $(document).ready(function () {
         url: "/posts/comment/unsupport/" + commentId + "/" + supportId,
         success: function (result) {
           ballot = true;
-          $("#"+commentId+"against").attr("ballot",ballot);
-          $("#"+commentId+"support").attr("ballot",ballot);
+          $("#" + commentId + "against").attr("ballot", ballot);
+          $("#" + commentId + "support").attr("ballot", ballot);
           isSupport = false;
-          $("#"+commentId+"support").attr("issupport",isSupport);
-          $("#"+commentId+"support").attr("supportcount",result.suppcount);
-          $("#"+commentId+"support").attr("title",'支持');
+          $("#" + commentId + "support").attr("issupport", isSupport);
+          $("#" + commentId + "support").attr("supportcount", result.suppcount);
+          $("#" + commentId + "support").attr("title", '支持');
           domSupport.html('<i commentid="' + commentId + '" supportid="' + supportId + '" issupport="' + isSupport + '" supportcount="' + result.suppcount + '" class="fa fa-thumbs-o-up"></i><span commentid="' + commentId + '" supportid="' + supportId + '" issupport="' + isSupport + '" supportcount="' + result.suppcount + '" class="comment-favourates">' + result.suppcount + '</span>');
         },
         error: function (arg) {
@@ -113,13 +113,13 @@ $(document).ready(function () {
         url: "/posts/comment/support/" + commentId,
         success: function (result) {
           ballot = false;
-          $("#"+commentId+"against").attr("ballot",ballot);
-          $("#"+commentId+"support").attr("ballot",ballot);
+          $("#" + commentId + "against").attr("ballot", ballot);
+          $("#" + commentId + "support").attr("ballot", ballot);
           isSupport = true;
-          $("#"+commentId+"support").attr("issupport",isSupport);
-          $("#"+commentId+"support").attr("supportcount",result.supportCount);
-          $("#"+commentId+"support").attr("supportid",result.supportId);
-          $("#"+commentId+"support").attr("title",'取消支持');
+          $("#" + commentId + "support").attr("issupport", isSupport);
+          $("#" + commentId + "support").attr("supportcount", result.supportCount);
+          $("#" + commentId + "support").attr("supportid", result.supportId);
+          $("#" + commentId + "support").attr("title", '取消支持');
           domSupport.html('<i commentid="' + commentId + '" supportcount="' + result.supportCount + '" issupport="' + isSupport + '" supportid="' + result.supportId + '" class="fa fa-thumbs-up"></i><span supportid="' + supportId + '" supportcount="' + result.supportCount + '" issupport="' + isSupport + '" supportid="' + result.supportId + '" class="comment-favourates">' + result.supportCount + '</span>');
         },
         error: function (arg) {
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
   $(".com-unlike").click(function (event) {
     var commentId = event.target.getAttribute('commentid');
-    var ballot = $("#"+commentId+"against").attr('ballot');
+    var ballot = $("#" + commentId + "against").attr('ballot');
     var againstId = event.target.getAttribute('againstid');
     var isagainst = event.target.getAttribute('isagainst');
     var againstCount = event.target.getAttribute('againstcount');
@@ -151,12 +151,12 @@ $(document).ready(function () {
         url: "/posts/comment/unagainst/" + commentId + "/" + againstId,
         success: function (result) {
           ballot = true;
-          $("#"+commentId+"support").attr("ballot",ballot);
-          $("#"+commentId+"against").attr("ballot",ballot);
+          $("#" + commentId + "support").attr("ballot", ballot);
+          $("#" + commentId + "against").attr("ballot", ballot);
           isagainst = false;
-          $("#"+commentId+"against").attr("isagainst",isagainst);
-          $("#"+commentId+"against").attr("againstcount",result.againcount);
-          $("#"+commentId+"against").attr("title",'支持');
+          $("#" + commentId + "against").attr("isagainst", isagainst);
+          $("#" + commentId + "against").attr("againstcount", result.againcount);
+          $("#" + commentId + "against").attr("title", '支持');
           domagainst.html('<i commentid="' + commentId + '" againstid="' + againstId + '" isagainst="' + isagainst + '" againstcount="' + result.againcount + '" class="fa fa-thumbs-o-down"></i><span commentid="' + commentId + '" againstid="' + againstId + '" isagainst="' + isagainst + '" againstcount="' + result.againcount + '" class="comment-favourates">' + result.againcount + '</span>');
         },
         error: function (arg) {
@@ -181,13 +181,13 @@ $(document).ready(function () {
         url: "/posts/comment/against/" + commentId,
         success: function (result) {
           ballot = false;
-          $("#"+commentId+"support").attr("ballot",ballot);
-          $("#"+commentId+"against").attr("ballot",ballot);
+          $("#" + commentId + "support").attr("ballot", ballot);
+          $("#" + commentId + "against").attr("ballot", ballot);
           isagainst = true;
-          $("#"+commentId+"against").attr("isagainst",isagainst);
-          $("#"+commentId+"against").attr("againstcount",result.againstCount);
-          $("#"+commentId+"against").attr("againstid",result.againstId);
-          $("#"+commentId+"against").attr("title",'取消支持');
+          $("#" + commentId + "against").attr("isagainst", isagainst);
+          $("#" + commentId + "against").attr("againstcount", result.againstCount);
+          $("#" + commentId + "against").attr("againstid", result.againstId);
+          $("#" + commentId + "against").attr("title", '取消支持');
           domagainst.html('<i commentid="' + commentId + '" againstcount="' + result.againstCount + '" isagainst="' + isagainst + '" againstid="' + result.againstId + '" class="fa fa-thumbs-down"></i><span againstid="' + againstId + '" againstcount="' + result.againstCount + '" isagainst="' + isagainst + '" againstid="' + result.againstId + '" class="comment-favourates">' + result.againstCount + '</span>');
         },
         error: function (arg) {
@@ -208,36 +208,37 @@ $(document).ready(function () {
   $(".comment-unfold").click(function (event) {
     var postId = $(".post-comments").attr("postid");
     var commentId = event.target.getAttribute('commentid');
-    var unfolded = $("#"+commentId).attr("unfolded");
-    var replycount = $("#"+commentId+"replycount").text();
-    var domReplyComments = $("#"+commentId+"reply");
+    var unfolded = $("#" + commentId).attr("unfolded");
+    var replycount = $("#" + commentId + "replycount").text();
+    var domReplyComments = $("#" + commentId + "reply");
     if (replycount == "0") {
-      showMessage('暂无回复！',1000);
+      showMessage('暂无回复！', 1000);
       return;
     }
     if (unfolded == "true") {
-      $("#"+commentId).attr("unfolded", "false");
-      $("#"+commentId+"replytext").text("展开");
+      $("#" + commentId).attr("unfolded", "false");
+      $("#" + commentId + "replytext").text("展开");
       domReplyComments.empty();
     } else {
       $.ajax({
         url: "/posts/comment/replys/" + postId + "/" + commentId,
         success: function (result) {
-          $("#"+commentId+"loading").css("display", "none");
-          $("#"+commentId).attr("unfolded", "true");
-          $("#"+commentId+"replytext").text("收起");
-          result.forEach(function(element) {
-            domReplyComments.prepend('<div replyid='+element.replyid+' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">'+element.nick+'</span><span class="comm-created">'+element.created+'</span></div><div id='+element.replyid+' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">'+element.content+'</div><div class="reply-reply"><a href="javascript:void(0)">回复</a></div></div>');
+          $("#" + commentId + "loading").css("display", "none");
+          $("#" + commentId).attr("unfolded", "true");
+          $("#" + commentId + "replytext").text("收起");
+          result.forEach(function (element) {
+            domReplyComments.prepend('<div replyid=' + element.replyid + ' style="padding-left:10px;padding-bottom:8px" class="reply-comment"><hr style="margin-top:10px;margin-bottom:10px"><div class="post-comment-author"><span style="font-size:18px" class="comm-author">' + element.nick + '</span><span class="comm-created">' + element.created + '</span></div><div id=' + element.replyid + ' style="padding-top:10px;padding-bottom:10px" class="post-comment-content markdown-body editormd-html-preview">' + element.content + '</div><div class="reply-reply"><a href="javascript:void(0)">回复</a></div></div>');
           }, this);
         },
         error: function (arg) {
-          showMessage('服务器异常，获取失败！',3000);
-          $("#"+commentId+"loading").css("display", "none");
+          showMessage('服务器异常，获取失败！', 3000);
+          $("#" + commentId + "loading").css("display", "none");
         },
         beforeSend: function () {
-          $("#"+commentId+"loading").css("display", "inherit");
+          $("#" + commentId + "loading").css("display", "inherit");
         }
       });
     }
   });
+
 });
