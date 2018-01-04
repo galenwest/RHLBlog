@@ -804,3 +804,13 @@ a.editormd-preview-close-btn {
   background-color: #12b075;
   border-color: #12b075;
 }
+
+.bottomA {
+  color: #666666;
+  text-decoration: none;
+}
+
+.bottomA:hover {
+  color: #12b075;
+  text-decoration: none;
+}
