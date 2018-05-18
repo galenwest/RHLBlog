@@ -3,3 +3,5 @@ public/components
 .nyc_output
 .sass-cache
 .vscode/
+package-lock.json
+.idea/
